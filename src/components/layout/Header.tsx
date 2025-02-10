@@ -1,6 +1,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { ThemeSwitcher } from "@/components/layout/ThemeSwitcher";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -14,7 +15,7 @@ export const Header = () => {
   const { signOut, user } = useAuth();
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="text-2xl font-bold text-primary">
           Batik Bazaar
@@ -36,6 +37,7 @@ export const Header = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-4">
+          <ThemeSwitcher />
           {user ? (
             <Button variant="outline" onClick={() => signOut()}>
               Sign Out

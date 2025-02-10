@@ -8,11 +8,20 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Welcome to Batik Bazaar</h1>
-        <CategoryFilter onSelectCategory={setSelectedCategory} selectedCategory={selectedCategory} />
+        <div className="max-w-4xl mx-auto text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            Welcome to Batik Bazaar
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Discover the finest collection of traditional and contemporary batik designs
+          </p>
+        </div>
+        <div className="bg-card rounded-lg p-6 shadow-lg mb-8">
+          <CategoryFilter onSelectCategory={setSelectedCategory} selectedCategory={selectedCategory} />
+        </div>
         <ProductGrid selectedCategory={selectedCategory} />
       </main>
     </div>
