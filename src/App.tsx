@@ -12,10 +12,17 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useAuth();
-  if (!session) {
-    return <Navigate to="/auth" />;
+  const { session, isLoading } = useAuth();
+  
+  // Show nothing while checking auth state
+  if (isLoading) {
+    return null;
   }
+  
+  if (!session) {
+    return <Navigate to="/auth" replace />;
+  }
+  
   return <>{children}</>;
 };
 

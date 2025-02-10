@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 type AuthContextType = {
   session: Session | null;
   user: User | null;
+  isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => Promise<void>;
   signOut: () => Promise<void>;
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setIsLoading(false);
     });
 
     // Listen for auth changes
@@ -32,65 +35,93 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error signing in",
+          description: error.message,
+        });
+        throw error;
+      }
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error signing in",
-        description: error.message,
+        description: error.message || "An error occurred during sign in",
       });
       throw error;
     }
   };
 
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-      },
-    });
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+        },
+      });
 
-    if (error) {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error signing up",
+          description: error.message,
+        });
+        throw error;
+      }
+
+      toast({
+        title: "Successfully signed up",
+        description: "Please check your email to verify your account.",
+      });
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error signing up",
-        description: error.message,
+        description: error.message || "An error occurred during sign up",
       });
       throw error;
     }
-
-    toast({
-      title: "Successfully signed up",
-      description: "Please check your email to verify your account.",
-    });
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error signing out",
+          description: error.message,
+        });
+        throw error;
+      }
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error signing out",
-        description: error.message,
+        description: error.message || "An error occurred during sign out",
       });
       throw error;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, user, isLoading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
