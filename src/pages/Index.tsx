@@ -13,10 +13,10 @@ const Index = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Welcome to Batik Bazaar
+            Selamat Datang di Pasar Pahing
           </h1>
           <p className="text-lg text-muted-foreground">
-            Discover the finest collection of traditional and contemporary batik designs
+            Pasar Online Budaya Asli Indonesia 
           </p>
         </div>
         <div className="bg-card rounded-lg p-6 shadow-lg mb-8">
