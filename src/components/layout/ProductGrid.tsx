@@ -4,11 +4,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export const ProductGrid = () => {
+interface ProductGridProps {
+  selectedCategory: string | null;
+}
+
+export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   const { data: products, isLoading } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", selectedCategory],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("products")
         .select(`
           *,
@@ -16,6 +20,12 @@ export const ProductGrid = () => {
             name
           )
         `);
+      
+      if (selectedCategory) {
+        query = query.eq('category_id', selectedCategory);
+      }
+      
+      const { data, error } = await query;
       
       if (error) throw error;
       return data;
@@ -38,10 +48,19 @@ export const ProductGrid = () => {
     );
   }
 
+  if (!products?.length) {
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-semibold text-gray-600">No products found</h2>
+        <p className="text-gray-500 mt-2">Try selecting a different category</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products?.map((product) => (
-        <Card key={product.id}>
+      {products.map((product) => (
+        <Card key={product.id} className="flex flex-col">
           <CardHeader>
             {product.image_url ? (
               <img
@@ -56,8 +75,8 @@ export const ProductGrid = () => {
             )}
             <CardTitle className="text-lg">{product.name}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600">{product.description}</p>
+          <CardContent className="flex-1">
+            <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
             <p className="text-lg font-bold mt-2">${product.price}</p>
             {product.categories && (
               <p className="text-sm text-gray-500">{product.categories.name}</p>

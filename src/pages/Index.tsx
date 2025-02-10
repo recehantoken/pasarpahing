@@ -12,8 +12,8 @@ const Index = () => {
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8">Welcome to Batik Bazaar</h1>
-        <CategoryFilter onSelectCategory={setSelectedCategory} />
-        <ProductGrid />
+        <CategoryFilter onSelectCategory={setSelectedCategory} selectedCategory={selectedCategory} />
+        <ProductGrid selectedCategory={selectedCategory} />
       </main>
     </div>
   );
