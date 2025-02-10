@@ -19,9 +19,26 @@ export const ThemeSwitcher = () => {
           .from('theme_settings')
           .select('theme_preference')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
-        if (data && !error) {
+        if (error) {
+          console.error('Error fetching theme preference:', error);
+          return;
+        }
+
+        // If no theme setting exists, create one with default theme
+        if (!data) {
+          const { error: insertError } = await supabase
+            .from('theme_settings')
+            .insert([
+              { user_id: user.id, theme_preference: 'light' }
+            ]);
+
+          if (insertError) {
+            console.error('Error creating theme setting:', insertError);
+            return;
+          }
+        } else {
           setTheme(data.theme_preference as 'light' | 'dark');
           document.documentElement.classList.toggle('dark', data.theme_preference === 'dark');
         }
