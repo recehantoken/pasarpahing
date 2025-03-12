@@ -10,6 +10,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Link } from "react-router-dom";
+import { User } from "lucide-react";
 
 export const Header = () => {
   const { signOut, user } = useAuth();
@@ -39,9 +40,16 @@ export const Header = () => {
         <div className="flex items-center gap-4">
           <ThemeSwitcher />
           {user ? (
-            <Button variant="outline" onClick={() => signOut()}>
-              Sign Out
-            </Button>
+            <>
+              <Link to="/profile">
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            </>
           ) : (
             <Link to="/auth">
               <Button>Sign In</Button>
