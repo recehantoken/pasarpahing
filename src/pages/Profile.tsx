@@ -101,20 +101,28 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">Loading your profile...</div>
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-center text-foreground">Loading your profile...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Batik Pattern Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-15" 
+        style={{ 
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B5A2B' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat'
+        }}
+      />
+      
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+          <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">My Profile</h1>
           
-          <Card>
+          <Card className="border border-primary/20 shadow-lg mb-6 bg-card/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Personal Information</CardTitle>
               <CardDescription>
@@ -130,6 +138,7 @@ const Profile = () => {
                   value={profile.first_name || ""}
                   onChange={handleChange}
                   placeholder="Enter your first name"
+                  className="border-primary/20 focus:border-primary/50"
                 />
               </div>
               <div className="space-y-2">
@@ -140,6 +149,7 @@ const Profile = () => {
                   value={profile.last_name || ""}
                   onChange={handleChange}
                   placeholder="Enter your last name"
+                  className="border-primary/20 focus:border-primary/50"
                 />
               </div>
               <div className="space-y-2">
@@ -148,7 +158,7 @@ const Profile = () => {
                   id="email"
                   value={user?.email || ""}
                   disabled
-                  className="bg-gray-50"
+                  className="bg-muted/70 border-primary/20"
                 />
                 <p className="text-sm text-muted-foreground">
                   Email cannot be changed
@@ -156,13 +166,13 @@ const Profile = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleSave} disabled={isSaving}>
+              <Button onClick={handleSave} disabled={isSaving} className="bg-primary hover:bg-primary/90">
                 {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </CardFooter>
           </Card>
 
-          <Card className="mt-6">
+          <Card className="border border-primary/20 shadow-lg bg-card/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Theme Preferences</CardTitle>
               <CardDescription>
