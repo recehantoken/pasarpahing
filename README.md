@@ -1,69 +1,49 @@
-# Welcome to your Lovable project
+# Pasar Pahing
 
-## Project info
+[![Website](https://img.shields.io/badge/Website-Pasar%20Pahing-blue)](https://pasarpahing.lovable.app)
 
-**URL**: https://lovable.dev/projects/f9ef8b2b-70e8-433c-a08a-f154d08e87b1
+Pasar Pahing adalah platform digital yang bertujuan untuk menghubungkan pedagang pasar tradisional dengan pelanggan secara online. Dengan Pasar Pahing, pengguna dapat menjelajahi berbagai produk, melakukan pemesanan, dan mendapatkan pengalaman belanja pasar secara praktis dari rumah.
 
-## How can I edit this code?
+## ✨ Fitur Utama
+- **Jelajahi Produk**: Lihat berbagai produk dari pedagang pasar tradisional.
+- **Pemesanan Online**: Pesan barang dengan mudah melalui platform.
+- **Notifikasi & Pembaruan**: Dapatkan informasi terbaru tentang produk dan promosi.
+- **Pembayaran Aman**: Berbagai metode pembayaran yang aman dan nyaman.
 
-There are several ways of editing your application.
+## 🚀 Cara Menggunakan
+1. Kunjungi [Pasar Pahing](https://pasarpahing.lovable.app)
+2. Buat akun atau masuk ke akunmu.
+3. Jelajahi produk dan tambahkan ke keranjang.
+4. Lakukan pembayaran dan tunggu konfirmasi.
+5. Terima pesananmu dengan nyaman!
 
-**Use Lovable**
+## 🔧 Instalasi (Untuk Pengembang)
+Jika kamu ingin berkontribusi atau menjalankan proyek ini secara lokal:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f9ef8b2b-70e8-433c-a08a-f154d08e87b1) and start prompting.
+```bash
+# Clone repositori ini
+git clone https://github.com/username/pasarpahing.git
 
-Changes made via Lovable will be committed automatically to this repo.
+# Masuk ke direktori proyek
+cd pasarpahing
 
-**Use your preferred IDE**
+# Install dependencies
+npm install
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Jalankan proyek secara lokal
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📌 Kontribusi
+Kami menyambut kontribusi dari siapa saja! Jika ingin berkontribusi:
+- Fork proyek ini
+- Buat branch baru (`git checkout -b fitur-baru`)
+- Lakukan perubahan dan commit (`git commit -m 'Menambahkan fitur baru'`)
+- Push ke branch dan buat pull request
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📄 Lisensi
+Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
-**Use GitHub Codespaces**
+---
+Dukung pasar tradisional dengan Pasar Pahing! 🚀
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f9ef8b2b-70e8-433c-a08a-f154d08e87b1) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
