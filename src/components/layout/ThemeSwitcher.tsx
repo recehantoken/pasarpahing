@@ -15,32 +15,39 @@ export const ThemeSwitcher = () => {
     // Check if user has a theme preference
     const fetchThemePreference = async () => {
       if (user) {
-        const { data, error } = await supabase
-          .from('theme_settings')
-          .select('theme_preference')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error fetching theme preference:', error);
-          return;
-        }
-
-        // If no theme setting exists, create one with default theme
-        if (!data) {
-          const { error: insertError } = await supabase
+        try {
+          const { data, error } = await supabase
             .from('theme_settings')
-            .insert([
-              { user_id: user.id, theme_preference: 'light' }
-            ]);
+            .select('theme_preference')
+            .eq('user_id', user.id)
+            .maybeSingle();
 
-          if (insertError) {
-            console.error('Error creating theme setting:', insertError);
+          if (error) {
+            console.error('Error fetching theme preference:', error);
             return;
           }
-        } else {
-          setTheme(data.theme_preference as 'light' | 'dark');
-          document.documentElement.classList.toggle('dark', data.theme_preference === 'dark');
+
+          // If theme setting exists, apply it
+          if (data) {
+            setTheme(data.theme_preference as 'light' | 'dark');
+            document.documentElement.classList.toggle('dark', data.theme_preference === 'dark');
+          } else {
+            // If no theme setting exists, create one with default theme
+            const { error: upsertError } = await supabase
+              .from('theme_settings')
+              .upsert({ 
+                user_id: user.id, 
+                theme_preference: 'light' 
+              }, { 
+                onConflict: 'user_id'
+              });
+
+            if (upsertError) {
+              console.error('Error creating theme setting:', upsertError);
+            }
+          }
+        } catch (err) {
+          console.error('Unexpected error in theme preference:', err);
         }
       }
     };
@@ -54,14 +61,26 @@ export const ThemeSwitcher = () => {
     document.documentElement.classList.toggle('dark');
 
     if (user) {
-      const { error } = await supabase
-        .from('theme_settings')
-        .upsert({
-          user_id: user.id,
-          theme_preference: newTheme
-        });
+      try {
+        const { error } = await supabase
+          .from('theme_settings')
+          .upsert({
+            user_id: user.id,
+            theme_preference: newTheme
+          }, {
+            onConflict: 'user_id'
+          });
 
-      if (error) {
+        if (error) {
+          toast({
+            title: "Error saving theme preference",
+            description: "Please try again later",
+            variant: "destructive"
+          });
+          console.error('Error updating theme preference:', error);
+        }
+      } catch (err) {
+        console.error('Unexpected error toggling theme:', err);
         toast({
           title: "Error saving theme preference",
           description: "Please try again later",
