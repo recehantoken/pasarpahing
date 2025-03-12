@@ -1,9 +1,9 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 
 interface ProductGridProps {
@@ -12,6 +12,7 @@ interface ProductGridProps {
 
 export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   const { user } = useAuth();
+  const { addToCart } = useCart();
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["products", selectedCategory],
@@ -36,20 +37,12 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
     },
   });
 
-  const handleAddToCart = () => {
-    if (!user) {
-      toast("Please sign in to add items to your cart", {
-        description: "Create an account or sign in to start shopping",
-        action: {
-          label: "Sign In",
-          onClick: () => window.location.href = "/auth"
-        }
-      });
-      return;
+  const handleAddToCart = async (productId: string) => {
+    try {
+      await addToCart(productId);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
     }
-    
-    // Cart functionality would go here
-    toast.success("Item added to cart");
   };
 
   if (isLoading) {
@@ -103,7 +96,7 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
             )}
           </CardContent>
           <CardFooter>
-            <Button className="w-full" onClick={handleAddToCart}>Add to Cart</Button>
+            <Button className="w-full" onClick={() => handleAddToCart(product.id)}>Add to Cart</Button>
           </CardFooter>
         </Card>
       ))}
