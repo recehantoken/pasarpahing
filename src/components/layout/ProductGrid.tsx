@@ -3,12 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 interface ProductGridProps {
   selectedCategory: string | null;
 }
 
 export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
+  const { user } = useAuth();
+
   const { data: products, isLoading } = useQuery({
     queryKey: ["products", selectedCategory],
     queryFn: async () => {
@@ -31,6 +35,22 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
       return data;
     },
   });
+
+  const handleAddToCart = () => {
+    if (!user) {
+      toast("Please sign in to add items to your cart", {
+        description: "Create an account or sign in to start shopping",
+        action: {
+          label: "Sign In",
+          onClick: () => window.location.href = "/auth"
+        }
+      });
+      return;
+    }
+    
+    // Cart functionality would go here
+    toast.success("Item added to cart");
+  };
 
   if (isLoading) {
     return (
@@ -83,7 +103,7 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
             )}
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Add to Cart</Button>
+            <Button className="w-full" onClick={handleAddToCart}>Add to Cart</Button>
           </CardFooter>
         </Card>
       ))}
