@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,6 +24,7 @@ interface CartContextType {
   updateQuantity: (cartItemId: string, quantity: number) => Promise<void>;
   totalPrice: number;
   clearCart: () => Promise<void>;
+  items: CartItem[];
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -47,7 +47,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user]);
 
   useEffect(() => {
-    // Calculate total price whenever cart items change
     const total = cartItems.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
       0
@@ -60,7 +59,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     setIsLoading(true);
     try {
-      // First, get or create a cart for the user
       const { data: carts, error: cartsError } = await supabase
         .from("carts")
         .select("id")
@@ -71,7 +69,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
       let currentCartId = carts?.id;
 
-      // If no cart exists, create one
       if (!currentCartId) {
         const { data: newCart, error: createCartError } = await supabase
           .from("carts")
@@ -85,7 +82,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
       setCartId(currentCartId);
 
-      // Fetch cart items with product details
       const { data: items, error: itemsError } = await supabase
         .from("cart_items")
         .select(`
@@ -129,14 +125,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
-      // Check if item already exists in cart
       const existingItem = cartItems.find(item => item.product_id === productId);
 
       if (existingItem) {
-        // Update quantity if item exists
         await updateQuantity(existingItem.id, existingItem.quantity + 1);
       } else {
-        // Add new item to cart
         const { data, error } = await supabase
           .from("cart_items")
           .insert({
@@ -236,7 +229,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         removeFromCart,
         updateQuantity,
         totalPrice,
-        clearCart
+        clearCart,
+        items: cartItems
       }}
     >
       {children}

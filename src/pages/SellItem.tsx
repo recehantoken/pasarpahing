@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 
 const SellItem = () => {
   const [name, setName] = useState("");
@@ -26,7 +26,6 @@ const SellItem = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Fetch categories for dropdown
   const { data: categories, isLoading: categoriesLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -44,7 +43,6 @@ const SellItem = () => {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
-      // Preview image
       const reader = new FileReader();
       reader.onload = () => {
         setImageUrl(reader.result as string);
@@ -60,15 +58,13 @@ const SellItem = () => {
     const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
     const filePath = `product-images/${fileName}`;
     
-    // Check if storage bucket exists
     const { data: buckets } = await supabase.storage.listBuckets();
     const productImagesBucket = buckets?.find(bucket => bucket.name === 'product-images');
     
-    // Create bucket if it doesn't exist
     if (!productImagesBucket) {
       const { error } = await supabase.storage.createBucket('product-images', {
         public: true,
-        fileSizeLimit: 5242880, // 5MB
+        fileSizeLimit: 5242880,
       });
       
       if (error) throw error;
@@ -104,24 +100,20 @@ const SellItem = () => {
     try {
       setIsLoading(true);
       
-      // Validate form
       if (!name || !price || !categoryId) {
         throw new Error("Name, price and category are required fields");
       }
       
-      // Convert price to numeric
       const numericPrice = parseFloat(price);
       if (isNaN(numericPrice) || numericPrice <= 0) {
         throw new Error("Price must be a positive number");
       }
       
-      // Upload image if provided
       let publicImageUrl = "";
       if (imageFile) {
         publicImageUrl = await uploadImage();
       }
       
-      // Save product to database
       const { data, error } = await supabase
         .from("products")
         .insert({
@@ -157,7 +149,6 @@ const SellItem = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground relative">
-      {/* Batik Pattern Background */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-15" 
         style={{ 
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B5A2B' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,

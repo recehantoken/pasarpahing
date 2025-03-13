@@ -15,15 +15,15 @@ export const CurrencyDisplay = ({ amount, className }: { amount: number, classNa
   const { data: currencyRate, isLoading } = useQuery({
     queryKey: ["currencyRate"],
     queryFn: async () => {
+      // Using raw query to bypass the type issue until types are updated
       const { data, error } = await supabase
-        .from("currency_rates")
-        .select("*")
-        .eq("currency_code", "IDR")
-        .order("last_updated", { ascending: false })
-        .limit(1)
-        .single();
+        .rpc('get_latest_currency_rate', { code: 'IDR' });
         
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching currency rate:", error);
+        throw error;
+      }
+      
       return data as CurrencyRate;
     },
   });
