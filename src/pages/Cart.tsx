@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { CurrencyDisplay } from "@/components/CurrencyDisplay";
+import { Footer } from "@/components/layout/Footer";
+import { useQuery } from "@tanstack/react-query";
 
 const Cart = () => {
   const { cartItems, cartId, isLoading, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart();
@@ -73,8 +75,6 @@ const Cart = () => {
 
     setIsSubmitting(true);
     try {
-      // Instead of creating a payment record, we'll store the payment data in local storage
-      // and simulate a successful payment
       const paymentData = {
         cart_id: cartId,
         payment_method: paymentMethod,
@@ -85,17 +85,14 @@ const Cart = () => {
         created_at: new Date().toISOString()
       };
       
-      // Store payment info in localStorage (for demo purposes)
       localStorage.setItem('last_payment', JSON.stringify(paymentData));
       
       toast.success("Order placed successfully!", {
         description: "Your payment is being processed."
       });
 
-      // Clear the cart after successful checkout
       await clearCart();
       
-      // Navigate to a confirmation or orders page
       navigate("/");
     } catch (error: any) {
       console.error("Checkout error:", error);
@@ -108,9 +105,10 @@ const Cart = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      
+      <main className="flex-1 container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Card>
@@ -252,7 +250,9 @@ const Cart = () => {
             </Card>
           </div>
         </div>
-      </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ShoppingCart, Store, LogIn, User } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { CurrencyMenu } from "./CurrencyMenu";
 
 export const Header = () => {
   const { user, session, signOut } = useAuth();
@@ -26,6 +27,7 @@ export const Header = () => {
         </Link>
         
         <div className="flex items-center space-x-4">
+          <CurrencyMenu />
           <ThemeSwitcher />
           
           {session ? (

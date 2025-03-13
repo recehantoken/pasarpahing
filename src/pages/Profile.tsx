@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,6 +11,7 @@ import { ThemeSwitcher } from "@/components/layout/ThemeSwitcher";
 import { Header } from "@/components/layout/Header";
 import { ProfilePictureUpload } from "@/components/ProfilePictureUpload";
 import { LogOut } from "lucide-react";
+import { Footer } from "@/components/layout/Footer";
 
 type ProfileData = {
   first_name: string | null;
@@ -131,16 +131,9 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background relative">
-      {/* Batik Pattern Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-15" 
-        style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B5A2B' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          backgroundRepeat: 'repeat'
-        }}
-      />
-      
+    <div className="min-h-screen flex flex-col">
       <Header />
+      
       <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-6">
@@ -242,6 +235,8 @@ const Profile = () => {
           </Card>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };
