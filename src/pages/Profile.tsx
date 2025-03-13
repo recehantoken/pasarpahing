@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,21 +10,26 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeSwitcher } from "@/components/layout/ThemeSwitcher";
 import { Header } from "@/components/layout/Header";
+import { ProfilePictureUpload } from "@/components/ProfilePictureUpload";
+import { LogOut } from "lucide-react";
 
 type ProfileData = {
   first_name: string | null;
   last_name: string | null;
+  avatar_url: string | null;
 };
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [profile, setProfile] = useState<ProfileData>({
     first_name: "",
     last_name: "",
+    avatar_url: null
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -33,7 +39,7 @@ const Profile = () => {
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("first_name, last_name")
+          .select("first_name, last_name, avatar_url")
           .eq("id", user.id)
           .maybeSingle();
 
@@ -45,6 +51,7 @@ const Profile = () => {
           setProfile({
             first_name: data.first_name,
             last_name: data.last_name,
+            avatar_url: data.avatar_url
           });
         }
       } catch (error: any) {
@@ -99,6 +106,22 @@ const Profile = () => {
     }));
   };
 
+  const handleAvatarChange = (url: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      avatar_url: url
+    }));
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully."
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -120,7 +143,35 @@ const Profile = () => {
       <Header />
       <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">My Profile</h1>
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">My Profile</h1>
+            <Button 
+              variant="outline" 
+              className="border-primary/20 text-primary hover:bg-primary/10" 
+              onClick={handleSignOut}
+            >
+              <LogOut size={16} className="mr-2" />
+              Sign Out
+            </Button>
+          </div>
+          
+          <Card className="border border-primary/20 shadow-lg mb-6 bg-card/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Profile Picture</CardTitle>
+              <CardDescription>
+                Upload a picture to personalize your profile
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              {user && (
+                <ProfilePictureUpload
+                  user={user}
+                  avatarUrl={profile.avatar_url}
+                  onAvatarChange={handleAvatarChange}
+                />
+              )}
+            </CardContent>
+          </Card>
           
           <Card className="border border-primary/20 shadow-lg mb-6 bg-card/80 backdrop-blur-sm">
             <CardHeader>
