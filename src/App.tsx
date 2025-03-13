@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
+import SellItem from "./pages/SellItem";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 
@@ -53,6 +54,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <Cart />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/sell" 
+                element={
+                  <ProtectedRoute>
+                    <SellItem />
                   </ProtectedRoute>
                 } 
               />

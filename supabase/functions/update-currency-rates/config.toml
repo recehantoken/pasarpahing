@@ -1,0 +1,5 @@
+
+project_id = "iyudhcpeqdubzyvgjcls"
+
+[permissions]
+env = {SUPABASE_URL = "always", SUPABASE_SERVICE_ROLE_KEY = "always"}

@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
+import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 
 interface ProductGridProps {
   selectedCategory: string | null;
@@ -73,7 +75,7 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {products.map((product) => (
-        <Card key={product.id} className="flex flex-col">
+        <Card key={product.id} className="flex flex-col border border-primary/20">
           <CardHeader>
             {product.image_url ? (
               <img
@@ -90,9 +92,12 @@ export const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
           </CardHeader>
           <CardContent className="flex-1">
             <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
-            <p className="text-lg font-bold mt-2">${product.price}</p>
+            <div className="mt-2">
+              <p className="text-lg font-bold">${product.price}</p>
+              <CurrencyDisplay amount={product.price} className="text-sm text-muted-foreground" />
+            </div>
             {product.categories && (
-              <p className="text-sm text-gray-500">{product.categories.name}</p>
+              <p className="text-sm text-gray-500 mt-1">{product.categories.name}</p>
             )}
           </CardContent>
           <CardFooter>
