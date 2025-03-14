@@ -62,9 +62,9 @@ const Index = () => {
         const { data, error } = await query;
 
         if (error) throw error;
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
+        setProducts(data || []);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       } finally {
         setLoading(false);
       }
@@ -73,92 +73,72 @@ const Index = () => {
     fetchProducts();
   }, [selectedCategory, searchQuery, sortOrder]);
 
-  const handleCategoryChange = (categoryId: string | null) => {
-    setSelectedCategory(categoryId);
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      
-      <div className="container mx-auto px-4 py-8">
-        {/* Banner Ads Section */}
-        <div className="mb-8">
-          <div className="grid grid-cols-1 gap-4">
-            <BannerAd
-              title={t('index.cryptoPayments')}
-              description={t('index.cryptoDesc')}
-              imageUrl="https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2832&auto=format&fit=crop"
-              linkUrl="/faq"
-              buttonText={t('index.learnMore')}
-              className="h-[300px]"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <BannerAd
-                title={t('index.newArrivals')}
-                description={t('index.checkProducts')}
-                imageUrl="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop"
-                linkUrl="/"
-                buttonText={t('index.shopNow')}
-                className="h-[200px]"
-              />
-              <BannerAd
-                title={t('index.limitedOffers')}
-                description={t('index.specialDiscount')}
-                imageUrl="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
-                linkUrl="/"
-                buttonText={t('index.viewDeals')}
-                className="h-[200px]"
-              />
+      <main className="flex-1 container mx-auto py-8 px-4">
+        <h1 className="text-3xl font-bold mb-8 text-center">{t('home.title')}</h1>
+        
+        <BannerAd />
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="md:col-span-1">
+            <div className="sticky top-24">
+              <h2 className="text-xl font-semibold mb-4">{t('home.categories')}</h2>
+              {categories && (
+                <CategoryFilter 
+                  categories={categories} 
+                  selectedCategory={selectedCategory}
+                  onSelectCategory={setSelectedCategory}
+                />
+              )}
             </div>
           </div>
-        </div>
-        
-        {/* Existing Product Grid Section */}
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-full md:w-64">
-            <CategoryFilter 
-              selectedCategory={selectedCategory} 
-              onSelectCategory={handleCategoryChange} 
-            />
-          </div>
           
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold">{t('index.products')}</h1>
-              {/* Search and Filter Controls */}
-              <div className="flex items-center gap-2">
+          <div className="md:col-span-3">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+              <div className="w-full md:w-1/2">
                 <Input
-                  placeholder={t('index.search')}
+                  placeholder={t('home.search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full max-w-[200px]"
+                  className="w-full"
                 />
-                <Select value={sortOrder} onValueChange={setSortOrder}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={t('index.sortBy')} />
+              </div>
+              
+              <div className="w-full md:w-auto">
+                <Select
+                  value={sortOrder}
+                  onValueChange={setSortOrder}
+                >
+                  <SelectTrigger className="w-full md:w-[200px]">
+                    <SelectValue placeholder={t('common.sort')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="newest">{t('index.newest')}</SelectItem>
-                    <SelectItem value="price_asc">{t('index.priceLowHigh')}</SelectItem>
-                    <SelectItem value="price_desc">{t('index.priceHighLow')}</SelectItem>
+                    <SelectItem value="newest">{t('home.sort.newest')}</SelectItem>
+                    <SelectItem value="price_asc">{t('home.sort.price_asc')}</SelectItem>
+                    <SelectItem value="price_desc">{t('home.sort.price_desc')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             
-            {/* Main Product Grid */}
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <p>{t('index.loading')}</p>
+                <p>{t('common.loading')}</p>
               </div>
             ) : (
-              <ProductGrid products={products} />
+              products.length > 0 ? (
+                <ProductGrid productList={products} />
+              ) : (
+                <div className="flex justify-center items-center h-64">
+                  <p>No products found.</p>
+                </div>
+              )
             )}
           </div>
         </div>
-      </div>
-      
+      </main>
       <Footer />
     </div>
   );
