@@ -44,7 +44,7 @@ export const Footer = () => {
         </div>
         
         <div className="mt-8 pt-4 border-t border-primary/10 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Pasar Pahing. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Pasar Pahing developed by ID Cent. All rights reserved.</p>
         </div>
       </div>
     </footer>
