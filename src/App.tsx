@@ -10,6 +10,13 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import SellItem from "./pages/SellItem";
+import FAQ from "./pages/FAQ";
+import Shipping from "./pages/Shipping";
+import Returns from "./pages/Returns";
+import ContactUs from "./pages/ContactUs";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 
@@ -65,6 +72,14 @@ const App = () => (
                   </ProtectedRoute>
                 } 
               />
+              {/* Footer Pages */}
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/returns" element={<Returns />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/cookies" element={<CookiePolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

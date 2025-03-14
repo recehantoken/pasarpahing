@@ -26,19 +26,19 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Help</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm hover:underline">FAQ</a></li>
-              <li><a href="#" className="text-sm hover:underline">Shipping</a></li>
-              <li><a href="#" className="text-sm hover:underline">Returns</a></li>
-              <li><a href="#" className="text-sm hover:underline">Contact Us</a></li>
+              <li><Link to="/faq" className="text-sm hover:underline">FAQ</Link></li>
+              <li><Link to="/shipping" className="text-sm hover:underline">Shipping</Link></li>
+              <li><Link to="/returns" className="text-sm hover:underline">Returns</Link></li>
+              <li><Link to="/contact" className="text-sm hover:underline">Contact Us</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm hover:underline">Terms of Service</a></li>
-              <li><a href="#" className="text-sm hover:underline">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm hover:underline">Cookies</a></li>
+              <li><Link to="/terms" className="text-sm hover:underline">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="text-sm hover:underline">Privacy Policy</Link></li>
+              <li><Link to="/cookies" className="text-sm hover:underline">Cookies</Link></li>
             </ul>
           </div>
         </div>
