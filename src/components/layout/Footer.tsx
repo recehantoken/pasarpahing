@@ -9,7 +9,7 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Pasar Pahing</h3>
             <p className="text-sm text-muted-foreground">
-            Pasar Pahing is a traditional Indonesian market celebrating local culture, fresh produce, and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.
+            Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.
             </p>
           </div>
           
