@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export interface BannerAdProps {
+interface BannerAdProps {
   title: string;
   description: string;
   imageUrl: string;
