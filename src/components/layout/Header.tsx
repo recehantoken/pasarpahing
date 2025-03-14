@@ -15,7 +15,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2">
-              <img src="/logo.svg" alt="Pasar Pahing Logo" className="h-10 w-auto" />
+              <img src="/cent.png" alt="Pasar Pahing Logo" className="h-10 w-auto" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                 Pasar Pahing
               </span>
