@@ -127,8 +127,8 @@ const ContactUs = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:info@pasarpahing.com" className="text-primary hover:underline">
-                    info@pasarpahing.com
+                  <a href="mailto:info@recehan.gold" className="text-primary hover:underline">
+                    info@recehan.gold
                   </a>
                 </CardContent>
               </Card>
@@ -141,8 +141,8 @@ const ContactUs = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="tel:+123456789" className="text-primary hover:underline">
-                    +1 (234) 567-8900
+                  <a href="tel:+6381553942464" className="text-primary hover:underline">
+                    +63 815 5394 2464
                   </a>
                 </CardContent>
               </Card>
@@ -156,10 +156,10 @@ const ContactUs = () => {
                 </CardHeader>
                 <CardContent>
                   <address className="not-italic">
-                    Pasar Pahing Headquarters<br />
-                    123 Marketplace Street<br />
-                    San Francisco, CA 94107<br />
-                    United States
+                    Office<br />
+                    Sleman, Yogyakarta<br />
+                    Central Java<br />
+                    Indonesia
                   </address>
                 </CardContent>
               </Card>
