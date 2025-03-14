@@ -8,8 +8,6 @@ import { CategoryFilter } from "@/components/layout/CategoryFilter";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BannerAd } from "@/components/layout/BannerAd";
-import { Footer } from "@/components/layout/Footer";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -17,7 +15,6 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState("newest");
-  const { t } = useLanguage();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -62,9 +59,9 @@ const Index = () => {
         const { data, error } = await query;
 
         if (error) throw error;
-        setProducts(data || []);
-      } catch (err) {
-        console.error("Error fetching products:", err);
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -73,82 +70,91 @@ const Index = () => {
     fetchProducts();
   }, [selectedCategory, searchQuery, sortOrder]);
 
+  const handleCategoryChange = (categoryId: string | null) => {
+    setSelectedCategory(categoryId);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
-      <main className="flex-1 container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-8 text-center">{t('home.title')}</h1>
-        
-        <BannerAd 
-          title="Special Offer" 
-          description="Get up to 50% off on selected items this weekend only!" 
-          imageUrl="/placeholder.svg" 
-          linkUrl="/special-offers" 
-          buttonText="Shop Now" 
-          className="mb-8"
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="md:col-span-1">
-            <div className="sticky top-24">
-              <h2 className="text-xl font-semibold mb-4">{t('home.categories')}</h2>
-              {categories && (
-                <CategoryFilter 
-                  selectedCategory={selectedCategory}
-                  onSelectCategory={setSelectedCategory}
-                />
-              )}
+      
+      <div className="container mx-auto px-4 py-8">
+        {/* Banner Ads Section */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 gap-4">
+            <BannerAd
+              title="Crypto Payments Now Available!"
+              description="Pay with your favorite cryptocurrency and get exclusive discounts on all purchases."
+              imageUrl="https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2832&auto=format&fit=crop"
+              linkUrl="/faq"
+              buttonText="Learn More"
+              className="h-[300px]"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <BannerAd
+                title="New Arrivals"
+                description="Check out our latest products"
+                imageUrl="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop"
+                linkUrl="/"
+                buttonText="Shop Now"
+                className="h-[200px]"
+              />
+              <BannerAd
+                title="Limited Offers"
+                description="Don't miss our special discount"
+                imageUrl="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
+                linkUrl="/"
+                buttonText="View Deals"
+                className="h-[200px]"
+              />
             </div>
           </div>
+        </div>
+        
+        {/* Existing Product Grid Section */}
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-64">
+            <CategoryFilter 
+              selectedCategory={selectedCategory} 
+              onSelectCategory={handleCategoryChange} 
+            />
+          </div>
           
-          <div className="md:col-span-3">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div className="w-full md:w-1/2">
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-bold">Products</h1>
+              {/* Search and Filter Controls */}
+              <div className="flex items-center gap-2">
                 <Input
-                  placeholder={t('home.search.placeholder')}
+                  placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full"
+                  className="w-full max-w-[200px]"
                 />
-              </div>
-              
-              <div className="w-full md:w-auto">
-                <Select
-                  value={sortOrder}
-                  onValueChange={setSortOrder}
-                >
-                  <SelectTrigger className="w-full md:w-[200px]">
-                    <SelectValue placeholder={t('common.sort')} />
+                <Select value={sortOrder} onValueChange={setSortOrder}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="newest">{t('home.sort.newest')}</SelectItem>
-                    <SelectItem value="price_asc">{t('home.sort.price_asc')}</SelectItem>
-                    <SelectItem value="price_desc">{t('home.sort.price_desc')}</SelectItem>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="price_asc">Price: Low to High</SelectItem>
+                    <SelectItem value="price_desc">Price: High to Low</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             
+            {/* Main Product Grid */}
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <p>{t('common.loading')}</p>
+                <p>Loading products...</p>
               </div>
             ) : (
-              products.length > 0 ? (
-                <ProductGrid 
-                  selectedCategory={selectedCategory}
-                  filter={null}
-                />
-              ) : (
-                <div className="flex justify-center items-center h-64">
-                  <p>No products found.</p>
-                </div>
-              )
+              <ProductGrid products={products} />
             )}
           </div>
         </div>
-      </main>
-      <Footer />
+      </div>
     </div>
   );
 };
