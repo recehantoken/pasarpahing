@@ -99,6 +99,53 @@ export type Database = {
         }
         Relationships: []
       }
+      crypto_payments: {
+        Row: {
+          amount: number
+          cart_id: string
+          created_at: string
+          currency: string
+          id: string
+          status: string
+          transaction_hash: string | null
+          updated_at: string
+          user_id: string
+          wallet_address: string
+        }
+        Insert: {
+          amount: number
+          cart_id: string
+          created_at?: string
+          currency: string
+          id?: string
+          status?: string
+          transaction_hash?: string | null
+          updated_at?: string
+          user_id: string
+          wallet_address: string
+        }
+        Update: {
+          amount?: number
+          cart_id?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          status?: string
+          transaction_hash?: string | null
+          updated_at?: string
+          user_id?: string
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crypto_payments_cart_id_fkey"
+            columns: ["cart_id"]
+            isOneToOne: false
+            referencedRelation: "carts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       currency_rates: {
         Row: {
           created_at: string | null
@@ -250,6 +297,7 @@ export type Database = {
           last_name: string | null
           preferred_currency: string | null
           updated_at: string
+          wallet_address: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -259,6 +307,7 @@ export type Database = {
           last_name?: string | null
           preferred_currency?: string | null
           updated_at?: string
+          wallet_address?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -268,6 +317,7 @@ export type Database = {
           last_name?: string | null
           preferred_currency?: string | null
           updated_at?: string
+          wallet_address?: string | null
         }
         Relationships: []
       }

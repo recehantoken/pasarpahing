@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
@@ -12,9 +13,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { Footer } from "@/components/layout/Footer";
-import { useQuery } from "@tanstack/react-query";
+import { sendCryptoPayment } from "@/services/crypto";
+import { FaEthereum } from "react-icons/fa";
 
 const Cart = () => {
   const { cartItems, cartId, isLoading, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart();
@@ -66,33 +67,47 @@ const Cart = () => {
   }
 
   const handleCheckout = async () => {
-    if (!cartId) return;
-
-    if (paymentMethod === "bank" && (!bankName || !accountNumber)) {
-      toast.error("Please fill in all bank details");
-      return;
-    }
+    if (!cartId || !user) return;
 
     setIsSubmitting(true);
     try {
-      const paymentData = {
-        cart_id: cartId,
-        payment_method: paymentMethod,
-        bank_name: bankName,
-        account_number: accountNumber,
-        amount: totalPrice,
-        status: "pending",
-        created_at: new Date().toISOString()
-      };
-      
-      localStorage.setItem('last_payment', JSON.stringify(paymentData));
-      
-      toast.success("Order placed successfully!", {
-        description: "Your payment is being processed."
-      });
+      if (paymentMethod === "crypto") {
+        // Process crypto payment
+        const result = await sendCryptoPayment(totalPrice, cartId, user.id);
+        
+        if (!result.success) {
+          throw new Error(result.error || "Crypto payment failed");
+        }
+        
+        toast.success("Crypto payment successful!", {
+          description: `Transaction hash: ${result.transactionHash?.substring(0, 10)}...`
+        });
+      } else if (paymentMethod === "bank") {
+        // Process bank payment (as before)
+        if (!bankName || !accountNumber) {
+          toast.error("Please fill in all bank details");
+          setIsSubmitting(false);
+          return;
+        }
 
-      await clearCart();
+        const paymentData = {
+          cart_id: cartId,
+          payment_method: paymentMethod,
+          bank_name: bankName,
+          account_number: accountNumber,
+          amount: totalPrice,
+          status: "pending",
+          created_at: new Date().toISOString()
+        };
+        
+        localStorage.setItem('last_payment', JSON.stringify(paymentData));
+        
+        toast.success("Order placed successfully!", {
+          description: "Your payment is being processed."
+        });
+      }
       
+      await clearCart();
       navigate("/");
     } catch (error: any) {
       console.error("Checkout error:", error);
@@ -210,6 +225,12 @@ const Cart = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="bank">Bank Transfer</SelectItem>
+                      <SelectItem value="crypto">
+                        <div className="flex items-center gap-2">
+                          <FaEthereum className="text-orange-500" />
+                          Cryptocurrency
+                        </div>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -234,6 +255,21 @@ const Cart = () => {
                         placeholder="Enter account number"
                       />
                     </div>
+                  </div>
+                )}
+                
+                {paymentMethod === "crypto" && (
+                  <div className="bg-orange-100 p-4 rounded-md">
+                    <div className="flex items-center gap-2 mb-2">
+                      <FaEthereum className="text-orange-500 text-xl" />
+                      <h3 className="font-medium">Pay with Cryptocurrency</h3>
+                    </div>
+                    <p className="text-sm text-gray-700 mb-2">
+                      You'll be prompted to connect your MetaMask wallet to complete this transaction.
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Total: {(totalPrice * 0.00028).toFixed(6)} ETH (approx)
+                    </p>
                   </div>
                 )}
               </CardContent>
