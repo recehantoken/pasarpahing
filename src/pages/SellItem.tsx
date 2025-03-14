@@ -1,9 +1,105 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { Header } from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
-import { ProductForm } from "@/components/sell/ProductForm";
 import { Footer } from "@/components/layout/Footer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+// Utility function to format price in IDR
+const formatIDR = (price) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(price);
+};
+
+// Example ProductForm component with IDR formatting
+const ProductForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    price: '',
+    description: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // For price, remove non-numeric characters except decimal
+    const numericValue = name === 'price' ? value.replace(/[^0-9]/g, '') : value;
+    setFormData(prev => ({
+      ...prev,
+      [name]: numericValue,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .insert({
+          name: formData.name,
+          price: parseFloat(formData.price),
+          description: formData.description,
+        });
+      if (error) throw error;
+      // Handle success (e.g., show success message, redirect)
+    } catch (error) {
+      console.error('Error submitting product:', error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium mb-1">
+          Product Name
+        </label>
+        <Input
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="price" className="block text-sm font-medium mb-1">
+          Price (IDR)
+        </label>
+        <Input
+          id="price"
+          name="price"
+          type="text"
+          value={formData.price ? formatIDR(formData.price) : ''}
+          onChange={handleChange}
+          placeholder="Enter price in IDR"
+          required
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium mb-1">
+          Description
+        </label>
+        <Input
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      
+      <Button type="submit" className="w-full">
+        Submit Product
+      </Button>
+    </form>
+  );
+};
 
 const SellItem = () => {
   const { user } = useAuth();
