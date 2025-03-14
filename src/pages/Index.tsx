@@ -8,6 +8,8 @@ import { CategoryFilter } from "@/components/layout/CategoryFilter";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BannerAd } from "@/components/layout/BannerAd";
+import { Footer } from "@/components/layout/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -15,6 +17,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState("newest");
+  const { t } = useLanguage();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -83,28 +86,28 @@ const Index = () => {
         <div className="mb-8">
           <div className="grid grid-cols-1 gap-4">
             <BannerAd
-              title="Crypto Payments Now Available!"
-              description="Pay with your favorite cryptocurrency and get exclusive discounts on all purchases."
+              title={t('index.cryptoPayments')}
+              description={t('index.cryptoDesc')}
               imageUrl="https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2832&auto=format&fit=crop"
               linkUrl="/faq"
-              buttonText="Learn More"
+              buttonText={t('index.learnMore')}
               className="h-[300px]"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <BannerAd
-                title="New Arrivals"
-                description="Check out our latest products"
+                title={t('index.newArrivals')}
+                description={t('index.checkProducts')}
                 imageUrl="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop"
                 linkUrl="/"
-                buttonText="Shop Now"
+                buttonText={t('index.shopNow')}
                 className="h-[200px]"
               />
               <BannerAd
-                title="Limited Offers"
-                description="Don't miss our special discount"
+                title={t('index.limitedOffers')}
+                description={t('index.specialDiscount')}
                 imageUrl="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
                 linkUrl="/"
-                buttonText="View Deals"
+                buttonText={t('index.viewDeals')}
                 className="h-[200px]"
               />
             </div>
@@ -122,23 +125,23 @@ const Index = () => {
           
           <div className="flex-1">
             <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold">Products</h1>
+              <h1 className="text-2xl font-bold">{t('index.products')}</h1>
               {/* Search and Filter Controls */}
               <div className="flex items-center gap-2">
                 <Input
-                  placeholder="Search products..."
+                  placeholder={t('index.search')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full max-w-[200px]"
                 />
                 <Select value={sortOrder} onValueChange={setSortOrder}>
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Sort by" />
+                    <SelectValue placeholder={t('index.sortBy')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="price_asc">Price: Low to High</SelectItem>
-                    <SelectItem value="price_desc">Price: High to Low</SelectItem>
+                    <SelectItem value="newest">{t('index.newest')}</SelectItem>
+                    <SelectItem value="price_asc">{t('index.priceLowHigh')}</SelectItem>
+                    <SelectItem value="price_desc">{t('index.priceHighLow')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -147,7 +150,7 @@ const Index = () => {
             {/* Main Product Grid */}
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <p>Loading products...</p>
+                <p>{t('index.loading')}</p>
               </div>
             ) : (
               <ProductGrid products={products} />
@@ -155,6 +158,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };
