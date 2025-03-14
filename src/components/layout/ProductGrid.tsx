@@ -8,7 +8,7 @@ import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { Badge } from "@/components/ui/badge";
-import { Fire, Sparkles } from "lucide-react";
+import { Flame, Sparkles } from "lucide-react";
 
 interface ProductGridProps {
   selectedCategory: string | null;
@@ -89,7 +89,7 @@ export const ProductGrid = ({ selectedCategory, filter }: ProductGridProps) => {
         <Card key={product.id} className="flex flex-col border border-primary/20 relative group">
           {product.is_flash_sale && (
             <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white flex items-center gap-1 z-10">
-              <Fire className="h-3 w-3" /> Flash Sale
+              <Flame className="h-3 w-3" /> Flash Sale
             </Badge>
           )}
           

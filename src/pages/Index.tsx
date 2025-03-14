@@ -4,7 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { CategoryFilter } from "@/components/layout/CategoryFilter";
 import { ProductGrid } from "@/components/layout/ProductGrid";
 import { Button } from "@/components/ui/button";
-import { Fire, Sparkles } from "lucide-react";
+import { Flame, Sparkles } from "lucide-react";
 import { Footer } from "@/components/layout/Footer";
 
 const Index = () => {
@@ -39,7 +39,7 @@ const Index = () => {
             onClick={() => toggleFilter('flash_sale')}
             className="flex items-center gap-2"
           >
-            <Fire className="h-4 w-4" />
+            <Flame className="h-4 w-4" />
             Flash Sales
           </Button>
           

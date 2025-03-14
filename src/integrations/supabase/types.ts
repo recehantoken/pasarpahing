@@ -199,6 +199,8 @@ export type Database = {
           description: string | null
           id: string
           image_url: string | null
+          is_flash_sale: boolean | null
+          is_new: boolean | null
           name: string
           price: number
           updated_at: string
@@ -210,6 +212,8 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          is_flash_sale?: boolean | null
+          is_new?: boolean | null
           name: string
           price: number
           updated_at?: string
@@ -221,6 +225,8 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          is_flash_sale?: boolean | null
+          is_new?: boolean | null
           name?: string
           price?: number
           updated_at?: string
@@ -242,6 +248,7 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          preferred_currency: string | null
           updated_at: string
         }
         Insert: {
@@ -250,6 +257,7 @@ export type Database = {
           first_name?: string | null
           id: string
           last_name?: string | null
+          preferred_currency?: string | null
           updated_at?: string
         }
         Update: {
@@ -258,6 +266,7 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          preferred_currency?: string | null
           updated_at?: string
         }
         Relationships: []
