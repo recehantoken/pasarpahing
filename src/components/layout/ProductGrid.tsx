@@ -1,16 +1,16 @@
 
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import { toast } from "sonner";
 import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { Badge } from "@/components/ui/badge";
 import { Flame, Sparkles } from "lucide-react";
 
-interface ProductGridProps {
+export interface ProductGridProps {
   selectedCategory: string | null;
   filter?: 'flash_sale' | 'new_products' | null;
 }
