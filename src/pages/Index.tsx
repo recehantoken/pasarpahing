@@ -8,6 +8,7 @@ import { CategoryFilter } from "@/components/layout/CategoryFilter";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BannerAd } from "@/components/layout/BannerAd";
+import { Footer } from "@/components/layout/Footer";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -155,6 +156,7 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
