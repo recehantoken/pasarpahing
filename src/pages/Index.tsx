@@ -1,9 +1,10 @@
+
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
-import { ProductGrid } from "@/components/ProductGrid";
-import { CategoryFilter } from "@/components/CategoryFilter";
+import { ProductGrid } from "@/components/layout/ProductGrid";
+import { CategoryFilter } from "@/components/layout/CategoryFilter";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BannerAd } from "@/components/layout/BannerAd";
