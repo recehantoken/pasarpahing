@@ -56,7 +56,7 @@ const Index = () => {
         <div className="mb-8">
           <CategoryFilter 
             selectedCategory={selectedCategory} 
-            onCategoryChange={handleCategoryChange}
+            onSelectCategory={handleCategoryChange}
           />
         </div>
         
