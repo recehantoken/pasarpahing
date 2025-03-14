@@ -79,7 +79,14 @@ const Index = () => {
       <main className="flex-1 container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-8 text-center">{t('home.title')}</h1>
         
-        <BannerAd />
+        <BannerAd 
+          title="Special Offer" 
+          description="Get up to 50% off on selected items this weekend only!" 
+          imageUrl="/placeholder.svg" 
+          linkUrl="/special-offers" 
+          buttonText="Shop Now" 
+          className="mb-8"
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="md:col-span-1">
@@ -87,7 +94,6 @@ const Index = () => {
               <h2 className="text-xl font-semibold mb-4">{t('home.categories')}</h2>
               {categories && (
                 <CategoryFilter 
-                  categories={categories} 
                   selectedCategory={selectedCategory}
                   onSelectCategory={setSelectedCategory}
                 />
@@ -129,7 +135,10 @@ const Index = () => {
               </div>
             ) : (
               products.length > 0 ? (
-                <ProductGrid productList={products} />
+                <ProductGrid 
+                  selectedCategory={selectedCategory}
+                  filter={null}
+                />
               ) : (
                 <div className="flex justify-center items-center h-64">
                   <p>No products found.</p>
