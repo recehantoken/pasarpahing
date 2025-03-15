@@ -45,6 +45,20 @@ const fetchCategories = async () => {
   return data as Category[];
 };
 
+// Loading Spinner Component
+const LoadingSpinner = () => {
+  return (
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="relative">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-primary text-sm font-medium animate-pulse">Loading...</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Index = () => {
   const { t } = useLanguage();
   const { session, signInWithMetaMask } = useAuth();
@@ -101,7 +115,7 @@ const Index = () => {
   });
 
   if (productsLoading) {
-    return <div>{t('common.loading')}</div>;
+    return <LoadingSpinner />;
   }
 
   if (productsError) {
@@ -128,7 +142,7 @@ const Index = () => {
         <BannerAd 
           title="Trade with Crypto"
           description="Now accepting Bitcoin, Ethereum and other cryptocurrencies for all purchases"
-          imageUrl="/crypto-img.jpg"
+          imageUrl="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
           linkUrl="/crypto-payments"
           buttonText="Learn More"
           className="w-full h-[250px] mb-8"
@@ -140,7 +154,7 @@ const Index = () => {
           <BannerAd 
             title="New Arrivals"
             description="Check out our latest gold and silver collections fresh from the vault"
-            imageUrl="/kebaya.jpg"
+            imageUrl="https://images.unsplash.com/photo-1610399214658-52b9fdea4627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
             linkUrl="/new-arrivals"
             buttonText="Explore"
             className="w-full h-[250px]"
@@ -150,7 +164,7 @@ const Index = () => {
           <BannerAd 
             title="Flash Sale - 24 Hours Only!"
             description="Limited time offers on premium jewelry - ends midnight tonight!"
-            imageUrl="/scarf2.jpg"
+            imageUrl="https://images.unsplash.com/photo-1512207846876-bb54ef5056fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
             linkUrl="/flash-sale"
             buttonText="Shop Now"
             className="w-full h-[250px]"
@@ -172,7 +186,7 @@ const Index = () => {
               className="flex items-center gap-2"
             >
               <img 
-                src="/metamask.png" 
+                src="/logo.svg" 
                 alt="MetaMask" 
                 className="w-5 h-5" 
               />
