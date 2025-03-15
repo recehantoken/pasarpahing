@@ -21,7 +21,7 @@ import Admin from "./pages/Admin";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { Analytics } from "@vercel/analytics/react"
+
 
 const queryClient = new QueryClient();
 
