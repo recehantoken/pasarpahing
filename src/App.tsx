@@ -19,7 +19,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
-import { Analytics } from "@vercel/analytics/react"
 
 const queryClient = new QueryClient();
 

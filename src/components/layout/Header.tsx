@@ -60,9 +60,9 @@ export const Header = () => {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <img src="/cent.png" alt="Recehan Logo" className="h-8 w-auto" />
+          <img src="/logo.svg" alt="Recehan Logo" className="h-8 w-auto" />
           <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Pasar Pahing
+            Recehan
           </span>
         </Link>
         
