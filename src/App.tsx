@@ -39,26 +39,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session, isLoading, user } = useAuth();
-  
-  // Show nothing while checking auth state
-  if (isLoading) {
-    return null;
-  }
-  
-  if (!session) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  // Check if the user is admin (email is master@recehan.gold)
-  if (user?.email !== "master@recehan.gold") {
-    return <Navigate to="/" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
@@ -95,14 +75,8 @@ const App = () => (
                     </ProtectedRoute>
                   } 
                 />
-                <Route 
-                  path="/admin/*" 
-                  element={
-                    <AdminRoute>
-                      <Admin />
-                    </AdminRoute>
-                  } 
-                />
+                {/* Admin route - authentication is handled within the component */}
+                <Route path="/admin" element={<Admin />} />
                 {/* Footer Pages */}
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/shipping" element={<Shipping />} />
