@@ -116,7 +116,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8 mt-20">
         <h1 className="text-3xl font-bold mb-4">{t('nav.home')}</h1>
 
-        {/* Featured Banner Ad */}
+        {/* Featured Banner Ad - Summer Deals */}
         <BannerAd 
           title="Special Summer Deals"
           description="Get up to 50% off on selected items for a limited time"
@@ -124,6 +124,36 @@ const Index = () => {
           linkUrl="/sale"
           buttonText="Shop Now"
           className="w-full h-[300px] mb-8"
+        />
+
+        {/* Crypto Banner Ad */}
+        <BannerAd 
+          title="Trade with Crypto"
+          description="Now accepting Bitcoin, Ethereum and other cryptocurrencies for all purchases"
+          imageUrl="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          linkUrl="/crypto-payments"
+          buttonText="Learn More"
+          className="w-full h-[250px] mb-8"
+        />
+
+        {/* New Products Banner Ad */}
+        <BannerAd 
+          title="New Arrivals"
+          description="Check out our latest gold and silver collections fresh from the vault"
+          imageUrl="https://images.unsplash.com/photo-1610399214658-52b9fdea4627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          linkUrl="/new-arrivals"
+          buttonText="Explore"
+          className="w-full h-[250px] mb-8"
+        />
+
+        {/* Flash Sale Banner Ad */}
+        <BannerAd 
+          title="Flash Sale - 24 Hours Only!"
+          description="Limited time offers on premium jewelry - ends midnight tonight!"
+          imageUrl="https://images.unsplash.com/photo-1512207846876-bb54ef5056fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          linkUrl="/flash-sale"
+          buttonText="Shop Now"
+          className="w-full h-[250px] mb-8"
         />
 
         <div className="flex items-center justify-between mb-4">

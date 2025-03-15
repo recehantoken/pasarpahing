@@ -7,11 +7,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
 export const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Default to dark
   const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
+    // Set dark theme as default
+    document.documentElement.classList.add('dark');
+
     // Check if user has a theme preference
     const fetchThemePreference = async () => {
       if (user) {
@@ -32,12 +35,12 @@ export const ThemeSwitcher = () => {
             setTheme(data.theme_preference as 'light' | 'dark');
             document.documentElement.classList.toggle('dark', data.theme_preference === 'dark');
           } else {
-            // If no theme setting exists, create one with default theme
+            // If no theme setting exists, create one with default dark theme
             const { error: upsertError } = await supabase
               .from('theme_settings')
               .upsert({ 
                 user_id: user.id, 
-                theme_preference: 'light' 
+                theme_preference: 'dark' 
               }, { 
                 onConflict: 'user_id'
               });

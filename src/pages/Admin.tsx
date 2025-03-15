@@ -27,6 +27,19 @@ import { AdminUsers } from "@/components/admin/AdminUsers";
 import { AdminFrontPage } from "@/components/admin/AdminFrontPage";
 import { AdminShipping } from "@/components/admin/AdminShipping";
 import { AdminSettings } from "@/components/admin/AdminSettings";
+import {
+  LayoutDashboard,
+  Package,
+  Tags,
+  Users,
+  Home,
+  Truck,
+  Settings,
+  UserCog,
+  ShoppingBag,
+  FileText,
+  MessageSquare
+} from "lucide-react";
 
 const Admin = () => {
   const { t } = useLanguage();
@@ -61,7 +74,7 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col dark:bg-sidebar">
       <Header />
       
       <main className="flex-1 container mx-auto px-4 py-16 mt-8">
@@ -77,27 +90,46 @@ const Admin = () => {
           onValueChange={setActiveTab}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 w-full mb-8">
-            <TabsTrigger value="dashboard">
-              {t('admin.dashboard')}
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-10 w-full mb-8">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.dashboard')}</span>
             </TabsTrigger>
-            <TabsTrigger value="products">
-              {t('admin.products')}
+            <TabsTrigger value="products" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.products')}</span>
             </TabsTrigger>
-            <TabsTrigger value="categories">
-              {t('admin.categories')}
+            <TabsTrigger value="categories" className="flex items-center gap-2">
+              <Tags className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.categories')}</span>
             </TabsTrigger>
-            <TabsTrigger value="users">
-              {t('admin.users')}
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.users')}</span>
             </TabsTrigger>
-            <TabsTrigger value="frontpage">
-              {t('admin.frontpage')}
+            <TabsTrigger value="frontpage" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.frontpage')}</span>
             </TabsTrigger>
-            <TabsTrigger value="shipping">
-              {t('admin.shipping')}
+            <TabsTrigger value="shipping" className="flex items-center gap-2">
+              <Truck className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.shipping')}</span>
             </TabsTrigger>
-            <TabsTrigger value="settings">
-              {t('admin.settings')}
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              <span className="hidden md:inline">{t('admin.settings')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="profiles" className="flex items-center gap-2">
+              <UserCog className="h-4 w-4" />
+              <span className="hidden md:inline">User Profiles</span>
+            </TabsTrigger>
+            <TabsTrigger value="orders" className="flex items-center gap-2">
+              <ShoppingBag className="h-4 w-4" />
+              <span className="hidden md:inline">Orders</span>
+            </TabsTrigger>
+            <TabsTrigger value="content" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <span className="hidden md:inline">Content</span>
             </TabsTrigger>
           </TabsList>
           
@@ -127,6 +159,42 @@ const Admin = () => {
           
           <TabsContent value="settings">
             <AdminSettings />
+          </TabsContent>
+          
+          <TabsContent value="profiles">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Profiles Management</CardTitle>
+                <CardDescription>Manage user profile settings and permissions</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p>Profile management tools coming soon...</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="orders">
+            <Card>
+              <CardHeader>
+                <CardTitle>Order Management</CardTitle>
+                <CardDescription>View and manage customer orders</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p>Order management tools coming soon...</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="content">
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Management</CardTitle>
+                <CardDescription>Manage site content, pages, and blog posts</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p>Content management tools coming soon...</p>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>
