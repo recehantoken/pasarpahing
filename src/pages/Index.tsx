@@ -128,7 +128,7 @@ const Index = () => {
         <BannerAd 
           title="Trade with Crypto"
           description="Now accepting Bitcoin, Ethereum and other cryptocurrencies for all purchases"
-          imageUrl="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          imageUrl="https://unsplash.com/photos/three-gold-bitcoins-sitting-on-top-of-a-wooden-table-AAq8y4jo6WU?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
           linkUrl="/crypto-payments"
           buttonText="Learn More"
           className="w-full h-[250px] mb-8"
