@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Product } from "@/types";
-import { Category } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +24,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  description?: string;
+  image_url?: string;
+  category_id?: string;
+  created_at?: string;
+  created_by?: string;
+  is_new?: boolean;
+  is_flash_sale?: boolean;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  image_url?: string;
+  created_at?: string;
+}
 
 const fetchProducts = async () => {
   const { data, error } = await supabase
@@ -52,14 +71,13 @@ const fetchCategories = async () => {
   return data as Category[];
 };
 
-// Fix CategoryFilter and ProductGrid props
 export const CategoryFilterProps = {
   selectedCategory: "",
   onSelectCategory: (categoryId: string) => {},
 };
 
 export const ProductGridProps = {
-  productList: [],
+  productList: [] as Product[],
 };
 
 const Index = () => {
