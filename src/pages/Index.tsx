@@ -172,7 +172,7 @@ const Index = () => {
               className="flex items-center gap-2"
             >
               <img 
-                src="/logo.svg" 
+                src="/metamask.png" 
                 alt="MetaMask" 
                 className="w-5 h-5" 
               />
