@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,7 +47,6 @@ export const AdminCategories = () => {
   });
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
-  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       setIsLoading(true);
@@ -92,20 +90,22 @@ export const AdminCategories = () => {
 
   const handleAddCategory = async () => {
     try {
-      // Validate required fields
       if (!newCategory.name) {
         toast({
-          variant: 'destructive',
-          title: 'Validation Error',
-          description: 'Name is required',
+          title: "Error",
+          description: "Category name is required",
+          variant: "destructive",
         });
         return;
       }
       
       const { data, error } = await supabase
-        .from('categories')
-        .insert([newCategory])
-        .select();
+        .from("categories")
+        .insert({
+          name: newCategory.name,
+          description: newCategory.description || "",
+          image_url: newCategory.image_url || "",
+        });
       
       if (error) throw error;
       
@@ -132,34 +132,22 @@ export const AdminCategories = () => {
     }
   };
 
-  const handleUpdateCategory = async () => {
+  const handleUpdateCategory = async (category: Category) => {
     if (!editingCategory) return;
     
     try {
-      // Validate required fields
-      if (!editingCategory.name) {
-        toast({
-          variant: 'destructive',
-          title: 'Validation Error',
-          description: 'Name is required',
-        });
-        return;
-      }
-      
       const { data, error } = await supabase
-        .from('categories')
+        .from("categories")
         .update({
-          name: editingCategory.name,
-          description: editingCategory.description,
-          image_url: editingCategory.image_url,
+          name: category.name,
+          description: category.description || "",
+          image_url: category.image_url || "",
         })
-        .eq('id', editingCategory.id)
-        .select();
+        .eq("id", category.id);
       
       if (error) throw error;
       
       if (data && data[0]) {
-        // Update categories state
         setCategories(categories.map(c => 
           c.id === data[0].id ? data[0] : c
         ));
@@ -192,7 +180,6 @@ export const AdminCategories = () => {
       
       if (error) throw error;
       
-      // Update categories state
       setCategories(categories.filter(c => c.id !== id));
       
       toast({
@@ -357,7 +344,7 @@ export const AdminCategories = () => {
                                 <DialogClose asChild>
                                   <Button variant="outline">{t('common.cancel')}</Button>
                                 </DialogClose>
-                                <Button type="submit" onClick={handleUpdateCategory}>
+                                <Button type="submit" onClick={() => handleUpdateCategory(category)}>
                                   {t('common.save')}
                                 </Button>
                               </DialogFooter>
