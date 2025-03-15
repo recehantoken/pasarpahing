@@ -80,10 +80,8 @@ const Index = () => {
   const handleMetaMaskLogin = async () => {
     // Check if MetaMask is installed
     if (typeof window.ethereum === 'undefined') {
-      toast({
-        title: "MetaMask Not Detected",
-        description: "Please install the MetaMask browser extension to use this feature.",
-        variant: "destructive"
+      toast("MetaMask Not Detected", {
+        description: "Please install the MetaMask browser extension to use this feature."
       });
       return;
     }
@@ -92,10 +90,8 @@ const Index = () => {
       await signInWithMetaMask();
     } catch (error) {
       console.error("MetaMask login error:", error);
-      toast({
-        title: "Login Failed",
-        description: "There was an error connecting with MetaMask.",
-        variant: "destructive"
+      toast("Login Failed", {
+        description: "There was an error connecting with MetaMask."
       });
     }
   };
