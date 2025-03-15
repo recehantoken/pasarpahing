@@ -150,7 +150,7 @@ const Index = () => {
           <BannerAd 
             title="Flash Sale - 24 Hours Only!"
             description="Limited time offers on premium jewelry - ends midnight tonight!"
-            imageUrl="https://unsplash.com/photos/a-close-up-of-a-person-with-blue-eyes-4bmtMXGuVqo?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+            imageUrl="/scarf2.jpg"
             linkUrl="/flash-sale"
             buttonText="Shop Now"
             className="w-full h-[250px]"
