@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -78,7 +77,6 @@ const Index = () => {
   };
 
   const handleMetaMaskLogin = async () => {
-    // Check if MetaMask is installed
     if (typeof window.ethereum === 'undefined') {
       toast("MetaMask Not Detected", {
         description: "Please install the MetaMask browser extension to use this feature."
@@ -136,25 +134,28 @@ const Index = () => {
           className="w-full h-[250px] mb-8"
         />
 
-        {/* New Products Banner Ad */}
-        <BannerAd 
-          title="New Arrivals"
-          description="Check out our latest gold and silver collections fresh from the vault"
-          imageUrl="https://images.unsplash.com/photo-1610399214658-52b9fdea4627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-          linkUrl="/new-arrivals"
-          buttonText="Explore"
-          className="w-full h-[250px] mb-8"
-        />
+        {/* Two-column banner section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {/* New Products Banner Ad */}
+          <BannerAd 
+            title="New Arrivals"
+            description="Check out our latest gold and silver collections fresh from the vault"
+            imageUrl="https://images.unsplash.com/photo-1610399214658-52b9fdea4627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            linkUrl="/new-arrivals"
+            buttonText="Explore"
+            className="w-full h-[250px]"
+          />
 
-        {/* Flash Sale Banner Ad */}
-        <BannerAd 
-          title="Flash Sale - 24 Hours Only!"
-          description="Limited time offers on premium jewelry - ends midnight tonight!"
-          imageUrl="https://images.unsplash.com/photo-1512207846876-bb54ef5056fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-          linkUrl="/flash-sale"
-          buttonText="Shop Now"
-          className="w-full h-[250px] mb-8"
-        />
+          {/* Flash Sale Banner Ad */}
+          <BannerAd 
+            title="Flash Sale - 24 Hours Only!"
+            description="Limited time offers on premium jewelry - ends midnight tonight!"
+            imageUrl="https://images.unsplash.com/photo-1512207846876-bb54ef5056fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            linkUrl="/flash-sale"
+            buttonText="Shop Now"
+            className="w-full h-[250px]"
+          />
+        </div>
 
         <div className="flex items-center justify-between mb-4">
           <Input
