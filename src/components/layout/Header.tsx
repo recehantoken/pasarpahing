@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
@@ -30,7 +29,6 @@ export const Header = () => {
   const navigate = useNavigate();
   const isAdmin = user?.email === "master@recehan.gold";
 
-  // Update header style on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -39,7 +37,6 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle sign out
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -88,28 +85,23 @@ export const Header = () => {
           )}
         </nav>
         
-        {/* Right section with cart, profile and menu */}
+        {/* Right section */}
         <div className="flex items-center space-x-2">
-          {/* Theme switcher */}
-          <ThemeSwitcher />
-          
-          {/* Language switcher */}
-          <LanguageSwitcher />
-          
-          {/* Currency menu */}
-          <CurrencyMenu />
-          
+          {/* Desktop icons - only shown on md and larger */}
+          <div className="hidden md:flex items-center space-x-2">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+            <CurrencyMenu />
+          </div>
+
           {session ? (
             <>
-              {/* Cart link */}
               <Link to="/cart">
                 <Button variant="outline" size="icon" className="rounded-full">
                   <ShoppingCart className="h-5 w-5" />
                   <span className="sr-only">{t('nav.cart')}</span>
                 </Button>
               </Link>
-              
-              {/* Profile link */}
               <Link to="/profile">
                 <Button variant="outline" size="icon" className="rounded-full">
                   <User className="h-5 w-5" />
@@ -173,13 +165,6 @@ export const Header = () => {
                         </Link>
                       </SheetClose>
                     )}
-                    <button
-                      onClick={handleSignOut}
-                      className="flex items-center py-2 hover:text-primary transition-colors"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      {t('nav.logout')}
-                    </button>
                   </>
                 ) : (
                   <SheetClose asChild>
@@ -187,6 +172,31 @@ export const Header = () => {
                       {t('nav.login')}
                     </Link>
                   </SheetClose>
+                )}
+
+                {/* Mobile menu settings */}
+                <div className="border-t pt-4 mt-4">
+                  <div className="flex flex-col space-y-4">
+                    <div className="py-2">
+                      <ThemeSwitcher />
+                    </div>
+                    <div className="py-2">
+                      <LanguageSwitcher />
+                    </div>
+                    <div className="py-2">
+                      <CurrencyMenu />
+                    </div>
+                  </div>
+                </div>
+
+                {session && (
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center py-2 hover:text-primary transition-colors"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    {t('nav.logout')}
+                  </button>
                 )}
               </nav>
             </SheetContent>
