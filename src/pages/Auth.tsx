@@ -12,6 +12,7 @@ import { FaEthereum } from "react-icons/fa";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,6 +22,7 @@ const Auth = () => {
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, signInWithMetaMask, session } = useAuth();
+  const { t } = useLanguage();
   const { toast } = useToast();
 
   if (session) {
@@ -103,22 +105,22 @@ const Auth = () => {
         <Card className="w-full max-w-md relative z-10 border-primary/20">
           <CardHeader>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-              {isSignUp ? "Create an Account" : "Sign In"}
+              {isSignUp ? t('auth.createAccount') : t('auth.signIn')}
             </CardTitle>
             <CardDescription>
               {isSignUp
-                ? "Sign up to start shopping and selling"
-                : "Sign in to access your account"}
+                ? t('common.signup')
+                : t('common.login')}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('auth.email')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -126,11 +128,11 @@ const Auth = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('auth.password')}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder={t('auth.password')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -140,22 +142,22 @@ const Auth = () => {
               {isSignUp && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="firstName">{t('auth.firstName')}</Label>
                     <Input
                       id="firstName"
                       type="text"
-                      placeholder="Enter your first name"
+                      placeholder={t('auth.firstName')}
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       disabled={isLoading}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">{t('auth.lastName')}</Label>
                     <Input
                       id="lastName"
                       type="text"
-                      placeholder="Enter your last name"
+                      placeholder={t('auth.lastName')}
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       disabled={isLoading}
@@ -169,7 +171,7 @@ const Auth = () => {
                   <span className="w-full border-t border-muted"></span>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                  <span className="bg-card px-2 text-muted-foreground">{t('auth.continueWith')}</span>
                 </div>
               </div>
               
@@ -199,7 +201,7 @@ const Auth = () => {
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
+                {isLoading ? t('common.loading') : isSignUp ? t('auth.signup') : t('auth.login')}
               </Button>
               <Button
                 type="button"
@@ -209,8 +211,8 @@ const Auth = () => {
                 disabled={isLoading}
               >
                 {isSignUp
-                  ? "Already have an account? Sign In"
-                  : "Don't have an account? Sign Up"}
+                  ? t('auth.alreadyHaveAccount')
+                  : t('auth.dontHaveAccount')}
               </Button>
             </CardFooter>
           </form>
