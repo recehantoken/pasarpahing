@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -5,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Dialog, 
@@ -13,9 +15,13 @@ import {
   DialogHeader, 
   DialogTitle,
   DialogTrigger,
-  DialogFooter
+  DialogFooter,
+  DialogClose
 } from "@/components/ui/dialog";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Plus, Pencil, Trash } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
 import { Category } from "@/types/product";
 
 export const AdminCategories = () => {
@@ -92,19 +98,26 @@ export const AdminCategories = () => {
       
       if (error) throw error;
       
-      if (data && data[0]) {
-        setCategories([...categories, data[0]]);
-        setNewCategory({
-          name: '',
-          description: '',
-          image_url: '',
-        });
+      // Fetch the categories again to get the updated list
+      const { data: updatedCategories, error: fetchError } = await supabase
+        .from('categories')
+        .select('*')
+        .order('name');
         
-        toast({
-          title: 'Success',
-          description: 'Category added successfully',
-        });
-      }
+      if (fetchError) throw fetchError;
+        
+      setCategories(updatedCategories || []);
+      setNewCategory({
+        name: '',
+        description: '',
+        image_url: '',
+      });
+      
+      toast({
+        title: 'Success',
+        description: 'Category added successfully',
+      });
+      
     } catch (error: any) {
       console.error('Error adding category:', error);
       toast({
@@ -115,33 +128,37 @@ export const AdminCategories = () => {
     }
   };
 
-  const handleUpdateCategory = async (category: Category) => {
-    if (!editingCategory) return;
+  const handleUpdateCategory = async () => {
+    if (!editingCategory || !editingCategory.id) return;
     
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("categories")
         .update({
-          name: category.name,
-          description: category.description || "",
-          image_url: category.image_url || "",
+          name: editingCategory.name,
+          description: editingCategory.description || "",
+          image_url: editingCategory.image_url || "",
         })
-        .eq("id", category.id);
+        .eq("id", editingCategory.id);
       
       if (error) throw error;
       
-      if (data && data[0]) {
-        setCategories(categories.map(c => 
-          c.id === data[0].id ? data[0] : c
-        ));
+      // Fetch the categories again to get the updated list
+      const { data: updatedCategories, error: fetchError } = await supabase
+        .from('categories')
+        .select('*')
+        .order('name');
         
-        setEditingCategory(null);
+      if (fetchError) throw fetchError;
         
-        toast({
-          title: 'Success',
-          description: 'Category updated successfully',
-        });
-      }
+      setCategories(updatedCategories || []);
+      setEditingCategory(null);
+      
+      toast({
+        title: 'Success',
+        description: 'Category updated successfully',
+      });
+      
     } catch (error: any) {
       console.error('Error updating category:', error);
       toast({
@@ -327,7 +344,7 @@ export const AdminCategories = () => {
                                 <DialogClose asChild>
                                   <Button variant="outline">{t('common.cancel')}</Button>
                                 </DialogClose>
-                                <Button type="submit" onClick={() => handleUpdateCategory(category)}>
+                                <Button type="submit" onClick={handleUpdateCategory}>
                                   {t('common.save')}
                                 </Button>
                               </DialogFooter>
