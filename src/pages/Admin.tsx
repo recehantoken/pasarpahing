@@ -27,6 +27,9 @@ import { AdminUsers } from "@/components/admin/AdminUsers";
 import { AdminFrontPage } from "@/components/admin/AdminFrontPage";
 import { AdminShipping } from "@/components/admin/AdminShipping";
 import { AdminSettings } from "@/components/admin/AdminSettings";
+import { AdminUserProfiles } from "@/components/admin/AdminUserProfiles";
+import { AdminOrders } from "@/components/admin/AdminOrders";
+import { AdminContentManagement } from "@/components/admin/AdminContentManagement";
 import {
   LayoutDashboard,
   Package,
@@ -162,39 +165,15 @@ const Admin = () => {
           </TabsContent>
           
           <TabsContent value="profiles">
-            <Card>
-              <CardHeader>
-                <CardTitle>User Profiles Management</CardTitle>
-                <CardDescription>Manage user profile settings and permissions</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p>Profile management tools coming soon...</p>
-              </CardContent>
-            </Card>
+            <AdminUserProfiles />
           </TabsContent>
           
           <TabsContent value="orders">
-            <Card>
-              <CardHeader>
-                <CardTitle>Order Management</CardTitle>
-                <CardDescription>View and manage customer orders</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p>Order management tools coming soon...</p>
-              </CardContent>
-            </Card>
+            <AdminOrders />
           </TabsContent>
           
           <TabsContent value="content">
-            <Card>
-              <CardHeader>
-                <CardTitle>Content Management</CardTitle>
-                <CardDescription>Manage site content, pages, and blog posts</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p>Content management tools coming soon...</p>
-              </CardContent>
-            </Card>
+            <AdminContentManagement />
           </TabsContent>
         </Tabs>
       </main>

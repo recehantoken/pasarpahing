@@ -48,6 +48,17 @@ export const ImageUpload = ({
         });
       }, 300);
       
+      // Check if product-images bucket exists, create if it doesn't
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const bucketExists = buckets?.some(b => b.name === 'product-images');
+      
+      if (!bucketExists) {
+        console.log("Creating product-images bucket");
+        await supabase.storage.createBucket('product-images', {
+          public: true
+        });
+      }
+      
       // Upload the file to Supabase Storage
       const { data, error } = await supabase.storage
         .from('product-images')
@@ -66,6 +77,7 @@ export const ImageUpload = ({
         .getPublicUrl(filePath);
       
       // Return the public URL
+      console.log("Uploaded image URL:", urlData.publicUrl);
       onImageUpload(urlData.publicUrl);
       toast.success("Image uploaded successfully");
     } catch (error) {
