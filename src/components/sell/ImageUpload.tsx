@@ -26,7 +26,10 @@ export const ImageUpload = ({
   const [isUploading, setIsUploading] = useState(false);
 
   const uploadToStorage = async () => {
-    if (!imageFile) return;
+    if (!imageFile) {
+      toast.error("No image selected");
+      return;
+    }
     
     try {
       setIsUploading(true);
@@ -55,11 +58,14 @@ export const ImageUpload = ({
         throw new Error("Failed to prepare storage bucket. Please try again or contact support.");
       }
       
+      console.log("Uploading to bucket: product-images, file:", filePath);
+      
       // Upload the file to Supabase Storage
       const { data, error } = await supabase.storage
         .from('product-images')
         .upload(filePath, imageFile, {
-          upsert: true
+          upsert: true,
+          cacheControl: '3600'
         });
       
       clearInterval(progressInterval);

@@ -30,6 +30,7 @@ import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminUserProfiles } from "@/components/admin/AdminUserProfiles";
 import { AdminOrders } from "@/components/admin/AdminOrders";
 import { AdminContentManagement } from "@/components/admin/AdminContentManagement";
+import { AdminPaymentMethods } from "@/components/admin/AdminPaymentMethods";
 import {
   LayoutDashboard,
   Package,
@@ -41,7 +42,8 @@ import {
   UserCog,
   ShoppingBag,
   FileText,
-  MessageSquare
+  MessageSquare,
+  CreditCard
 } from "lucide-react";
 
 const Admin = () => {
@@ -93,7 +95,7 @@ const Admin = () => {
           onValueChange={setActiveTab}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-10 w-full mb-8">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-11 w-full mb-8">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden md:inline">{t('admin.dashboard')}</span>
@@ -117,6 +119,10 @@ const Admin = () => {
             <TabsTrigger value="shipping" className="flex items-center gap-2">
               <Truck className="h-4 w-4" />
               <span className="hidden md:inline">{t('admin.shipping')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="payments" className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              <span className="hidden md:inline">Payments</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -158,6 +164,10 @@ const Admin = () => {
           
           <TabsContent value="shipping">
             <AdminShipping />
+          </TabsContent>
+          
+          <TabsContent value="payments">
+            <AdminPaymentMethods />
           </TabsContent>
           
           <TabsContent value="settings">

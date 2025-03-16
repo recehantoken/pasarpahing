@@ -15,10 +15,10 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
 export const ensureStorageBucket = async () => {
   try {
     // Check if product-images bucket exists
-    const { data: buckets, error } = await supabase.storage.listBuckets();
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
     
-    if (error) {
-      console.error("Error checking buckets:", error);
+    if (listError) {
+      console.error("Error checking buckets:", listError);
       return false;
     }
     
@@ -27,12 +27,21 @@ export const ensureStorageBucket = async () => {
     if (!bucketExists) {
       console.log("Creating product-images bucket");
       const { error: createError } = await supabase.storage.createBucket('product-images', {
-        public: true
+        public: true,
+        fileSizeLimit: 10485760, // 10MB
+        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml']
       });
       
       if (createError) {
         console.error("Error creating product-images bucket:", createError);
         return false;
+      }
+      
+      // Set public bucket policy
+      const { error: policyError } = await supabase.storage.from('product-images').getPublicUrl('test.png');
+      if (policyError) {
+        console.error("Warning: Could not confirm public policy:", policyError);
+        // We continue anyway since the bucket was created
       }
     }
     

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -84,15 +85,27 @@ export const AdminProducts = () => {
 
   const handleAddProduct = async () => {
     try {
+      if (!newProduct.name || !newProduct.price) {
+        toast.error("Product name and price are required");
+        return;
+      }
+      
+      if (!newProduct.category_id && categories && categories.length > 0) {
+        // Set the first category as default if none selected
+        setNewProduct({...newProduct, category_id: categories[0].id});
+      }
+      
+      console.log("Adding product with data:", newProduct);
+      
       const { data, error } = await supabase
         .from('products')
         .insert([
           {
             name: newProduct.name,
             price: newProduct.price,
-            description: newProduct.description,
-            image_url: newProduct.image_url,
-            category_id: newProduct.category_id,
+            description: newProduct.description || null,
+            image_url: newProduct.image_url || null,
+            category_id: newProduct.category_id || null,
             is_new: newProduct.is_new,
             is_flash_sale: newProduct.is_flash_sale,
             created_by: 'admin'
@@ -100,7 +113,10 @@ export const AdminProducts = () => {
         ])
         .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error details:", error);
+        throw error;
+      }
       
       toast.success('Product added successfully');
       setIsAddDialogOpen(false);
@@ -114,9 +130,9 @@ export const AdminProducts = () => {
         is_flash_sale: false
       });
       refetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding product:', error);
-      toast.error('Failed to add product');
+      toast.error('Failed to add product: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -143,9 +159,9 @@ export const AdminProducts = () => {
       setIsEditDialogOpen(false);
       setSelectedProduct(null);
       refetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating product:', error);
-      toast.error('Failed to update product');
+      toast.error('Failed to update product: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -164,9 +180,9 @@ export const AdminProducts = () => {
       setIsDeleteDialogOpen(false);
       setSelectedProduct(null);
       refetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting product:', error);
-      toast.error('Failed to delete product');
+      toast.error('Failed to delete product: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -257,7 +273,7 @@ export const AdminProducts = () => {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">Name</Label>
+              <Label htmlFor="name" className="text-right">Name*</Label>
               <Input 
                 id="name" 
                 value={newProduct.name} 
@@ -266,7 +282,7 @@ export const AdminProducts = () => {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="price" className="text-right">Price</Label>
+              <Label htmlFor="price" className="text-right">Price*</Label>
               <Input 
                 id="price" 
                 type="number"
