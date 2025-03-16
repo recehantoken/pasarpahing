@@ -10,3 +10,35 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// Helper function to ensure the product-images bucket exists
+export const ensureStorageBucket = async () => {
+  try {
+    // Check if product-images bucket exists
+    const { data: buckets, error } = await supabase.storage.listBuckets();
+    
+    if (error) {
+      console.error("Error checking buckets:", error);
+      return false;
+    }
+    
+    const bucketExists = buckets?.some(b => b.name === 'product-images');
+    
+    if (!bucketExists) {
+      console.log("Creating product-images bucket");
+      const { error: createError } = await supabase.storage.createBucket('product-images', {
+        public: true
+      });
+      
+      if (createError) {
+        console.error("Error creating product-images bucket:", createError);
+        return false;
+      }
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Error in ensureStorageBucket:", error);
+    return false;
+  }
+};

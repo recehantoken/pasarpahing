@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, ensureStorageBucket } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface ImageUploadProps {
@@ -48,15 +48,11 @@ export const ImageUpload = ({
         });
       }, 300);
       
-      // Check if product-images bucket exists, create if it doesn't
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const bucketExists = buckets?.some(b => b.name === 'product-images');
+      // Ensure the product-images bucket exists
+      const bucketReady = await ensureStorageBucket();
       
-      if (!bucketExists) {
-        console.log("Creating product-images bucket");
-        await supabase.storage.createBucket('product-images', {
-          public: true
-        });
+      if (!bucketReady) {
+        throw new Error("Failed to prepare storage bucket. Please try again or contact support.");
       }
       
       // Upload the file to Supabase Storage
@@ -67,9 +63,13 @@ export const ImageUpload = ({
         });
       
       clearInterval(progressInterval);
-      setUploadProgress(100);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Upload error details:", error);
+        throw error;
+      }
+      
+      setUploadProgress(100);
       
       // Get the public URL
       const { data: urlData } = supabase.storage
@@ -80,9 +80,9 @@ export const ImageUpload = ({
       console.log("Uploaded image URL:", urlData.publicUrl);
       onImageUpload(urlData.publicUrl);
       toast.success("Image uploaded successfully");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error uploading image:", error);
-      toast.error("Failed to upload image. Please try again.");
+      toast.error(error.message || "Failed to upload image. Please try again.");
     } finally {
       setIsUploading(false);
     }
