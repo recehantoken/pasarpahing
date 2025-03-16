@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ImageUploadProps {
   imageUrl: string;
@@ -35,12 +37,16 @@ export const ImageUpload = ({
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${fileName}`;
       
-      // Setup event handler for upload progress
-      const eventSource = new EventSource('/api/upload-progress');
-      eventSource.onmessage = (event) => {
-        const progress = JSON.parse(event.data);
-        setUploadProgress(progress.percentage);
-      };
+      // Simple progress simulation since direct progress tracking isn't available
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 300);
       
       // Upload the file to Supabase Storage
       const { data, error } = await supabase.storage
@@ -49,8 +55,7 @@ export const ImageUpload = ({
           upsert: true
         });
       
-      // Close the event source after upload completes
-      eventSource.close();
+      clearInterval(progressInterval);
       setUploadProgress(100);
       
       if (error) throw error;
@@ -62,9 +67,10 @@ export const ImageUpload = ({
       
       // Return the public URL
       onImageUpload(urlData.publicUrl);
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
+      toast.error("Failed to upload image. Please try again.");
     } finally {
       setIsUploading(false);
     }

@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { CurrencyDisplay } from "@/components/CurrencyDisplay";
-import { useAuth } from "@/contexts/AuthContext";
 import { CategorySelect } from "./CategorySelect";
 import { ImageUpload } from "./ImageUpload";
 import { toast } from "sonner";
@@ -26,7 +25,6 @@ export const ProductForm = () => {
   const [isNewProduct, setIsNewProduct] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -41,6 +39,7 @@ export const ProductForm = () => {
   };
 
   const handleImageUpload = (publicUrl: string) => {
+    console.log("Image uploaded, URL:", publicUrl);
     setImageUrl(publicUrl);
   };
 
@@ -48,9 +47,7 @@ export const ProductForm = () => {
     e.preventDefault();
     
     if (!user) {
-      toast({
-        variant: "destructive",
-        title: "Authentication required",
+      toast("Authentication required", {
         description: "You must be logged in to sell items",
       });
       return;
@@ -72,6 +69,17 @@ export const ProductForm = () => {
         throw new Error("Please upload an image before submitting");
       }
       
+      console.log("Submitting product:", {
+        name,
+        description,
+        price: numericPrice,
+        category_id: categoryId,
+        image_url: imageUrl,
+        created_by: user.id,
+        is_flash_sale: isFlashSale,
+        is_new: isNewProduct
+      });
+      
       const { data, error } = await supabase
         .from("products")
         .insert({
@@ -87,19 +95,19 @@ export const ProductForm = () => {
         .select()
         .single();
         
-      if (error) throw error;
+      if (error) {
+        console.error("Error details:", error);
+        throw error;
+      }
       
-      toast({
-        title: "Item listed successfully",
+      toast.success("Item listed successfully", {
         description: "Your item is now available for sale",
       });
       
       navigate("/");
     } catch (error: any) {
       console.error("Error selling item:", error);
-      toast({
-        variant: "destructive",
-        title: "Error listing item",
+      toast.error("Error listing item", {
         description: error.message || "Failed to list your item. Please try again.",
       });
     } finally {
