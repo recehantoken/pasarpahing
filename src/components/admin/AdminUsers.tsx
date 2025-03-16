@@ -45,14 +45,28 @@ export const AdminUsers = () => {
         const usersWithEmail = await Promise.all(
           (profiles || []).map(async (profile) => {
             try {
-              // Attempt to get user email if you have admin access
-              const { data: userData, error: userError } = await supabase
-                .rpc('get_user_email', { user_id: profile.id })
-                .single();
+              // Call the edge function directly instead of using rpc
+              const response = await fetch(
+                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get_user_email`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${supabase.auth.getSession().then(res => res.data.session?.access_token)}`
+                  },
+                  body: JSON.stringify({ user_id: profile.id })
+                }
+              );
+              
+              if (!response.ok) {
+                throw new Error('Failed to fetch user email');
+              }
+              
+              const userData = await response.json();
               
               return {
                 ...profile,
-                email: userError ? `User ${profile.id.slice(0, 8)}...` : userData?.email
+                email: userData && userData.email ? userData.email : `User ${profile.id.slice(0, 8)}...`
               };
             } catch (error) {
               console.error("Error fetching user email:", error);

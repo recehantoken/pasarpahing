@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -36,16 +35,23 @@ export const ImageUpload = ({
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${fileName}`;
       
+      // Setup event handler for upload progress
+      const eventSource = new EventSource('/api/upload-progress');
+      eventSource.onmessage = (event) => {
+        const progress = JSON.parse(event.data);
+        setUploadProgress(progress.percentage);
+      };
+      
       // Upload the file to Supabase Storage
       const { data, error } = await supabase.storage
         .from('product-images')
         .upload(filePath, imageFile, {
-          upsert: true,
-          onUploadProgress: (progress) => {
-            const percent = Math.round((progress.loaded / progress.total) * 100);
-            setUploadProgress(percent);
-          }
+          upsert: true
         });
+      
+      // Close the event source after upload completes
+      eventSource.close();
+      setUploadProgress(100);
       
       if (error) throw error;
       
