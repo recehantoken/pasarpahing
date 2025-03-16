@@ -132,7 +132,7 @@ const CookiePolicy = () => {
               <h2 className="text-2xl font-semibold mb-3">6. Contact Us</h2>
               <p className="text-muted-foreground">
                 If you have any questions about our use of cookies or other technologies, please email
-                us at privacy@pasarpahing.com.
+                us at info@recehan.gold.
               </p>
             </section>
           </div>
