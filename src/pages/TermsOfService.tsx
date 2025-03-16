@@ -121,7 +121,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-3">10. Contact Us</h2>
               <p className="text-muted-foreground">
-                If you have any questions about these Terms, please contact us at legal@pasarpahing.com.
+                If you have any questions about these Terms, please contact us at info@recehan.gold.
               </p>
             </section>
           </div>
