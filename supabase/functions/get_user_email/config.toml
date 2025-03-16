@@ -1,0 +1,5 @@
+
+[functions.get_user_email]
+method = "POST"
+port = 8000
+verify_jwt = true

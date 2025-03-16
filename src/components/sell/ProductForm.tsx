@@ -12,6 +12,7 @@ import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { useAuth } from "@/contexts/AuthContext";
 import { CategorySelect } from "./CategorySelect";
 import { ImageUpload } from "./ImageUpload";
+import { toast } from "sonner";
 
 export const ProductForm = () => {
   const [name, setName] = useState("");
@@ -39,38 +40,8 @@ export const ProductForm = () => {
     }
   };
 
-  const uploadImage = async (): Promise<string> => {
-    if (!imageFile) return "";
-    
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-    const filePath = `product-images/${fileName}`;
-    
-    const { data: buckets } = await supabase.storage.listBuckets();
-    const productImagesBucket = buckets?.find(bucket => bucket.name === 'product-images');
-    
-    if (!productImagesBucket) {
-      const { error } = await supabase.storage.createBucket('product-images', {
-        public: true,
-        fileSizeLimit: 5242880,
-      });
-      
-      if (error) throw error;
-    }
-    
-    const { error: uploadError } = await supabase.storage
-      .from('product-images')
-      .upload(filePath, imageFile, {
-        upsert: true
-      });
-    
-    if (uploadError) throw uploadError;
-    
-    const { data } = supabase.storage
-      .from('product-images')
-      .getPublicUrl(filePath);
-      
-    return data.publicUrl;
+  const handleImageUpload = (publicUrl: string) => {
+    setImageUrl(publicUrl);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,9 +68,8 @@ export const ProductForm = () => {
         throw new Error("Price must be a positive number");
       }
       
-      let publicImageUrl = "";
-      if (imageFile) {
-        publicImageUrl = await uploadImage();
+      if (!imageUrl.startsWith('http')) {
+        throw new Error("Please upload an image before submitting");
       }
       
       const { data, error } = await supabase
@@ -109,7 +79,7 @@ export const ProductForm = () => {
           description,
           price: numericPrice,
           category_id: categoryId,
-          image_url: publicImageUrl,
+          image_url: imageUrl,
           created_by: user.id,
           is_flash_sale: isFlashSale,
           is_new: isNewProduct
@@ -195,6 +165,8 @@ export const ProductForm = () => {
         imageUrl={imageUrl}
         handleImageChange={handleImageChange}
         isLoading={isLoading}
+        imageFile={imageFile}
+        onImageUpload={handleImageUpload}
       />
       
       <div className="flex space-x-4">
@@ -226,7 +198,7 @@ export const ProductForm = () => {
       <Button 
         type="submit" 
         className="w-full" 
-        disabled={isLoading}
+        disabled={isLoading || !imageUrl.startsWith('http')}
       >
         {isLoading ? (
           <>

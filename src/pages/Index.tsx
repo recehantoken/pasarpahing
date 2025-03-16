@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -127,16 +128,6 @@ const Index = () => {
       <Header />
       <div className="container mx-auto px-4 py-8 mt-20">
         <h1 className="text-3xl font-bold mb-4">{t('nav.home')}</h1>
-
-        {/* Featured Banner Ad - Summer Deals */}
-        <BannerAd 
-          title="Special Summer Deals"
-          description="Get up to 50% off on selected items for a limited time"
-          imageUrl="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-          linkUrl="/sale"
-          buttonText="Shop Now"
-          className="w-full h-[300px] mb-8"
-        />
 
         {/* Crypto Banner Ad */}
         <BannerAd 

@@ -34,35 +34,43 @@ export const AdminUsers = () => {
     const fetchUsers = async () => {
       setIsLoading(true);
       try {
-        // First get all users from auth.users
-        const authUsersResponse = await supabase.auth.admin.listUsers();
-        if (authUsersResponse.error) throw authUsersResponse.error;
-        
-        const authUsers = authUsersResponse.data.users || [];
-        
-        // Then get all profiles
+        // Get all profiles from the profiles table
         const { data: profiles, error: profilesError } = await supabase
           .from('profiles')
           .select('*');
         
         if (profilesError) throw profilesError;
         
-        // Merge auth users with profiles
-        const mergedUsers = profiles?.map(profile => {
-          const authUser = authUsers.find(u => u.id === profile.id);
-          return {
-            ...profile,
-            email: authUser?.email
-          };
-        }) || [];
+        // For each profile, try to get the user's email
+        const usersWithEmail = await Promise.all(
+          (profiles || []).map(async (profile) => {
+            try {
+              // Attempt to get user email if you have admin access
+              const { data: userData, error: userError } = await supabase
+                .rpc('get_user_email', { user_id: profile.id })
+                .single();
+              
+              return {
+                ...profile,
+                email: userError ? `User ${profile.id.slice(0, 8)}...` : userData?.email
+              };
+            } catch (error) {
+              console.error("Error fetching user email:", error);
+              return {
+                ...profile,
+                email: `User ${profile.id.slice(0, 8)}...`
+              };
+            }
+          })
+        );
         
-        setUsers(mergedUsers);
+        setUsers(usersWithEmail);
       } catch (error) {
         console.error('Error fetching users:', error);
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: 'Failed to load users. You may not have admin access.',
+          description: 'Failed to load users data.',
         });
       } finally {
         setIsLoading(false);
