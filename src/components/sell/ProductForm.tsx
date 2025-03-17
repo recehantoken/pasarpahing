@@ -1,19 +1,19 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase, ensureStorageBucket } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import { CurrencyDisplay } from "@/components/CurrencyDisplay";
-import { CategorySelect } from "./CategorySelect";
-import { ImageUpload } from "./ImageUpload";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+// Import the refactored components
+import { ProductDetails } from "./ProductDetails";
+import { PriceSection } from "./PriceSection";
+import { CategorySelect } from "./CategorySelect";
+import { ImageUpload } from "./ImageUpload";
+import { MethodSelectors } from "./MethodSelectors";
+import { ProductOptions } from "./ProductOptions";
+import { SubmitButton } from "./SubmitButton";
 
 export const ProductForm = () => {
   const [name, setName] = useState("");
@@ -30,7 +30,7 @@ export const ProductForm = () => {
   const [shippingMethods, setShippingMethods] = useState<any[]>([]);
 
   const { user } = useAuth();
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const navigate = useNavigate();
 
   // Fetch payment and shipping methods
@@ -155,51 +155,19 @@ export const ProductForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="name">{language === 'id' ? 'Nama Produk*' : 'Product Name*'}</Label>
-        <Input
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder={language === 'id' ? 'Masukkan nama produk' : 'Enter product name'}
-          required
-          disabled={isLoading}
-        />
-      </div>
+      <ProductDetails
+        name={name}
+        setName={setName}
+        description={description}
+        setDescription={setDescription}
+        isLoading={isLoading}
+      />
       
-      <div className="space-y-2">
-        <Label htmlFor="description">{language === 'id' ? 'Deskripsi' : 'Description'}</Label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder={language === 'id' ? 'Deskripsikan produk Anda' : 'Describe your product'}
-          rows={4}
-          disabled={isLoading}
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="price">{language === 'id' ? 'Harga (USD)*' : 'Price (USD)*'}</Label>
-        <Input
-          id="price"
-          type="number"
-          step="0.01"
-          min="0.01"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          placeholder="0.00"
-          required
-          disabled={isLoading}
-        />
-        
-        {price && (
-          <div className="mt-2">
-            <Label>{language === 'id' ? 'Harga dalam IDR:' : 'Price in IDR:'}</Label>
-            <CurrencyDisplay amount={parseFloat(price) || 0} className="text-sm mt-1" />
-          </div>
-        )}
-      </div>
+      <PriceSection 
+        price={price}
+        setPrice={setPrice}
+        isLoading={isLoading}
+      />
       
       <CategorySelect 
         categoryId={categoryId}
@@ -213,88 +181,25 @@ export const ProductForm = () => {
         onImageSelect={handleImageUpload}
       />
       
-      <div className="space-y-2">
-        <Label htmlFor="paymentMethod">{language === 'id' ? 'Metode Pembayaran*' : 'Payment Method*'}</Label>
-        <Select 
-          value={paymentMethodId} 
-          onValueChange={setPaymentMethodId}
-          disabled={isLoading || paymentMethods.length === 0}
-        >
-          <SelectTrigger id="paymentMethod">
-            <SelectValue placeholder={language === 'id' ? 'Pilih metode pembayaran' : 'Select payment method'} />
-          </SelectTrigger>
-          <SelectContent>
-            {paymentMethods.map((method) => (
-              <SelectItem key={method.id} value={method.id}>
-                {method.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <MethodSelectors
+        paymentMethodId={paymentMethodId}
+        setPaymentMethodId={setPaymentMethodId}
+        shippingMethodId={shippingMethodId}
+        setShippingMethodId={setShippingMethodId}
+        paymentMethods={paymentMethods}
+        shippingMethods={shippingMethods}
+        isLoading={isLoading}
+      />
       
-      <div className="space-y-2">
-        <Label htmlFor="shippingMethod">{language === 'id' ? 'Metode Pengiriman*' : 'Shipping Method*'}</Label>
-        <Select 
-          value={shippingMethodId} 
-          onValueChange={setShippingMethodId}
-          disabled={isLoading || shippingMethods.length === 0}
-        >
-          <SelectTrigger id="shippingMethod">
-            <SelectValue placeholder={language === 'id' ? 'Pilih metode pengiriman' : 'Select shipping method'} />
-          </SelectTrigger>
-          <SelectContent>
-            {shippingMethods.map((method) => (
-              <SelectItem key={method.id} value={method.id}>
-                {method.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <ProductOptions
+        isFlashSale={isFlashSale}
+        setIsFlashSale={setIsFlashSale}
+        isNewProduct={isNewProduct}
+        setIsNewProduct={setIsNewProduct}
+        isLoading={isLoading}
+      />
       
-      <div className="flex space-x-4">
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="flashSale"
-            checked={isFlashSale}
-            onChange={(e) => setIsFlashSale(e.target.checked)}
-            className="rounded border-gray-300"
-            disabled={isLoading}
-          />
-          <Label htmlFor="flashSale" className="cursor-pointer">
-            {language === 'id' ? 'Flash Sale' : 'Flash Sale'}
-          </Label>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="newProduct"
-            checked={isNewProduct}
-            onChange={(e) => setIsNewProduct(e.target.checked)}
-            className="rounded border-gray-300"
-            disabled={isLoading}
-          />
-          <Label htmlFor="newProduct" className="cursor-pointer">
-            {language === 'id' ? 'Produk Baru' : 'New Product'}
-          </Label>
-        </div>
-      </div>
-      
-      <Button 
-        type="submit" 
-        className="w-full" 
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {language === 'id' ? 'Mendaftarkan Produk...' : 'Listing Product...'}
-          </>
-        ) : language === 'id' ? 'Daftarkan Produk Untuk Dijual' : 'List Product for Sale'}
-      </Button>
+      <SubmitButton isLoading={isLoading} />
     </form>
   );
 };
