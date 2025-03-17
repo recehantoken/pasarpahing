@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,12 +23,10 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
   
-  // Scroll to bottom of messages on new message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Add welcome message when chat is first opened
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       const welcomeMessage = language === 'id'
@@ -62,7 +59,6 @@ export function Chatbot() {
     setIsLoading(true);
     
     try {
-      // Format messages for API
       const formattedMessages = messages
         .concat(userMessage)
         .map(msg => ({
@@ -70,7 +66,6 @@ export function Chatbot() {
           content: msg.content
         }));
       
-      // Call Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('gemini-chat', {
         body: { 
           messages: formattedMessages,
@@ -80,7 +75,6 @@ export function Chatbot() {
       
       if (error) throw new Error(error.message);
       
-      // Add assistant response
       setMessages(prev => [
         ...prev, 
         {
@@ -97,7 +91,6 @@ export function Chatbot() {
         { description: error.message }
       );
       
-      // Add error message
       setMessages(prev => [
         ...prev, 
         {
@@ -123,13 +116,20 @@ export function Chatbot() {
 
   if (!isOpen) {
     return (
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-primary hover:bg-primary/90"
-        variant="default"
-      >
-        <MessageSquare size={24} />
-      </Button>
+      <div className="fixed bottom-6 right-6 flex items-center gap-3">
+        <div className="bg-primary/10 px-3 py-1 rounded-full shadow-md">
+          <span className="text-sm text-primary font-medium">
+            {language === 'id' ? 'Chat dengan Asisten' : 'Chat with Assistant'}
+          </span>
+        </div>
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-primary hover:bg-primary/90"
+          variant="default"
+        >
+          <MessageSquare size={24} />
+        </Button>
+      </div>
     );
   }
 
