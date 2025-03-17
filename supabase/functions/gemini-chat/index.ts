@@ -9,6 +9,7 @@ const corsHeaders = {
 };
 
 const pasarPahingInfo = `
+Detect language on chat, then translate.
 Pasar Pahing is a digital platform that connects local farmers and artisans with consumers, aiming to promote sustainable and locally sourced products. The platform offers a wide range of products, including fresh produce, handcrafted goods, and traditional foods, all sourced directly from local producers. By eliminating intermediaries, Pasar Pahing ensures fair pricing for both producers and consumers. The platform also emphasizes eco-friendly practices, encouraging the use of minimal packaging and supporting organic farming methods.
 
 Key Features:
