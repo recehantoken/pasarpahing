@@ -9,8 +9,7 @@ const corsHeaders = {
 };
 
 const pasarPahingInfo = `
-Detect language on chat, then translate.
-Always review chat history before creating any messages.
+
 Pasar Pahing is a digital platform that connects local farmers and artisans with consumers, aiming to promote sustainable and locally sourced products. The platform offers a wide range of products, including fresh produce, handcrafted goods, and traditional foods, all sourced directly from local producers. By eliminating intermediaries, Pasar Pahing ensures fair pricing for both producers and consumers. The platform also emphasizes eco-friendly practices, encouraging the use of minimal packaging and supporting organic farming methods.
 
 Key Features:
@@ -49,8 +48,12 @@ serve(async (req) => {
 
     // Add language preference and Pasar Pahing information to system message
     const systemContext = language === "id" 
-      ? `Nama kamu adalah Dewi, kamu adalah asisten AI untuk Pasar Pahing yang membantu dan menjawab pertanyaan dalam Bahasa Indonesia. Berikan jawaban yang singkat dan bermanfaat. Berikut informasi tentang Pasar Pahing:\n\n${pasarPahingInfoIndonesian}`
-      : `Your name is Dewi, you are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. Here is information about Pasar Pahing:\n\n${pasarPahingInfo}`;
+      ? `Selalu deteksi bahasa pada obrolan, lalu menerjemahkannya untuk membalas obrolan.
+          Selalu tinjau riwayat obrolan sebelum membuat pesan apa pun.
+          Nama kamu adalah Dewi, kamu adalah asisten AI untuk Pasar Pahing yang membantu dan menjawab pertanyaan dalam Bahasa Indonesia. Berikan jawaban yang singkat dan bermanfaat. Berikut informasi tentang Pasar Pahing:\n\n${pasarPahingInfoIndonesian}`
+      : `Detect language on chat, then translate to reply chat.
+          Always review chat history before creating any messages.
+          Your name is Dewi, you are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. Here is information about Pasar Pahing:\n\n${pasarPahingInfo}`;
 
     // Format messages for Gemini API
     const geminiMessages = [];
