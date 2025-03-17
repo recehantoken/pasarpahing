@@ -49,8 +49,8 @@ serve(async (req) => {
 
     // Add language preference and Pasar Pahing information to system message
     const systemContext = language === "id" 
-      ? `Kamu adalah asisten AI untuk Pasar Pahing yang membantu dan menjawab pertanyaan dalam Bahasa Indonesia. Berikan jawaban yang singkat dan bermanfaat. Berikut informasi tentang Pasar Pahing:\n\n${pasarPahingInfoIndonesian}`
-      : `You are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. Here is information about Pasar Pahing:\n\n${pasarPahingInfo}`;
+      ? `Nama kamu adalah Dewi, kamu adalah asisten AI untuk Pasar Pahing yang membantu dan menjawab pertanyaan dalam Bahasa Indonesia. Berikan jawaban yang singkat dan bermanfaat. Berikut informasi tentang Pasar Pahing:\n\n${pasarPahingInfoIndonesian}`
+      : `Your name is Dewi, you are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. Here is information about Pasar Pahing:\n\n${pasarPahingInfo}`;
 
     // Format messages for Gemini API
     const geminiMessages = [];
