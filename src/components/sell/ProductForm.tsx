@@ -37,6 +37,8 @@ export const ProductForm = () => {
   useEffect(() => {
     const fetchMethods = async () => {
       try {
+        setIsLoading(true);
+        
         // Ensure storage buckets exist
         await ensureStorageBucket();
         
@@ -47,7 +49,36 @@ export const ProductForm = () => {
           .eq("is_active", true);
           
         if (paymentError) throw paymentError;
-        setPaymentMethods(paymentData || []);
+        
+        // Update payment methods state
+        if (paymentData && paymentData.length > 0) {
+          setPaymentMethods(paymentData);
+          setPaymentMethodId(paymentData[0].id);
+        } else {
+          setPaymentMethods([]);
+          setPaymentMethodId("");
+          
+          // If no payment methods exist and user is admin, create a default one
+          if (user?.email === "master@recehan.gold") {
+            const { data: newMethod, error: createError } = await supabase
+              .from("payment_methods")
+              .insert([
+                {
+                  name: "Cash on Delivery",
+                  type: "cash",
+                  is_active: true
+                }
+              ])
+              .select()
+              .single();
+              
+            if (!createError && newMethod) {
+              setPaymentMethods([newMethod]);
+              setPaymentMethodId(newMethod.id);
+              console.log("Created default payment method:", newMethod);
+            }
+          }
+        }
         
         // Fetch shipping methods
         const { data: shippingData, error: shippingError } = await supabase
@@ -56,21 +87,49 @@ export const ProductForm = () => {
           .eq("is_active", true);
           
         if (shippingError) throw shippingError;
-        setShippingMethods(shippingData || []);
         
-        // Set defaults if available
-        if (paymentData?.length > 0) setPaymentMethodId(paymentData[0].id);
-        if (shippingData?.length > 0) setShippingMethodId(shippingData[0].id);
+        // Update shipping methods state
+        if (shippingData && shippingData.length > 0) {
+          setShippingMethods(shippingData);
+          setShippingMethodId(shippingData[0].id);
+        } else {
+          setShippingMethods([]);
+          setShippingMethodId("");
+        }
       } catch (error: any) {
         console.error("Error fetching methods:", error);
         toast.error(language === 'id' ? "Gagal memuat metode" : "Failed to load methods", {
           description: error.message
         });
+      } finally {
+        setIsLoading(false);
       }
     };
     
     fetchMethods();
-  }, [language]);
+  }, [language, user?.email]);
+
+  // Effect to update payment methods when they change (e.g., when a new one is created)
+  const refreshPaymentMethods = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("payment_methods")
+        .select("*")
+        .eq("is_active", true);
+        
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        setPaymentMethods(data);
+        // Only set the ID if it's not already set
+        if (!paymentMethodId) {
+          setPaymentMethodId(data[0].id);
+        }
+      }
+    } catch (error) {
+      console.error("Error refreshing payment methods:", error);
+    }
+  };
 
   const handleImageUpload = (publicUrl: string) => {
     console.log("Image uploaded, URL:", publicUrl);
