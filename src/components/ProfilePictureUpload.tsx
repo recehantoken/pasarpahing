@@ -1,11 +1,12 @@
 
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, ensureStorageBucket } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
 import { Upload } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type ProfilePictureUploadProps = {
   user: User;
@@ -16,6 +17,7 @@ type ProfilePictureUploadProps = {
 export const ProfilePictureUpload = ({ user, avatarUrl, onAvatarChange }: ProfilePictureUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+  const { language } = useLanguage();
 
   const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -25,8 +27,13 @@ export const ProfilePictureUpload = ({ user, avatarUrl, onAvatarChange }: Profil
         return;
       }
       
+      // Ensure the avatars bucket exists
+      await ensureStorageBucket();
+      
       const file = event.target.files[0];
       const fileExt = file.name.split('.').pop();
+      
+      // Create a folder for the user
       const filePath = `${user.id}/avatar.${fileExt}`;
       
       // Upload file to storage
@@ -57,15 +64,19 @@ export const ProfilePictureUpload = ({ user, avatarUrl, onAvatarChange }: Profil
         onAvatarChange(data.publicUrl);
         
         toast({
-          title: "Avatar updated",
-          description: "Your profile picture has been updated successfully",
+          title: language === 'id' ? "Avatar diperbarui" : "Avatar updated",
+          description: language === 'id' 
+            ? "Foto profil Anda telah diperbarui dengan sukses" 
+            : "Your profile picture has been updated successfully",
         });
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Error uploading avatar",
-        description: error.message || "There was an error uploading your avatar",
+        title: language === 'id' ? "Kesalahan mengunggah avatar" : "Error uploading avatar",
+        description: error.message || (language === 'id' 
+          ? "Terjadi kesalahan saat mengunggah avatar Anda" 
+          : "There was an error uploading your avatar"),
       });
     } finally {
       setUploading(false);
@@ -95,7 +106,9 @@ export const ProfilePictureUpload = ({ user, avatarUrl, onAvatarChange }: Profil
             disabled={uploading}
           />
           <Upload size={16} className="mr-2" />
-          {uploading ? "Uploading..." : "Change Picture"}
+          {uploading 
+            ? (language === 'id' ? "Mengunggah..." : "Uploading...") 
+            : (language === 'id' ? "Ubah Foto" : "Change Picture")}
         </Button>
       </div>
     </div>

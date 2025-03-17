@@ -36,12 +36,22 @@ export const ensureStorageBucket = async () => {
         console.error("Error creating product-images bucket:", createError);
         return false;
       }
+    }
+    
+    // Check for avatars bucket
+    const avatarsBucketExists = buckets?.some(b => b.name === 'avatars');
+    
+    if (!avatarsBucketExists) {
+      console.log("Creating avatars bucket");
+      const { error: createAvatarsError } = await supabase.storage.createBucket('avatars', {
+        public: true,
+        fileSizeLimit: 5242880, // 5MB
+        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml']
+      });
       
-      // Set public bucket policy
-      const { error: policyError } = await supabase.storage.from('product-images').getPublicUrl('test.png');
-      if (policyError) {
-        console.error("Warning: Could not confirm public policy:", policyError);
-        // We continue anyway since the bucket was created
+      if (createAvatarsError) {
+        console.error("Error creating avatars bucket:", createAvatarsError);
+        return false;
       }
     }
     
@@ -50,4 +60,10 @@ export const ensureStorageBucket = async () => {
     console.error("Error in ensureStorageBucket:", error);
     return false;
   }
+};
+
+// Helper function to get the public URL of a file
+export const getPublicUrl = (bucketName: string, filePath: string) => {
+  const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+  return data.publicUrl;
 };

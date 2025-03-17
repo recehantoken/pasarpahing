@@ -1,139 +1,88 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Upload } from "lucide-react";
-import { supabase, ensureStorageBucket } from "@/integrations/supabase/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Image } from "lucide-react";
 import { toast } from "sonner";
 
 interface ImageUploadProps {
   imageUrl: string;
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
-  imageFile: File | null;
-  onImageUpload: (url: string) => void;
+  onImageSelect: (url: string) => void;
 }
+
+// Predefined product images from public folder
+const publicImages = [
+  { id: "placeholder", path: "/placeholder.svg", name: "Default" },
+  { id: "kebaya", path: "/kebaya.jpg", name: "Kebaya" },
+  { id: "scarf", path: "/scarf.jpg", name: "Scarf" },
+  { id: "scarf2", path: "/scarf2.jpg", name: "Scarf 2" },
+  { id: "batik", path: "/batikfloral.jpg", name: "Batik Floral" },
+  { id: "batiktulis", path: "/batiktulis.jpg", name: "Batik Tulis" },
+  { id: "batik2", path: "/batik2.jpg", name: "Batik 2" },
+];
 
 export const ImageUpload = ({ 
   imageUrl, 
-  handleImageChange, 
   isLoading, 
-  imageFile,
-  onImageUpload
+  onImageSelect
 }: ImageUploadProps) => {
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(imageUrl || publicImages[0].path);
+  const { language } = useLanguage();
 
-  const uploadToStorage = async () => {
-    if (!imageFile) {
-      toast.error("No image selected");
-      return;
+  useEffect(() => {
+    // Initialize with the first image if none is set
+    if (!imageUrl) {
+      onImageSelect(publicImages[0].path);
     }
+  }, [imageUrl, onImageSelect]);
+
+  const handleImageChange = (value: string) => {
+    setSelectedImage(value);
+    onImageSelect(value);
     
-    try {
-      setIsUploading(true);
-      setUploadProgress(0);
-      
-      // Create a unique file name
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-      const filePath = `${fileName}`;
-      
-      // Simple progress simulation since direct progress tracking isn't available
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 300);
-      
-      // Ensure the product-images bucket exists
-      const bucketReady = await ensureStorageBucket();
-      
-      if (!bucketReady) {
-        throw new Error("Failed to prepare storage bucket. Please try again or contact support.");
-      }
-      
-      console.log("Uploading to bucket: product-images, file:", filePath);
-      
-      // Upload the file to Supabase Storage
-      const { data, error } = await supabase.storage
-        .from('product-images')
-        .upload(filePath, imageFile, {
-          upsert: true,
-          cacheControl: '3600'
-        });
-      
-      clearInterval(progressInterval);
-      
-      if (error) {
-        console.error("Upload error details:", error);
-        throw error;
-      }
-      
-      setUploadProgress(100);
-      
-      // Get the public URL
-      const { data: urlData } = supabase.storage
-        .from('product-images')
-        .getPublicUrl(filePath);
-      
-      // Return the public URL
-      console.log("Uploaded image URL:", urlData.publicUrl);
-      onImageUpload(urlData.publicUrl);
-      toast.success("Image uploaded successfully");
-    } catch (error: any) {
-      console.error("Error uploading image:", error);
-      toast.error(error.message || "Failed to upload image. Please try again.");
-    } finally {
-      setIsUploading(false);
-    }
+    toast.success(
+      language === 'id' ? "Gambar dipilih" : "Image selected",
+      { description: language === 'id' ? "Gambar produk telah diperbarui" : "Product image has been updated" }
+    );
   };
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor="image">Product Image</Label>
-      <Input
-        id="image"
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        disabled={isLoading || isUploading}
-      />
+    <div className="space-y-4">
+      <Label htmlFor="image">{language === 'id' ? 'Gambar Produk' : 'Product Image'}</Label>
       
-      {imageFile && !imageUrl.startsWith('http') && (
-        <Button
-          type="button"
-          onClick={uploadToStorage}
-          disabled={isUploading || !imageFile}
-          className="mt-2"
-        >
-          {isUploading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Uploading... {uploadProgress}%
-            </>
-          ) : (
-            <>
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Image
-            </>
-          )}
-        </Button>
-      )}
+      <Select 
+        value={selectedImage} 
+        onValueChange={handleImageChange}
+        disabled={isLoading}
+      >
+        <SelectTrigger id="image" className="w-full">
+          <SelectValue placeholder={language === 'id' ? "Pilih gambar" : "Select an image"} />
+        </SelectTrigger>
+        <SelectContent>
+          {publicImages.map((img) => (
+            <SelectItem key={img.id} value={img.path}>
+              <div className="flex items-center gap-2">
+                <Image className="h-4 w-4" />
+                <span>{img.name}</span>
+              </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       
-      {imageUrl && (
-        <div className="mt-2">
-          <p className="text-sm mb-2">Preview:</p>
-          <img 
-            src={imageUrl} 
-            alt="Product preview" 
-            className="max-h-40 rounded border border-border"
-          />
+      {selectedImage && (
+        <div className="mt-4">
+          <p className="text-sm mb-2">{language === 'id' ? 'Pratinjau:' : 'Preview:'}</p>
+          <div className="border border-border rounded p-2 bg-card">
+            <img 
+              src={selectedImage} 
+              alt="Product preview" 
+              className="max-h-40 rounded mx-auto"
+            />
+          </div>
         </div>
       )}
     </div>

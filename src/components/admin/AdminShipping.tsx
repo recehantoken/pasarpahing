@@ -1,585 +1,461 @@
 
-import React, { useState, useEffect } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Loader2, Plus, Edit, Trash } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-
-interface ShippingMethod {
-  id: string;
-  name: string;
-  description: string | null;
-  base_cost: number;
-  estimated_days: number | null;
-  is_active: boolean | null;
-  available_to: string[];
-}
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Loader2, Check, X, PlusCircle } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const AdminShipping = () => {
-  const { t } = useLanguage();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState<ShippingMethod | null>(null);
-  const [newShippingMethod, setNewShippingMethod] = useState<Partial<ShippingMethod>>({
-    name: '',
-    description: '',
-    base_cost: 0,
-    estimated_days: 3,
-    is_active: true,
-    available_to: ['admin', 'user']
-  });
+  const [shippingMethods, setShippingMethods] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [baseCost, setBaseCost] = useState("");
+  const [estimatedDays, setEstimatedDays] = useState("");
+  const [isActive, setIsActive] = useState(true);
+  const [currentId, setCurrentId] = useState("");
+  
+  const { toast } = useToast();
+  const { t, language } = useLanguage();
 
-  const { data: shippingMethods, isLoading, refetch } = useQuery({
-    queryKey: ['shipping-methods'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('shipping_methods')
-        .select('*')
-        .order('name');
-      
-      if (error) throw error;
-      
-      // Transform data to include available_to field
-      return (data || []).map(method => ({
-        ...method,
-        available_to: method.available_to || ['admin', 'user']
-      })) as ShippingMethod[];
-    }
-  });
+  useEffect(() => {
+    fetchShippingMethods();
+  }, []);
 
-  const handleAddShippingMethod = async () => {
+  const fetchShippingMethods = async () => {
     try {
-      const { error } = await supabase
-        .from('shipping_methods')
-        .insert({
-          name: newShippingMethod.name || '',
-          description: newShippingMethod.description || '',
-          base_cost: newShippingMethod.base_cost || 0,
-          estimated_days: newShippingMethod.estimated_days || null,
-          is_active: newShippingMethod.is_active !== undefined ? newShippingMethod.is_active : true,
-          available_to: newShippingMethod.available_to || ['admin', 'user']
-        });
-
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("shipping_methods")
+        .select("*")
+        .order("name");
+        
       if (error) throw error;
       
-      toast.success("Shipping method added successfully");
-      setIsAddDialogOpen(false);
-      setNewShippingMethod({
-        name: '',
-        description: '',
-        base_cost: 0,
-        estimated_days: 3,
-        is_active: true,
-        available_to: ['admin', 'user']
+      setShippingMethods(data || []);
+    } catch (error: any) {
+      console.error("Error fetching shipping methods:", error);
+      toast({
+        variant: "destructive",
+        title: language === 'id' ? "Gagal memuat metode pengiriman" : "Failed to load shipping methods",
+        description: error.message,
       });
-      refetch();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setBaseCost("");
+    setEstimatedDays("");
+    setIsActive(true);
+    setCurrentId("");
+  };
+
+  const handleEdit = (method: any) => {
+    setName(method.name);
+    setDescription(method.description || "");
+    setBaseCost(String(method.base_cost));
+    setEstimatedDays(method.estimated_days ? String(method.estimated_days) : "");
+    setIsActive(!!method.is_active);
+    setCurrentId(method.id);
+    setIsEditing(true);
+  };
+
+  const handleAdd = async () => {
+    try {
+      if (!name || !baseCost) {
+        toast({
+          variant: "destructive",
+          title: language === 'id' ? "Data tidak lengkap" : "Incomplete data",
+          description: language === 'id' ? "Nama dan biaya dasar diperlukan" : "Name and base cost are required",
+        });
+        return;
+      }
+      
+      const newMethod = {
+        name,
+        description: description || null,
+        base_cost: parseFloat(baseCost),
+        estimated_days: estimatedDays ? parseInt(estimatedDays) : null,
+        is_active: isActive
+      };
+      
+      const { data, error } = await supabase
+        .from("shipping_methods")
+        .insert(newMethod)
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      toast({
+        title: language === 'id' ? "Metode pengiriman ditambahkan" : "Shipping method added",
+        description: language === 'id' ? "Metode pengiriman baru telah ditambahkan" : "New shipping method has been added",
+      });
+      
+      setShippingMethods([...shippingMethods, data]);
+      resetForm();
+      setIsAdding(false);
     } catch (error: any) {
       console.error("Error adding shipping method:", error);
-      toast.error(error.message || "Failed to add shipping method");
+      toast({
+        variant: "destructive",
+        title: language === 'id' ? "Gagal menambahkan metode pengiriman" : "Failed to add shipping method",
+        description: error.message,
+      });
     }
   };
 
-  const handleEditShippingMethod = async () => {
-    if (!selectedMethod) return;
-    
+  const handleUpdate = async () => {
     try {
+      if (!name || !baseCost) {
+        toast({
+          variant: "destructive",
+          title: language === 'id' ? "Data tidak lengkap" : "Incomplete data",
+          description: language === 'id' ? "Nama dan biaya dasar diperlukan" : "Name and base cost are required",
+        });
+        return;
+      }
+      
+      const updatedMethod = {
+        name,
+        description: description || null,
+        base_cost: parseFloat(baseCost),
+        estimated_days: estimatedDays ? parseInt(estimatedDays) : null,
+        is_active: isActive
+      };
+      
       const { error } = await supabase
-        .from('shipping_methods')
-        .update({
-          name: selectedMethod.name,
-          description: selectedMethod.description,
-          base_cost: selectedMethod.base_cost,
-          estimated_days: selectedMethod.estimated_days,
-          is_active: selectedMethod.is_active,
-          available_to: selectedMethod.available_to
-        })
-        .eq('id', selectedMethod.id);
-
+        .from("shipping_methods")
+        .update(updatedMethod)
+        .eq("id", currentId);
+        
       if (error) throw error;
       
-      toast.success("Shipping method updated successfully");
-      setIsEditDialogOpen(false);
-      setSelectedMethod(null);
-      refetch();
+      toast({
+        title: language === 'id' ? "Metode pengiriman diperbarui" : "Shipping method updated",
+        description: language === 'id' ? "Perubahan telah disimpan" : "Changes have been saved",
+      });
+      
+      // Update local state
+      setShippingMethods(
+        shippingMethods.map(method => 
+          method.id === currentId ? { ...method, ...updatedMethod } : method
+        )
+      );
+      
+      resetForm();
+      setIsEditing(false);
     } catch (error: any) {
       console.error("Error updating shipping method:", error);
-      toast.error(error.message || "Failed to update shipping method");
+      toast({
+        variant: "destructive",
+        title: language === 'id' ? "Gagal memperbarui metode pengiriman" : "Failed to update shipping method",
+        description: error.message,
+      });
     }
   };
 
-  const handleDeleteShippingMethod = async () => {
-    if (!selectedMethod) return;
-    
+  const toggleActive = async (id: string, currentValue: boolean) => {
     try {
       const { error } = await supabase
-        .from('shipping_methods')
-        .delete()
-        .eq('id', selectedMethod.id);
-
+        .from("shipping_methods")
+        .update({ is_active: !currentValue })
+        .eq("id", id);
+        
       if (error) throw error;
       
-      toast.success("Shipping method deleted successfully");
-      setIsDeleteDialogOpen(false);
-      setSelectedMethod(null);
-      refetch();
+      // Update local state
+      setShippingMethods(
+        shippingMethods.map(method => 
+          method.id === id ? { ...method, is_active: !currentValue } : method
+        )
+      );
+      
+      toast({
+        title: language === 'id' ? "Status diperbarui" : "Status updated",
+        description: currentValue 
+          ? (language === 'id' ? "Metode pengiriman telah dinonaktifkan" : "Shipping method has been deactivated") 
+          : (language === 'id' ? "Metode pengiriman telah diaktifkan" : "Shipping method has been activated"),
+      });
     } catch (error: any) {
-      console.error("Error deleting shipping method:", error);
-      toast.error(error.message || "Failed to delete shipping method");
+      console.error("Error toggling active status:", error);
+      toast({
+        variant: "destructive",
+        title: language === 'id' ? "Gagal memperbarui status" : "Failed to update status",
+        description: error.message,
+      });
     }
-  };
-
-  const toggleAvailability = (method: ShippingMethod, type: 'admin' | 'user') => {
-    const updatedMethod = { ...method };
-    
-    if (updatedMethod.available_to.includes(type)) {
-      updatedMethod.available_to = updatedMethod.available_to.filter(t => t !== type);
-    } else {
-      updatedMethod.available_to.push(type);
-    }
-    
-    setSelectedMethod(updatedMethod);
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('admin.shipping')}</CardTitle>
-        <CardDescription>
-          Configure shipping methods and availability
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-6 flex justify-between items-center">
-          <h3 className="text-lg font-medium">Shipping Methods</h3>
-          <Button onClick={() => setIsAddDialogOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Method
-          </Button>
-        </div>
-        
-        {isLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="h-8 w-8 animate-spin" />
+    <div className="space-y-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>{language === 'id' ? 'Metode Pengiriman' : 'Shipping Methods'}</CardTitle>
+            <CardDescription>
+              {language === 'id' 
+                ? 'Kelola metode pengiriman yang tersedia untuk pelanggan' 
+                : 'Manage shipping methods available to customers'}
+            </CardDescription>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {shippingMethods?.length === 0 ? (
-              <div className="rounded-md border border-dashed p-8 text-center">
-                <p className="text-muted-foreground">No shipping methods available</p>
-                <Button 
-                  variant="outline" 
-                  className="mt-4"
-                  onClick={() => setIsAddDialogOpen(true)}
-                >
-                  Add Your First Shipping Method
-                </Button>
-              </div>
-            ) : (
-              shippingMethods?.map((method) => (
-                <div key={method.id} className="rounded-md border p-4 space-y-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-medium flex items-center">
-                        {method.name}
-                        {!method.is_active && (
-                          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
-                            Inactive
-                          </span>
-                        )}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {method.description || "No description provided"}
-                      </p>
-                      <div className="mt-2 text-sm">
-                        <div><strong>Cost:</strong> ${method.base_cost}</div>
-                        {method.estimated_days && (
-                          <div><strong>Estimated Delivery:</strong> {method.estimated_days} days</div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
-                        size="icon"
-                        onClick={() => {
-                          setSelectedMethod(method);
-                          setIsEditDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button 
-                        variant="destructive" 
-                        size="icon"
-                        onClick={() => {
-                          setSelectedMethod(method);
-                          setIsDeleteDialogOpen(true);
-                        }}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="border-t pt-3 mt-3">
-                    <h4 className="text-sm font-medium mb-2">Available To:</h4>
-                    <div className="flex space-x-4">
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          id={`admin-${method.id}`}
-                          checked={method.available_to?.includes('admin') ?? true}
-                          onChange={() => {
-                            const updatedMethod = { ...method };
-                            if (updatedMethod.available_to?.includes('admin')) {
-                              updatedMethod.available_to = updatedMethod.available_to.filter(t => t !== 'admin');
-                            } else {
-                              updatedMethod.available_to = [...(updatedMethod.available_to || []), 'admin'];
-                            }
-                            
-                            // Update the shipping method in the database
-                            supabase
-                              .from('shipping_methods')
-                              .update({ available_to: updatedMethod.available_to })
-                              .eq('id', method.id)
-                              .then(({ error }) => {
-                                if (error) {
-                                  toast.error(`Failed to update availability: ${error.message}`);
-                                } else {
-                                  refetch();
-                                }
-                              });
-                          }}
-                          className="rounded border-gray-300"
-                        />
-                        <Label htmlFor={`admin-${method.id}`}>Administrators</Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          id={`user-${method.id}`}
-                          checked={method.available_to?.includes('user') ?? true}
-                          onChange={() => {
-                            const updatedMethod = { ...method };
-                            if (updatedMethod.available_to?.includes('user')) {
-                              updatedMethod.available_to = updatedMethod.available_to.filter(t => t !== 'user');
-                            } else {
-                              updatedMethod.available_to = [...(updatedMethod.available_to || []), 'user'];
-                            }
-                            
-                            // Update the shipping method in the database
-                            supabase
-                              .from('shipping_methods')
-                              .update({ available_to: updatedMethod.available_to })
-                              .eq('id', method.id)
-                              .then(({ error }) => {
-                                if (error) {
-                                  toast.error(`Failed to update availability: ${error.message}`);
-                                } else {
-                                  refetch();
-                                }
-                              });
-                          }}
-                          className="rounded border-gray-300"
-                        />
-                        <Label htmlFor={`user-${method.id}`}>Regular Users</Label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-      </CardContent>
-
-      {/* Add Shipping Method Dialog */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Shipping Method</DialogTitle>
-            <DialogDescription>
-              Create a new shipping method for your customers.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">Name</Label>
-              <Input 
-                id="name" 
-                value={newShippingMethod.name} 
-                onChange={(e) => setNewShippingMethod({...newShippingMethod, name: e.target.value})}
-                className="col-span-3" 
-                placeholder="Express Shipping"
-              />
-            </div>
-            
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">Description</Label>
-              <Textarea 
-                id="description" 
-                value={newShippingMethod.description || ''} 
-                onChange={(e) => setNewShippingMethod({...newShippingMethod, description: e.target.value})}
-                className="col-span-3" 
-                placeholder="Fast delivery within 2-3 business days"
-              />
-            </div>
-            
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="cost" className="text-right">Cost ($)</Label>
-              <Input 
-                id="cost" 
-                type="number"
-                step="0.01"
-                min="0"
-                value={newShippingMethod.base_cost} 
-                onChange={(e) => setNewShippingMethod({
-                  ...newShippingMethod, 
-                  base_cost: parseFloat(e.target.value) || 0
-                })}
-                className="col-span-3" 
-              />
-            </div>
-            
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="days" className="text-right">Est. Days</Label>
-              <Input 
-                id="days" 
-                type="number"
-                min="1"
-                value={newShippingMethod.estimated_days || ''} 
-                onChange={(e) => setNewShippingMethod({
-                  ...newShippingMethod, 
-                  estimated_days: parseInt(e.target.value) || null
-                })}
-                className="col-span-3" 
-              />
-            </div>
-            
-            <div className="grid grid-cols-4 items-center gap-4">
-              <div className="text-right">Status</div>
-              <div className="col-span-3 flex items-center space-x-2">
-                <Switch 
-                  checked={newShippingMethod.is_active} 
-                  onCheckedChange={(checked) => setNewShippingMethod({
-                    ...newShippingMethod, 
-                    is_active: checked
-                  })}
-                />
-                <Label>Active</Label>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-4 items-start gap-4">
-              <div className="text-right pt-2">Available To</div>
-              <div className="col-span-3 space-y-2">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="available-admin"
-                    checked={newShippingMethod.available_to?.includes('admin') ?? true}
-                    onChange={() => {
-                      const current = newShippingMethod.available_to || [];
-                      setNewShippingMethod({
-                        ...newShippingMethod, 
-                        available_to: current.includes('admin') 
-                          ? current.filter(t => t !== 'admin')
-                          : [...current, 'admin']
-                      });
-                    }}
-                    className="rounded border-gray-300"
+          <Dialog open={isAdding} onOpenChange={setIsAdding}>
+            <DialogTrigger asChild>
+              <Button variant="outline" onClick={() => resetForm()}>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                {language === 'id' ? 'Tambah Metode' : 'Add Method'}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{language === 'id' ? 'Tambah Metode Pengiriman' : 'Add Shipping Method'}</DialogTitle>
+                <DialogDescription>
+                  {language === 'id'
+                    ? 'Buat metode pengiriman baru untuk pelanggan'
+                    : 'Create a new shipping method for customers'}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">{language === 'id' ? 'Nama' : 'Name'}</Label>
+                  <Input 
+                    id="name" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)} 
+                    placeholder={language === 'id' ? 'Masukkan nama' : 'Enter name'}
                   />
-                  <Label htmlFor="available-admin">Administrators</Label>
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="available-user"
-                    checked={newShippingMethod.available_to?.includes('user') ?? true}
-                    onChange={() => {
-                      const current = newShippingMethod.available_to || [];
-                      setNewShippingMethod({
-                        ...newShippingMethod, 
-                        available_to: current.includes('user') 
-                          ? current.filter(t => t !== 'user')
-                          : [...current, 'user']
-                      });
-                    }}
-                    className="rounded border-gray-300"
+                <div className="grid gap-2">
+                  <Label htmlFor="description">{language === 'id' ? 'Deskripsi' : 'Description'}</Label>
+                  <Textarea 
+                    id="description" 
+                    value={description} 
+                    onChange={(e) => setDescription(e.target.value)} 
+                    placeholder={language === 'id' ? 'Masukkan deskripsi' : 'Enter description'}
                   />
-                  <Label htmlFor="available-user">Regular Users</Label>
                 </div>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddShippingMethod}>Add Shipping Method</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Shipping Method Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Shipping Method</DialogTitle>
-            <DialogDescription>
-              Update shipping method details.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedMethod && (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-name" className="text-right">Name</Label>
-                <Input 
-                  id="edit-name" 
-                  value={selectedMethod.name} 
-                  onChange={(e) => setSelectedMethod({...selectedMethod, name: e.target.value})}
-                  className="col-span-3" 
-                />
-              </div>
-              
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-description" className="text-right">Description</Label>
-                <Textarea 
-                  id="edit-description" 
-                  value={selectedMethod.description || ''} 
-                  onChange={(e) => setSelectedMethod({...selectedMethod, description: e.target.value})}
-                  className="col-span-3" 
-                />
-              </div>
-              
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-cost" className="text-right">Cost ($)</Label>
-                <Input 
-                  id="edit-cost" 
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={selectedMethod.base_cost} 
-                  onChange={(e) => setSelectedMethod({
-                    ...selectedMethod, 
-                    base_cost: parseFloat(e.target.value)
-                  })}
-                  className="col-span-3" 
-                />
-              </div>
-              
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-days" className="text-right">Est. Days</Label>
-                <Input 
-                  id="edit-days" 
-                  type="number"
-                  min="1"
-                  value={selectedMethod.estimated_days || ''} 
-                  onChange={(e) => setSelectedMethod({
-                    ...selectedMethod, 
-                    estimated_days: e.target.value ? parseInt(e.target.value) : null
-                  })}
-                  className="col-span-3" 
-                />
-              </div>
-              
-              <div className="grid grid-cols-4 items-center gap-4">
-                <div className="text-right">Status</div>
-                <div className="col-span-3 flex items-center space-x-2">
+                <div className="grid gap-2">
+                  <Label htmlFor="baseCost">{language === 'id' ? 'Biaya Dasar ($)' : 'Base Cost ($)'}</Label>
+                  <Input 
+                    id="baseCost" 
+                    value={baseCost} 
+                    onChange={(e) => setBaseCost(e.target.value)} 
+                    type="number" 
+                    min="0" 
+                    step="0.01"
+                    placeholder="0.00"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="estimatedDays">{language === 'id' ? 'Perkiraan Hari' : 'Estimated Days'}</Label>
+                  <Input 
+                    id="estimatedDays" 
+                    value={estimatedDays} 
+                    onChange={(e) => setEstimatedDays(e.target.value)} 
+                    type="number" 
+                    min="1"
+                    placeholder={language === 'id' ? 'Masukkan perkiraan hari' : 'Enter estimated days'}
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
                   <Switch 
-                    checked={selectedMethod.is_active || false} 
-                    onCheckedChange={(checked) => setSelectedMethod({
-                      ...selectedMethod, 
-                      is_active: checked
-                    })}
+                    id="isActive" 
+                    checked={isActive} 
+                    onCheckedChange={setIsActive} 
                   />
-                  <Label>Active</Label>
+                  <Label htmlFor="isActive">{language === 'id' ? 'Aktif' : 'Active'}</Label>
                 </div>
               </div>
-              
-              <div className="grid grid-cols-4 items-start gap-4">
-                <div className="text-right pt-2">Available To</div>
-                <div className="col-span-3 space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="edit-available-admin"
-                      checked={selectedMethod.available_to?.includes('admin') ?? true}
-                      onChange={() => toggleAvailability(selectedMethod, 'admin')}
-                      className="rounded border-gray-300"
-                    />
-                    <Label htmlFor="edit-available-admin">Administrators</Label>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="edit-available-user"
-                      checked={selectedMethod.available_to?.includes('user') ?? true}
-                      onChange={() => toggleAvailability(selectedMethod, 'user')}
-                      className="rounded border-gray-300"
-                    />
-                    <Label htmlFor="edit-available-user">Regular Users</Label>
-                  </div>
-                </div>
-              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsAdding(false)}>
+                  {language === 'id' ? 'Batal' : 'Cancel'}
+                </Button>
+                <Button onClick={handleAdd}>
+                  {language === 'id' ? 'Simpan' : 'Save'}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin" />
+              <span className="ml-2">{language === 'id' ? 'Memuat...' : 'Loading...'}</span>
             </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleEditShippingMethod}>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Shipping Method Dialog */}
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Shipping Method</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this shipping method? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedMethod && (
-            <div className="py-4">
-              <p><strong>Method:</strong> {selectedMethod.name}</p>
-              <p><strong>Cost:</strong> ${selectedMethod.base_cost}</p>
+          ) : shippingMethods.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">
+                {language === 'id' 
+                  ? 'Tidak ada metode pengiriman yang ditemukan' 
+                  : 'No shipping methods found'}
+              </p>
             </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{language === 'id' ? 'Nama' : 'Name'}</TableHead>
+                  <TableHead>{language === 'id' ? 'Deskripsi' : 'Description'}</TableHead>
+                  <TableHead>{language === 'id' ? 'Biaya Dasar' : 'Base Cost'}</TableHead>
+                  <TableHead>{language === 'id' ? 'Perkiraan Hari' : 'Est. Days'}</TableHead>
+                  <TableHead>{language === 'id' ? 'Status' : 'Status'}</TableHead>
+                  <TableHead className="text-right">{language === 'id' ? 'Tindakan' : 'Actions'}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {shippingMethods.map((method) => (
+                  <TableRow key={method.id}>
+                    <TableCell className="font-medium">{method.name}</TableCell>
+                    <TableCell>{method.description || '-'}</TableCell>
+                    <TableCell>${method.base_cost.toFixed(2)}</TableCell>
+                    <TableCell>{method.estimated_days || '-'}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          method.is_active
+                            ? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500"
+                            : "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500"
+                        }`}
+                      >
+                        {method.is_active 
+                          ? (language === 'id' ? 'Aktif' : 'Active') 
+                          : (language === 'id' ? 'Nonaktif' : 'Inactive')}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleActive(method.id, !!method.is_active)}
+                      >
+                        {method.is_active ? (
+                          <X className="h-4 w-4" />
+                        ) : (
+                          <Check className="h-4 w-4" />
+                        )}
+                      </Button>
+                      <Dialog open={isEditing} onOpenChange={setIsEditing}>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEdit(method)}
+                          >
+                            {language === 'id' ? 'Edit' : 'Edit'}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>{language === 'id' ? 'Edit Metode Pengiriman' : 'Edit Shipping Method'}</DialogTitle>
+                            <DialogDescription>
+                              {language === 'id'
+                                ? 'Ubah detail metode pengiriman'
+                                : 'Update shipping method details'}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="grid gap-4 py-4">
+                            <div className="grid gap-2">
+                              <Label htmlFor="edit-name">{language === 'id' ? 'Nama' : 'Name'}</Label>
+                              <Input 
+                                id="edit-name" 
+                                value={name} 
+                                onChange={(e) => setName(e.target.value)} 
+                              />
+                            </div>
+                            <div className="grid gap-2">
+                              <Label htmlFor="edit-description">{language === 'id' ? 'Deskripsi' : 'Description'}</Label>
+                              <Textarea 
+                                id="edit-description" 
+                                value={description} 
+                                onChange={(e) => setDescription(e.target.value)} 
+                              />
+                            </div>
+                            <div className="grid gap-2">
+                              <Label htmlFor="edit-baseCost">{language === 'id' ? 'Biaya Dasar ($)' : 'Base Cost ($)'}</Label>
+                              <Input 
+                                id="edit-baseCost" 
+                                value={baseCost} 
+                                onChange={(e) => setBaseCost(e.target.value)} 
+                                type="number" 
+                                min="0" 
+                                step="0.01"
+                              />
+                            </div>
+                            <div className="grid gap-2">
+                              <Label htmlFor="edit-estimatedDays">{language === 'id' ? 'Perkiraan Hari' : 'Estimated Days'}</Label>
+                              <Input 
+                                id="edit-estimatedDays" 
+                                value={estimatedDays} 
+                                onChange={(e) => setEstimatedDays(e.target.value)} 
+                                type="number" 
+                                min="1"
+                              />
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Switch 
+                                id="edit-isActive" 
+                                checked={isActive} 
+                                onCheckedChange={setIsActive} 
+                              />
+                              <Label htmlFor="edit-isActive">{language === 'id' ? 'Aktif' : 'Active'}</Label>
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button variant="outline" onClick={() => setIsEditing(false)}>
+                              {language === 'id' ? 'Batal' : 'Cancel'}
+                            </Button>
+                            <Button onClick={handleUpdate}>
+                              {language === 'id' ? 'Simpan' : 'Save'}
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={handleDeleteShippingMethod}>Delete Method</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

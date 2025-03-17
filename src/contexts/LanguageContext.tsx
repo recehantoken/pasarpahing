@@ -61,6 +61,98 @@ const initialTranslations: Translations = {
     en: 'Success',
     id: 'Berhasil',
   },
+  'common.required': {
+    en: 'Required',
+    id: 'Wajib',
+  },
+  'common.optional': {
+    en: 'Optional',
+    id: 'Opsional',
+  },
+  'common.select': {
+    en: 'Select',
+    id: 'Pilih',
+  },
+  'common.preview': {
+    en: 'Preview',
+    id: 'Pratinjau',
+  },
+  'common.status': {
+    en: 'Status',
+    id: 'Status',
+  },
+  'common.active': {
+    en: 'Active',
+    id: 'Aktif',
+  },
+  'common.inactive': {
+    en: 'Inactive',
+    id: 'Nonaktif',
+  },
+  'common.action': {
+    en: 'Action',
+    id: 'Tindakan',
+  },
+  'common.actions': {
+    en: 'Actions',
+    id: 'Tindakan',
+  },
+  'common.add': {
+    en: 'Add',
+    id: 'Tambah',
+  },
+  'common.create': {
+    en: 'Create',
+    id: 'Buat',
+  },
+  'common.update': {
+    en: 'Update',
+    id: 'Perbarui',
+  },
+  'common.confirm': {
+    en: 'Confirm',
+    id: 'Konfirmasi',
+  },
+  'common.continue': {
+    en: 'Continue',
+    id: 'Lanjutkan',
+  },
+  'common.back': {
+    en: 'Back',
+    id: 'Kembali',
+  },
+  'common.next': {
+    en: 'Next',
+    id: 'Berikutnya',
+  },
+  'common.previous': {
+    en: 'Previous',
+    id: 'Sebelumnya',
+  },
+  'common.done': {
+    en: 'Done',
+    id: 'Selesai',
+  },
+  'common.finish': {
+    en: 'Finish',
+    id: 'Selesai',
+  },
+  'common.yes': {
+    en: 'Yes',
+    id: 'Ya',
+  },
+  'common.no': {
+    en: 'No',
+    id: 'Tidak',
+  },
+  'common.or': {
+    en: 'Or',
+    id: 'Atau',
+  },
+  'common.and': {
+    en: 'And',
+    id: 'Dan',
+  },
   
   // Navigation
   'nav.home': {
@@ -94,6 +186,34 @@ const initialTranslations: Translations = {
   'nav.signup': {
     en: 'Sign Up',
     id: 'Daftar',
+  },
+  'nav.about': {
+    en: 'About',
+    id: 'Tentang',
+  },
+  'nav.contact': {
+    en: 'Contact',
+    id: 'Kontak',
+  },
+  'nav.faq': {
+    en: 'FAQ',
+    id: 'FAQ',
+  },
+  'nav.terms': {
+    en: 'Terms',
+    id: 'Ketentuan',
+  },
+  'nav.privacy': {
+    en: 'Privacy',
+    id: 'Privasi',
+  },
+  'nav.shipping': {
+    en: 'Shipping',
+    id: 'Pengiriman',
+  },
+  'nav.returns': {
+    en: 'Returns',
+    id: 'Pengembalian',
   },
   
   // Auth
@@ -141,6 +261,30 @@ const initialTranslations: Translations = {
     en: 'Don\'t have an account? Sign Up',
     id: 'Belum memiliki akun? Daftar',
   },
+  'auth.forgotPassword': {
+    en: 'Forgot Password?',
+    id: 'Lupa Kata Sandi?',
+  },
+  'auth.resetPassword': {
+    en: 'Reset Password',
+    id: 'Atur Ulang Kata Sandi',
+  },
+  'auth.verification': {
+    en: 'Verification',
+    id: 'Verifikasi',
+  },
+  'auth.accountCreated': {
+    en: 'Account Created',
+    id: 'Akun Dibuat',
+  },
+  'auth.loggedIn': {
+    en: 'Logged In',
+    id: 'Berhasil Masuk',
+  },
+  'auth.loggedOut': {
+    en: 'Logged Out',
+    id: 'Berhasil Keluar',
+  },
   
   // Products
   'product.price': {
@@ -166,6 +310,46 @@ const initialTranslations: Translations = {
   'product.outOfStock': {
     en: 'Out of Stock',
     id: 'Stok Habis',
+  },
+  'product.name': {
+    en: 'Product Name',
+    id: 'Nama Produk',
+  },
+  'product.image': {
+    en: 'Product Image',
+    id: 'Gambar Produk',
+  },
+  'product.selectImage': {
+    en: 'Select Image',
+    id: 'Pilih Gambar',
+  },
+  'product.flashSale': {
+    en: 'Flash Sale',
+    id: 'Flash Sale',
+  },
+  'product.new': {
+    en: 'New Product',
+    id: 'Produk Baru',
+  },
+  'product.list': {
+    en: 'List Product for Sale',
+    id: 'Daftarkan Produk Untuk Dijual',
+  },
+  'product.listing': {
+    en: 'Listing Product...',
+    id: 'Mendaftarkan Produk...',
+  },
+  'product.listed': {
+    en: 'Item listed successfully',
+    id: 'Barang terdaftar berhasil',
+  },
+  'product.listingFailed': {
+    en: 'Error listing item',
+    id: 'Gagal mendaftarkan barang',
+  },
+  'product.requiredFields': {
+    en: 'Required fields',
+    id: 'Kolom wajib diisi',
   },
   
   // Cart
@@ -193,6 +377,34 @@ const initialTranslations: Translations = {
     en: 'Quantity',
     id: 'Jumlah',
   },
+  'cart.continue': {
+    en: 'Continue Shopping',
+    id: 'Lanjutkan Belanja',
+  },
+  'cart.summary': {
+    en: 'Order Summary',
+    id: 'Ringkasan Pesanan',
+  },
+  'cart.shipping': {
+    en: 'Shipping',
+    id: 'Pengiriman',
+  },
+  'cart.tax': {
+    en: 'Tax',
+    id: 'Pajak',
+  },
+  'cart.discount': {
+    en: 'Discount',
+    id: 'Diskon',
+  },
+  'cart.subtotal': {
+    en: 'Subtotal',
+    id: 'Subtotal',
+  },
+  'cart.estimatedTotal': {
+    en: 'Estimated Total',
+    id: 'Total Estimasi',
+  },
   
   // Profile
   'profile.title': {
@@ -214,6 +426,42 @@ const initialTranslations: Translations = {
   'profile.language': {
     en: 'Language',
     id: 'Bahasa',
+  },
+  'profile.changePassword': {
+    en: 'Change Password',
+    id: 'Ubah Kata Sandi',
+  },
+  'profile.accountSettings': {
+    en: 'Account Settings',
+    id: 'Pengaturan Akun',
+  },
+  'profile.notifications': {
+    en: 'Notifications',
+    id: 'Notifikasi',
+  },
+  'profile.preferences': {
+    en: 'Preferences',
+    id: 'Preferensi',
+  },
+  'profile.address': {
+    en: 'Address',
+    id: 'Alamat',
+  },
+  'profile.paymentMethods': {
+    en: 'Payment Methods',
+    id: 'Metode Pembayaran',
+  },
+  'profile.changeEmail': {
+    en: 'Change Email',
+    id: 'Ubah Email',
+  },
+  'profile.deleteAccount': {
+    en: 'Delete Account',
+    id: 'Hapus Akun',
+  },
+  'profile.exportData': {
+    en: 'Export My Data',
+    id: 'Ekspor Data Saya',
   },
   
   // Admin
@@ -264,6 +512,222 @@ const initialTranslations: Translations = {
   'admin.editCategory': {
     en: 'Edit Category',
     id: 'Edit Kategori',
+  },
+  'admin.addShipping': {
+    en: 'Add Shipping Method',
+    id: 'Tambah Metode Pengiriman',
+  },
+  'admin.editShipping': {
+    en: 'Edit Shipping Method',
+    id: 'Edit Metode Pengiriman',
+  },
+  'admin.payments': {
+    en: 'Payment Methods',
+    id: 'Metode Pembayaran',
+  },
+  'admin.addPayment': {
+    en: 'Add Payment Method',
+    id: 'Tambah Metode Pembayaran',
+  },
+  'admin.editPayment': {
+    en: 'Edit Payment Method',
+    id: 'Edit Metode Pembayaran',
+  },
+  'admin.statistics': {
+    en: 'Statistics',
+    id: 'Statistik',
+  },
+  'admin.analytics': {
+    en: 'Analytics',
+    id: 'Analitik',
+  },
+  'admin.sales': {
+    en: 'Sales',
+    id: 'Penjualan',
+  },
+  'admin.revenue': {
+    en: 'Revenue',
+    id: 'Pendapatan',
+  },
+  'admin.customers': {
+    en: 'Customers',
+    id: 'Pelanggan',
+  },
+  'admin.content': {
+    en: 'Content',
+    id: 'Konten',
+  },
+  'admin.marketing': {
+    en: 'Marketing',
+    id: 'Pemasaran',
+  },
+  'admin.discounts': {
+    en: 'Discounts',
+    id: 'Diskon',
+  },
+  'admin.reports': {
+    en: 'Reports',
+    id: 'Laporan',
+  },
+  'admin.inventory': {
+    en: 'Inventory',
+    id: 'Inventaris',
+  },
+  
+  // Payment and Shipping
+  'payment.method': {
+    en: 'Payment Method',
+    id: 'Metode Pembayaran',
+  },
+  'payment.methods': {
+    en: 'Payment Methods',
+    id: 'Metode Pembayaran',
+  },
+  'payment.cardNumber': {
+    en: 'Card Number',
+    id: 'Nomor Kartu',
+  },
+  'payment.expiryDate': {
+    en: 'Expiry Date',
+    id: 'Tanggal Kadaluwarsa',
+  },
+  'payment.cvv': {
+    en: 'CVV',
+    id: 'CVV',
+  },
+  'payment.nameOnCard': {
+    en: 'Name on Card',
+    id: 'Nama pada Kartu',
+  },
+  'payment.billingAddress': {
+    en: 'Billing Address',
+    id: 'Alamat Penagihan',
+  },
+  'payment.crypto': {
+    en: 'Cryptocurrency',
+    id: 'Mata Uang Kripto',
+  },
+  'payment.wallet': {
+    en: 'Wallet Address',
+    id: 'Alamat Dompet',
+  },
+  'payment.bankTransfer': {
+    en: 'Bank Transfer',
+    id: 'Transfer Bank',
+  },
+  'payment.accountNumber': {
+    en: 'Account Number',
+    id: 'Nomor Rekening',
+  },
+  'payment.accountName': {
+    en: 'Account Name',
+    id: 'Nama Pemilik Rekening',
+  },
+  'payment.bankName': {
+    en: 'Bank Name',
+    id: 'Nama Bank',
+  },
+  'payment.payNow': {
+    en: 'Pay Now',
+    id: 'Bayar Sekarang',
+  },
+  'payment.paymentSummary': {
+    en: 'Payment Summary',
+    id: 'Ringkasan Pembayaran',
+  },
+  'payment.paymentSuccessful': {
+    en: 'Payment Successful',
+    id: 'Pembayaran Berhasil',
+  },
+  'payment.paymentFailed': {
+    en: 'Payment Failed',
+    id: 'Pembayaran Gagal',
+  },
+  'shipping.method': {
+    en: 'Shipping Method',
+    id: 'Metode Pengiriman',
+  },
+  'shipping.methods': {
+    en: 'Shipping Methods',
+    id: 'Metode Pengiriman',
+  },
+  'shipping.address': {
+    en: 'Shipping Address',
+    id: 'Alamat Pengiriman',
+  },
+  'shipping.cost': {
+    en: 'Shipping Cost',
+    id: 'Biaya Pengiriman',
+  },
+  'shipping.expedited': {
+    en: 'Expedited Shipping',
+    id: 'Pengiriman Ekspres',
+  },
+  'shipping.standard': {
+    en: 'Standard Shipping',
+    id: 'Pengiriman Standar',
+  },
+  'shipping.free': {
+    en: 'Free Shipping',
+    id: 'Pengiriman Gratis',
+  },
+  'shipping.estimatedDelivery': {
+    en: 'Estimated Delivery',
+    id: 'Perkiraan Pengiriman',
+  },
+  'shipping.tracking': {
+    en: 'Tracking Number',
+    id: 'Nomor Pelacakan',
+  },
+  'shipping.track': {
+    en: 'Track Package',
+    id: 'Lacak Paket',
+  },
+  'shipping.days': {
+    en: 'days',
+    id: 'hari',
+  },
+  
+  // Chat
+  'chat.title': {
+    en: 'Chat',
+    id: 'Obrolan',
+  },
+  'chat.message': {
+    en: 'Message',
+    id: 'Pesan',
+  },
+  'chat.send': {
+    en: 'Send',
+    id: 'Kirim',
+  },
+  'chat.typing': {
+    en: 'Typing...',
+    id: 'Mengetik...',
+  },
+  'chat.placeholder': {
+    en: 'Type a message...',
+    id: 'Ketik pesan...',
+  },
+  'chat.assistant': {
+    en: 'Assistant',
+    id: 'Asisten',
+  },
+  'chat.loadMore': {
+    en: 'Load more messages',
+    id: 'Muat lebih banyak pesan',
+  },
+  'chat.welcome': {
+    en: 'Hello! How can I help you today?',
+    id: 'Halo! Apa yang bisa saya bantu hari ini?',
+  },
+  'chat.networkError': {
+    en: 'Network error. Please try again.',
+    id: 'Kesalahan jaringan. Silakan coba lagi.',
+  },
+  'chat.errorMessage': {
+    en: 'Sorry, there was an error. Please try again.',
+    id: 'Maaf, terjadi kesalahan. Silakan coba lagi.',
   },
 };
 

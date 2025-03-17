@@ -21,7 +21,7 @@ import Admin from "./pages/Admin";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
-
+import { Chatbot } from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -88,6 +88,7 @@ const App = () => (
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <Chatbot />
             </BrowserRouter>
           </TooltipProvider>
         </CartProvider>

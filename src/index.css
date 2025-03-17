@@ -93,4 +93,35 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* This makes sure content doesn't hide under the fixed header */
+  main {
+    @apply pt-20;
+  }
 }
+
+/* Chat component styles */
+.chat-container {
+  @apply h-[500px] flex flex-col rounded-lg border border-border bg-card;
+}
+
+.chat-messages {
+  @apply flex-1 p-4 overflow-y-auto space-y-4;
+}
+
+.chat-message {
+  @apply p-3 rounded-lg max-w-[80%];
+}
+
+.chat-message.user {
+  @apply bg-primary text-primary-foreground ml-auto;
+}
+
+.chat-message.bot {
+  @apply bg-muted mr-auto;
+}
+
+.chat-input-container {
+  @apply p-4 border-t border-border;
+}
+
