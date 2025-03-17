@@ -33,8 +33,8 @@ export function Chatbot() {
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       const welcomeMessage = language === 'id'
-        ? 'Halo! Apa yang bisa saya bantu hari ini?'
-        : 'Hello! How can I help you today?';
+        ? 'Halo! Saya adalah asisten AI Pasar Pahing. Apa yang bisa saya bantu hari ini?'
+        : 'Hello! I am the Pasar Pahing AI assistant. How can I help you today?';
         
       setMessages([
         {
@@ -125,7 +125,7 @@ export function Chatbot() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg flex items-center justify-center"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-primary hover:bg-primary/90"
         variant="default"
       >
         <MessageSquare size={24} />
@@ -138,7 +138,7 @@ export function Chatbot() {
       {isMinimized ? (
         <Button
           onClick={() => setIsMinimized(false)}
-          className="h-14 w-14 rounded-full shadow-lg flex items-center justify-center"
+          className="h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-primary hover:bg-primary/90"
           variant="default"
         >
           <MessageSquare size={24} />
@@ -150,7 +150,7 @@ export function Chatbot() {
               <div className="flex items-center space-x-2">
                 <Bot className="h-6 w-6" />
                 <CardTitle className="text-lg font-medium">
-                  {language === 'id' ? 'Asisten AI' : 'AI Assistant'}
+                  {language === 'id' ? 'Asisten Pasar Pahing' : 'Pasar Pahing Assistant'}
                 </CardTitle>
               </div>
               <div className="flex gap-2">
@@ -177,7 +177,7 @@ export function Chatbot() {
             <div className="h-[350px] overflow-y-auto p-4 bg-muted/30">
               <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-5" 
                 style={{ 
-                  backgroundImage: `url(/scarf2.jpg)`,
+                  backgroundImage: `url(/batik2.jpg)`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
                 }}
@@ -201,7 +201,7 @@ export function Chatbot() {
                         <div className="flex items-center mb-1">
                           <Bot size={14} className="mr-1 text-primary" />
                           <span className="text-xs font-medium text-primary">
-                            {language === 'id' ? 'Asisten AI' : 'AI Assistant'}
+                            {language === 'id' ? 'Asisten Pasar Pahing' : 'Pasar Pahing Assistant'}
                           </span>
                         </div>
                       )}
