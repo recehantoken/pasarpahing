@@ -108,7 +108,7 @@ export const ProductForm = () => {
         description,
         price: numericPrice,
         category_id: categoryId,
-        image_url: "/placeholder.svg", // Use a public image
+        image_url: imageUrl || "/placeholder.svg", // Use a public image or the selected one
         created_by: user.id,
         is_flash_sale: isFlashSale,
         is_new: isNewProduct,
@@ -123,10 +123,12 @@ export const ProductForm = () => {
           description,
           price: numericPrice,
           category_id: categoryId,
-          image_url: "/placeholder.svg", // Use a public image
+          image_url: imageUrl || "/placeholder.svg", // Use the selected image or default
           created_by: user.id,
           is_flash_sale: isFlashSale,
-          is_new: isNewProduct
+          is_new: isNewProduct,
+          payment_method_id: paymentMethodId,
+          shipping_method_id: shippingMethodId
         })
         .select()
         .single();
@@ -203,6 +205,12 @@ export const ProductForm = () => {
         categoryId={categoryId}
         setCategoryId={setCategoryId}
         isLoading={isLoading}
+      />
+      
+      <ImageUpload 
+        imageUrl={imageUrl}
+        isLoading={isLoading}
+        onImageSelect={handleImageUpload}
       />
       
       <div className="space-y-2">

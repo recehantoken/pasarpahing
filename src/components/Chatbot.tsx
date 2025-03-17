@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { MessageSquare, Send, X, MinusCircle } from 'lucide-react';
+import { MessageSquare, Send, X, MinusCircle, Bot } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -125,7 +125,7 @@ export function Chatbot() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg flex items-center justify-center"
         variant="default"
       >
         <MessageSquare size={24} />
@@ -134,27 +134,30 @@ export function Chatbot() {
   }
 
   return (
-    <div className={`fixed ${isMinimized ? 'bottom-6 right-6' : 'bottom-[10%] right-[5%]'} z-50 transition-all duration-300`}>
+    <div className={`fixed ${isMinimized ? 'bottom-6 right-6' : 'bottom-[5%] right-[5%]'} z-50 transition-all duration-300`}>
       {isMinimized ? (
         <Button
           onClick={() => setIsMinimized(false)}
-          className="h-14 w-14 rounded-full shadow-lg"
+          className="h-14 w-14 rounded-full shadow-lg flex items-center justify-center"
           variant="default"
         >
           <MessageSquare size={24} />
         </Button>
       ) : (
-        <Card className="w-[350px] md:w-[400px] shadow-xl">
+        <Card className="w-[350px] md:w-[400px] shadow-xl border-primary/20">
           <CardHeader className="bg-primary text-primary-foreground py-3 rounded-t-lg">
             <div className="flex justify-between items-center">
-              <CardTitle className="text-lg font-medium">
-                {language === 'id' ? 'Asisten' : 'Assistant'}
-              </CardTitle>
+              <div className="flex items-center space-x-2">
+                <Bot className="h-6 w-6" />
+                <CardTitle className="text-lg font-medium">
+                  {language === 'id' ? 'Asisten AI' : 'AI Assistant'}
+                </CardTitle>
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-primary-foreground h-8 w-8"
+                  className="text-primary-foreground h-8 w-8 hover:bg-primary-foreground/10"
                   onClick={() => setIsMinimized(true)}
                 >
                   <MinusCircle size={18} />
@@ -162,7 +165,7 @@ export function Chatbot() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-primary-foreground h-8 w-8"
+                  className="text-primary-foreground h-8 w-8 hover:bg-primary-foreground/10"
                   onClick={() => setIsOpen(false)}
                 >
                   <X size={18} />
@@ -170,30 +173,47 @@ export function Chatbot() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-[350px] overflow-y-auto p-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`mb-4 ${
-                    message.role === 'user' ? 'text-right' : 'text-left'
-                  }`}
-                >
+          <CardContent className="p-0 relative">
+            <div className="h-[350px] overflow-y-auto p-4 bg-muted/30">
+              <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-5" 
+                style={{ 
+                  backgroundImage: `url(/scarf2.jpg)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              />
+              <div className="relative z-10">
+                {messages.map((message) => (
                   <div
-                    className={`inline-block max-w-[80%] px-4 py-2 rounded-lg ${
-                      message.role === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted'
+                    key={message.id}
+                    className={`mb-4 ${
+                      message.role === 'user' ? 'text-right' : 'text-left'
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <div
+                      className={`inline-block max-w-[80%] px-4 py-2 rounded-lg shadow-sm ${
+                        message.role === 'user'
+                          ? 'bg-primary text-primary-foreground rounded-tr-none'
+                          : 'bg-card border border-border rounded-tl-none'
+                      }`}
+                    >
+                      {message.role === 'assistant' && (
+                        <div className="flex items-center mb-1">
+                          <Bot size={14} className="mr-1 text-primary" />
+                          <span className="text-xs font-medium text-primary">
+                            {language === 'id' ? 'Asisten AI' : 'AI Assistant'}
+                          </span>
+                        </div>
+                      )}
+                      <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
               <div ref={messagesEndRef} />
             </div>
           </CardContent>
-          <CardFooter className="p-3 pt-0">
+          <CardFooter className="p-3 border-t">
             <div className="flex w-full gap-2">
               <Input
                 value={inputMessage}
@@ -208,6 +228,7 @@ export function Chatbot() {
                 size="icon"
                 disabled={isLoading || !inputMessage.trim()}
                 onClick={handleSendMessage}
+                className="bg-primary hover:bg-primary/90"
               >
                 <Send size={18} />
               </Button>

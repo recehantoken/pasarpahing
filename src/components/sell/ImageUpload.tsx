@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Image } from "lucide-react";
 import { toast } from "sonner";
@@ -34,10 +33,10 @@ export const ImageUpload = ({
 
   useEffect(() => {
     // Initialize with the first image if none is set
-    if (!imageUrl) {
+    if (!imageUrl && !selectedImage) {
       onImageSelect(publicImages[0].path);
     }
-  }, [imageUrl, onImageSelect]);
+  }, [imageUrl, onImageSelect, selectedImage]);
 
   const handleImageChange = (value: string) => {
     setSelectedImage(value);
@@ -51,7 +50,7 @@ export const ImageUpload = ({
 
   return (
     <div className="space-y-4">
-      <Label htmlFor="image">{language === 'id' ? 'Gambar Produk' : 'Product Image'}</Label>
+      <Label htmlFor="image">{language === 'id' ? 'Gambar Produk*' : 'Product Image*'}</Label>
       
       <Select 
         value={selectedImage} 

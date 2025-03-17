@@ -14,7 +14,9 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
 // Helper function to ensure the product-images bucket exists
 export const ensureStorageBucket = async () => {
   try {
-    // Check if product-images bucket exists
+    // Due to RLS issues, we'll just check if buckets exist but won't create them
+    // This functionality should be handled by server-side migrations instead
+    
     const { data: buckets, error: listError } = await supabase.storage.listBuckets();
     
     if (listError) {
@@ -22,37 +24,15 @@ export const ensureStorageBucket = async () => {
       return false;
     }
     
-    const bucketExists = buckets?.some(b => b.name === 'product-images');
+    const productBucketExists = buckets?.some(b => b.name === 'product-images');
+    const avatarBucketExists = buckets?.some(b => b.name === 'avatars');
     
-    if (!bucketExists) {
-      console.log("Creating product-images bucket");
-      const { error: createError } = await supabase.storage.createBucket('product-images', {
-        public: true,
-        fileSizeLimit: 10485760, // 10MB
-        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml']
-      });
-      
-      if (createError) {
-        console.error("Error creating product-images bucket:", createError);
-        return false;
-      }
+    if (!productBucketExists) {
+      console.log("'product-images' bucket doesn't exist. Products will use public images only.");
     }
     
-    // Check for avatars bucket
-    const avatarsBucketExists = buckets?.some(b => b.name === 'avatars');
-    
-    if (!avatarsBucketExists) {
-      console.log("Creating avatars bucket");
-      const { error: createAvatarsError } = await supabase.storage.createBucket('avatars', {
-        public: true,
-        fileSizeLimit: 5242880, // 5MB
-        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml']
-      });
-      
-      if (createAvatarsError) {
-        console.error("Error creating avatars bucket:", createAvatarsError);
-        return false;
-      }
+    if (!avatarBucketExists) {
+      console.log("'avatars' bucket doesn't exist. Profiles will use default avatars only.");
     }
     
     return true;
