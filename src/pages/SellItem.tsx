@@ -1,11 +1,10 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Header } from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
-import { ProductForm } from "@/components/sell/ProductForm";
 import { Footer } from "@/components/layout/Footer";
 import { Chatbot } from "@/components/Chatbot";
+import { ProductForm } from "@/components/sell/ProductForm";
 
 const SellItem = () => {
   const { user } = useAuth();
