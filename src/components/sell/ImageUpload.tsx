@@ -1,85 +1,97 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Image } from "lucide-react";
 import { toast } from "sonner";
 
 interface ImageUploadProps {
   imageUrl: string;
   isLoading: boolean;
-  onImageSelect: (url: string) => void;
+  onImageSelect: (file: File) => void; // Changed to accept File instead of URL
 }
-
-// Predefined product images from public folder
-const publicImages = [
-  { id: "placeholder", path: "/placeholder.svg", name: "Default" },
-  { id: "kebaya", path: "/kebaya.jpg", name: "Kebaya" },
-  { id: "scarf", path: "/scarf.jpg", name: "Scarf" },
-  { id: "scarf2", path: "/scarf2.jpg", name: "Scarf 2" },
-  { id: "batik", path: "/batikfloral.jpg", name: "Batik Floral" },
-  { id: "batiktulis", path: "/batiktulis.jpg", name: "Batik Tulis" },
-  { id: "batik2", path: "/batik2.jpg", name: "Batik 2" },
-];
 
 export const ImageUpload = ({ 
   imageUrl, 
   isLoading, 
   onImageSelect
 }: ImageUploadProps) => {
-  const [selectedImage, setSelectedImage] = useState(imageUrl || publicImages[0].path);
   const { language } = useLanguage();
+  const [previewUrl, setPreviewUrl] = useState<string>(imageUrl);
 
-  useEffect(() => {
-    // Initialize with the first image if none is set
-    if (!imageUrl && !selectedImage) {
-      onImageSelect(publicImages[0].path);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (500KB = 500 * 1024 bytes)
+    if (file.size > 500 * 1024) {
+      toast.error(
+        language === 'id' ? "Ukuran gambar terlalu besar" : "Image size too large",
+        {
+          description: language === 'id' 
+            ? "Ukuran maksimum adalah 500KB" 
+            : "Maximum size is 500KB"
+        }
+      );
+      return;
     }
-  }, [imageUrl, onImageSelect, selectedImage]);
 
-  const handleImageChange = (value: string) => {
-    setSelectedImage(value);
-    onImageSelect(value);
+    // Generate preview URL for immediate feedback
+    const preview = URL.createObjectURL(file);
+    setPreviewUrl(preview);
     
+    // Pass the file to parent component
+    onImageSelect(file);
+
     toast.success(
       language === 'id' ? "Gambar dipilih" : "Image selected",
-      { description: language === 'id' ? "Gambar produk telah diperbarui" : "Product image has been updated" }
+      {
+        description: language === 'id' 
+          ? "Gambar produk telah diperbarui" 
+          : "Product image has been updated"
+      }
     );
+  };
+
+  // Clean up preview URL when component unmounts or new file is selected
+  const handleCleanup = () => {
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
   };
 
   return (
     <div className="space-y-4">
-      <Label htmlFor="image">{language === 'id' ? 'Gambar Produk*' : 'Product Image*'}</Label>
+      <Label htmlFor="image">
+        {language === 'id' ? 'Gambar Produk* (maks 500KB)' : 'Product Image* (max 500KB)'}
+      </Label>
       
-      <Select 
-        value={selectedImage} 
-        onValueChange={handleImageChange}
+      <Input
+        id="image"
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        onClick={handleCleanup} // Clean up previous blob URL when clicking to select new file
         disabled={isLoading}
-      >
-        <SelectTrigger id="image" className="w-full">
-          <SelectValue placeholder={language === 'id' ? "Pilih gambar" : "Select an image"} />
-        </SelectTrigger>
-        <SelectContent>
-          {publicImages.map((img) => (
-            <SelectItem key={img.id} value={img.path}>
-              <div className="flex items-center gap-2">
-                <Image className="h-4 w-4" />
-                <span>{img.name}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        className="w-full"
+      />
       
-      {selectedImage && (
+      {(previewUrl || imageUrl) && (
         <div className="mt-4">
-          <p className="text-sm mb-2">{language === 'id' ? 'Pratinjau:' : 'Preview:'}</p>
+          <p className="text-sm mb-2">
+            {language === 'id' ? 'Pratinjau:' : 'Preview:'}
+          </p>
           <div className="border border-border rounded p-2 bg-card">
             <img 
-              src={selectedImage} 
+              src={previewUrl || imageUrl} 
               alt="Product preview" 
               className="max-h-40 rounded mx-auto"
+              onLoad={() => {
+                // Clean up blob URL after image loads if it's not the current Supabase URL
+                if (previewUrl && previewUrl.startsWith('blob:') && imageUrl !== previewUrl) {
+                  URL.revokeObjectURL(previewUrl);
+                }
+              }}
             />
           </div>
         </div>

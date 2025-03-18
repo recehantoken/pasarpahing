@@ -1,39 +1,37 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PriceSectionProps {
-  price: string;
-  setPrice: (price: string) => void;
+  price: string; // This will now be the formatted Rupiah string
+  setPrice: (price: string) => void; // This expects raw numeric string
   isLoading: boolean;
 }
 
 export const PriceSection = ({ price, setPrice, isLoading }: PriceSectionProps) => {
   const { language } = useLanguage();
 
+  // Handle input change to maintain formatting
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+    setPrice(value); // Send raw numeric value to parent
+  };
+
   return (
     <div className="space-y-2">
-      <Label htmlFor="price">{language === 'id' ? 'Harga (USD)*' : 'Price (USD)*'}</Label>
+      <Label htmlFor="price">
+        {language === 'id' ? 'Harga (IDR)*' : 'Price (IDR)*'}
+      </Label>
       <Input
         id="price"
-        type="number"
-        step="0.01"
-        min="0.01"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder="0.00"
+        type="text" // Changed from number to text to show Rp prefix
+        value={price} // This is the formatted value from ProductForm
+        onChange={handleChange}
+        placeholder="Rp 0"
         required
         disabled={isLoading}
+        className="font-mono" // Optional: makes numbers align nicely
       />
-      
-      {price && (
-        <div className="mt-2">
-          <Label>{language === 'id' ? 'Harga dalam IDR:' : 'Price in IDR:'}</Label>
-          <CurrencyDisplay amount={parseFloat(price) || 0} className="text-sm mt-1" />
-        </div>
-      )}
     </div>
   );
 };

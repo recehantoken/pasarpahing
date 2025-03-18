@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -39,10 +38,8 @@ export const ProductForm = () => {
       try {
         setIsLoading(true);
         
-        // Ensure storage buckets exist
         await ensureStorageBucket();
         
-        // Fetch payment methods
         const { data: paymentData, error: paymentError } = await supabase
           .from("payment_methods")
           .select("*")
@@ -50,7 +47,6 @@ export const ProductForm = () => {
           
         if (paymentError) throw paymentError;
         
-        // Update payment methods state
         if (paymentData && paymentData.length > 0) {
           setPaymentMethods(paymentData);
           setPaymentMethodId(paymentData[0].id);
@@ -58,7 +54,6 @@ export const ProductForm = () => {
           setPaymentMethods([]);
           setPaymentMethodId("");
           
-          // If no payment methods exist and user is admin, create a default one
           if (user?.email === "master@recehan.gold") {
             const { data: newMethod, error: createError } = await supabase
               .from("payment_methods")
@@ -75,12 +70,10 @@ export const ProductForm = () => {
             if (!createError && newMethod) {
               setPaymentMethods([newMethod]);
               setPaymentMethodId(newMethod.id);
-              console.log("Created default payment method:", newMethod);
             }
           }
         }
         
-        // Fetch shipping methods
         const { data: shippingData, error: shippingError } = await supabase
           .from("shipping_methods")
           .select("*")
@@ -88,7 +81,6 @@ export const ProductForm = () => {
           
         if (shippingError) throw shippingError;
         
-        // Update shipping methods state
         if (shippingData && shippingData.length > 0) {
           setShippingMethods(shippingData);
           setShippingMethodId(shippingData[0].id);
@@ -109,7 +101,6 @@ export const ProductForm = () => {
     fetchMethods();
   }, [language, user?.email]);
 
-  // Effect to update payment methods when they change (e.g., when a new one is created)
   const refreshPaymentMethods = async () => {
     try {
       const { data, error } = await supabase
@@ -121,7 +112,6 @@ export const ProductForm = () => {
       
       if (data && data.length > 0) {
         setPaymentMethods(data);
-        // Only set the ID if it's not already set
         if (!paymentMethodId) {
           setPaymentMethodId(data[0].id);
         }
@@ -131,9 +121,55 @@ export const ProductForm = () => {
     }
   };
 
-  const handleImageUpload = (publicUrl: string) => {
-    console.log("Image uploaded, URL:", publicUrl);
-    setImageUrl(publicUrl);
+  const handleImageUpload = async (file: File) => {
+    try {
+      // Check file size (500kb = 500 * 1024 bytes)
+      if (file.size > 500 * 1024) {
+        throw new Error(language === 'id' 
+          ? "Ukuran gambar maksimum 500KB" 
+          : "Maximum image size is 500KB");
+      }
+
+      // Generate unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+      // Upload to Supabase storage
+      const { data, error } = await supabase.storage
+        .from('products') // Make sure this bucket exists and is public
+        .upload(`public/${fileName}`, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: publicUrlData } = supabase.storage
+        .from('products')
+        .getPublicUrl(`public/${fileName}`);
+
+      const publicUrl = publicUrlData.publicUrl;
+      setImageUrl(publicUrl);
+      toast.success(language === 'id' ? "Gambar berhasil diunggah" : "Image uploaded successfully");
+    } catch (error: any) {
+      console.error("Error uploading image:", error);
+      toast.error(language === 'id' ? "Gagal mengunggah gambar" : "Failed to upload image", {
+        description: error.message
+      });
+    }
+  };
+
+  // Format price to Rupiah
+  const formatRupiah = (value: string) => {
+    const number = value.replace(/[^0-9]/g, '');
+    return number ? `Rp ${Number(number).toLocaleString('id-ID')}` : '';
+  };
+
+  // Handle price input change
+  const handlePriceChange = (value: string) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    setPrice(numericValue);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -162,19 +198,6 @@ export const ProductForm = () => {
           : "Price must be a positive number");
       }
       
-      console.log("Submitting product:", {
-        name,
-        description,
-        price: numericPrice,
-        category_id: categoryId,
-        image_url: imageUrl || "/placeholder.svg", // Use a public image or the selected one
-        created_by: user.id,
-        is_flash_sale: isFlashSale,
-        is_new: isNewProduct,
-        payment_method_id: paymentMethodId,
-        shipping_method_id: shippingMethodId
-      });
-      
       const { data, error } = await supabase
         .from("products")
         .insert({
@@ -182,7 +205,7 @@ export const ProductForm = () => {
           description,
           price: numericPrice,
           category_id: categoryId,
-          image_url: imageUrl || "/placeholder.svg", // Use the selected image or default
+          image_url: imageUrl || "/placeholder.svg",
           created_by: user.id,
           is_flash_sale: isFlashSale,
           is_new: isNewProduct,
@@ -192,10 +215,7 @@ export const ProductForm = () => {
         .select()
         .single();
         
-      if (error) {
-        console.error("Error details:", error);
-        throw error;
-      }
+      if (error) throw error;
       
       toast.success(language === 'id' ? "Barang terdaftar berhasil" : "Item listed successfully", {
         description: language === 'id' ? "Barang Anda sekarang tersedia untuk dijual" : "Your item is now available for sale",
@@ -223,8 +243,8 @@ export const ProductForm = () => {
       />
       
       <PriceSection 
-        price={price}
-        setPrice={setPrice}
+        price={formatRupiah(price)}
+        setPrice={handlePriceChange}
         isLoading={isLoading}
       />
       
