@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import ReCAPTCHA from "react-google-recaptcha"; // Add this import
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,7 +21,7 @@ const Auth = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [captchaVerified, setCaptchaVerified] = useState(false); // Add captcha state
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const { signIn, signUp, signInWithMetaMask, session } = useAuth();
   const { t } = useLanguage();
   const { toast } = useToast();
@@ -119,12 +119,11 @@ const Auth = () => {
               {isSignUp ? t('auth.createAccount') : t('auth.signIn')}
             </CardTitle>
             <CardDescription>
-              {isSignUp ? t('common.signup') : t('common.login')}
+              {isSignUp ? t('common.signup') : ""} {/* Removed t('common.login') */}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
-              {/* Social Logins First */}
               <div className="grid grid-cols-2 gap-3">
                 <Button 
                   type="button" 
@@ -149,7 +148,6 @@ const Auth = () => {
                 </Button>
               </div>
 
-              {/* Divider */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-muted"></span>
@@ -159,7 +157,6 @@ const Auth = () => {
                 </div>
               </div>
 
-              {/* Email Form */}
               <div className="space-y-2">
                 <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input
@@ -211,10 +208,9 @@ const Auth = () => {
                 </>
               )}
               
-              {/* reCAPTCHA */}
               <div className="flex justify-center">
                 <ReCAPTCHA
-                  sitekey="6LeepfgqAAAAACl2LwBYiWy-a4xbXv60-qUy5cnh" // Replace with your actual site key
+                  sitekey="YOUR_RECAPTCHA_SITE_KEY"
                   onChange={onCaptchaChange}
                 />
               </div>
