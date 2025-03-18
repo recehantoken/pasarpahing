@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
@@ -13,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ReCAPTCHA from "react-google-recaptcha"; // Add this import
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,6 +21,7 @@ const Auth = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false); // Add captcha state
   const { signIn, signUp, signInWithMetaMask, session } = useAuth();
   const { t } = useLanguage();
   const { toast } = useToast();
@@ -31,8 +32,16 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!captchaVerified) {
+      toast({
+        variant: "destructive",
+        title: "Verification Required",
+        description: "Please complete the reCAPTCHA verification",
+      });
+      return;
+    }
     
+    setIsLoading(true);
     try {
       if (isSignUp) {
         await signUp(email, password, { first_name: firstName, last_name: lastName });
@@ -60,9 +69,7 @@ const Auth = () => {
         }
       });
       
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
     } catch (error: any) {
       console.error("Google sign in error:", error);
       toast({
@@ -90,6 +97,10 @@ const Auth = () => {
     }
   };
 
+  const onCaptchaChange = (value: string | null) => {
+    setCaptchaVerified(!!value);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -108,13 +119,47 @@ const Auth = () => {
               {isSignUp ? t('auth.createAccount') : t('auth.signIn')}
             </CardTitle>
             <CardDescription>
-              {isSignUp
-                ? t('common.signup')
-                : t('common.login')}
+              {isSignUp ? t('common.signup') : t('common.login')}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
+              {/* Social Logins First */}
+              <div className="grid grid-cols-2 gap-3">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleGoogleSignIn}
+                  disabled={isLoading}
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <FcGoogle className="h-5 w-5" />
+                  Google
+                </Button>
+                
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleMetaMaskSignIn}
+                  disabled={isLoading}
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <FaEthereum className="h-5 w-5 text-orange-500" />
+                  MetaMask
+                </Button>
+              </div>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-muted"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">{t('auth.orEmail')}</span>
+                </div>
+              </div>
+
+              {/* Email Form */}
               <div className="space-y-2">
                 <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input
@@ -166,41 +211,16 @@ const Auth = () => {
                 </>
               )}
               
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-muted"></span>
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">{t('auth.continueWith')}</span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={handleGoogleSignIn}
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2"
-                >
-                  <FcGoogle className="h-5 w-5" />
-                  Google
-                </Button>
-                
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={handleMetaMaskSignIn}
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2"
-                >
-                  <FaEthereum className="h-5 w-5 text-orange-500" />
-                  MetaMask
-                </Button>
+              {/* reCAPTCHA */}
+              <div className="flex justify-center">
+                <ReCAPTCHA
+                  sitekey="6LeepfgqAAAAACl2LwBYiWy-a4xbXv60-qUy5cnh" // Replace with your actual site key
+                  onChange={onCaptchaChange}
+                />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isLoading || !captchaVerified}>
                 {isLoading ? t('common.loading') : isSignUp ? t('auth.signup') : t('auth.login')}
               </Button>
               <Button
