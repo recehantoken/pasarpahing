@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -45,12 +44,15 @@ export const AdminProducts = () => {
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: 0,
+    currency: 'USD', // Added currency field
     description: '',
     image_url: '',
     category_id: '',
     is_new: false,
     is_flash_sale: false
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
 
   const { data: products, isLoading: productsLoading, refetch: refetchProducts } = useQuery({
     queryKey: ['admin-products'],
@@ -83,6 +85,36 @@ export const AdminProducts = () => {
     }
   });
 
+  const handleImageUpload = async (file: File): Promise<string> => {
+    if (file.size > 500 * 1024) {
+      throw new Error("Image size must be less than 500KB");
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) throw error;
+
+    const { data: publicData } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(fileName);
+
+    return publicData.publicUrl;
+  };
+
+  const formatPrice = (price: number, currency: string) => {
+    return currency === 'USD' 
+      ? `$${price.toFixed(2)}`
+      : `Rp ${price.toLocaleString('id-ID')}`;
+  };
+
   const handleAddProduct = async () => {
     try {
       if (!newProduct.name || !newProduct.price) {
@@ -90,12 +122,14 @@ export const AdminProducts = () => {
         return;
       }
       
+      let imageUrl = newProduct.image_url;
+      if (imageFile) {
+        imageUrl = await handleImageUpload(imageFile);
+      }
+
       if (!newProduct.category_id && categories && categories.length > 0) {
-        // Set the first category as default if none selected
         setNewProduct({...newProduct, category_id: categories[0].id});
       }
-      
-      console.log("Adding product with data:", newProduct);
       
       const { data, error } = await supabase
         .from('products')
@@ -103,8 +137,9 @@ export const AdminProducts = () => {
           {
             name: newProduct.name,
             price: newProduct.price,
+            currency: newProduct.currency, // Added currency to insert
             description: newProduct.description || null,
-            image_url: newProduct.image_url || null,
+            image_url: imageUrl || null,
             category_id: newProduct.category_id || null,
             is_new: newProduct.is_new,
             is_flash_sale: newProduct.is_flash_sale,
@@ -113,22 +148,21 @@ export const AdminProducts = () => {
         ])
         .select();
 
-      if (error) {
-        console.error("Error details:", error);
-        throw error;
-      }
+      if (error) throw error;
       
       toast.success('Product added successfully');
       setIsAddDialogOpen(false);
       setNewProduct({
         name: '',
         price: 0,
+        currency: 'USD',
         description: '',
         image_url: '',
         category_id: '',
         is_new: false,
         is_flash_sale: false
       });
+      setImageFile(null);
       refetchProducts();
     } catch (error: any) {
       console.error('Error adding product:', error);
@@ -140,13 +174,19 @@ export const AdminProducts = () => {
     if (!selectedProduct) return;
     
     try {
+      let imageUrl = selectedProduct.image_url;
+      if (editImageFile) {
+        imageUrl = await handleImageUpload(editImageFile);
+      }
+
       const { error } = await supabase
         .from('products')
         .update({
           name: selectedProduct.name,
           price: selectedProduct.price,
+          currency: selectedProduct.currency || 'USD', // Added currency to update
           description: selectedProduct.description,
-          image_url: selectedProduct.image_url,
+          image_url: imageUrl,
           category_id: selectedProduct.category_id,
           is_new: selectedProduct.is_new,
           is_flash_sale: selectedProduct.is_flash_sale
@@ -158,6 +198,7 @@ export const AdminProducts = () => {
       toast.success('Product updated successfully');
       setIsEditDialogOpen(false);
       setSelectedProduct(null);
+      setEditImageFile(null);
       refetchProducts();
     } catch (error: any) {
       console.error('Error updating product:', error);
@@ -225,7 +266,7 @@ export const AdminProducts = () => {
                     )}
                   </TableCell>
                   <TableCell>{product.name}</TableCell>
-                  <TableCell>${product.price}</TableCell>
+                  <TableCell>{formatPrice(product.price, product.currency || 'USD')}</TableCell>
                   <TableCell>{product.categories?.name}</TableCell>
                   <TableCell>
                     {product.is_new && <span className="mr-2 text-blue-500">New</span>}
@@ -283,13 +324,27 @@ export const AdminProducts = () => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="price" className="text-right">Price*</Label>
-              <Input 
-                id="price" 
-                type="number"
-                value={newProduct.price} 
-                onChange={(e) => setNewProduct({...newProduct, price: parseFloat(e.target.value)})}
-                className="col-span-3" 
-              />
+              <div className="col-span-3 flex gap-2">
+                <Input 
+                  id="price" 
+                  type="number"
+                  value={newProduct.price} 
+                  onChange={(e) => setNewProduct({...newProduct, price: parseFloat(e.target.value)})}
+                  className="flex-grow" 
+                />
+                <Select
+                  value={newProduct.currency}
+                  onValueChange={(value) => setNewProduct({...newProduct, currency: value})}
+                >
+                  <SelectTrigger className="w-24">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD ($)</SelectItem>
+                    <SelectItem value="IDR">IDR (Rp)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description" className="text-right">Description</Label>
@@ -301,13 +356,17 @@ export const AdminProducts = () => {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="image_url" className="text-right">Image URL</Label>
+              <Label htmlFor="image" className="text-right">Image</Label>
               <Input 
-                id="image_url" 
-                value={newProduct.image_url} 
-                onChange={(e) => setNewProduct({...newProduct, image_url: e.target.value})}
+                id="image" 
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
                 className="col-span-3" 
               />
+              <p className="col-span-4 text-sm text-gray-500 text-center">
+                Max file size: 500KB
+              </p>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="category" className="text-right">Category</Label>
@@ -382,13 +441,27 @@ export const AdminProducts = () => {
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-price" className="text-right">Price</Label>
-                <Input 
-                  id="edit-price" 
-                  type="number"
-                  value={selectedProduct.price} 
-                  onChange={(e) => setSelectedProduct({...selectedProduct, price: parseFloat(e.target.value)})}
-                  className="col-span-3" 
-                />
+                <div className="col-span-3 flex gap-2">
+                  <Input 
+                    id="edit-price" 
+                    type="number"
+                    value={selectedProduct.price} 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, price: parseFloat(e.target.value)})}
+                    className="flex-grow" 
+                  />
+                  <Select
+                    value={selectedProduct.currency || 'USD'}
+                    onValueChange={(value) => setSelectedProduct({...selectedProduct, currency: value})}
+                  >
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USD">USD ($)</SelectItem>
+                      <SelectItem value="IDR">IDR (Rp)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-description" className="text-right">Description</Label>
@@ -400,13 +473,26 @@ export const AdminProducts = () => {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-image_url" className="text-right">Image URL</Label>
+                <Label htmlFor="edit-image" className="text-right">Image</Label>
                 <Input 
-                  id="edit-image_url" 
-                  value={selectedProduct.image_url || ''} 
-                  onChange={(e) => setSelectedProduct({...selectedProduct, image_url: e.target.value})}
+                  id="edit-image" 
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setEditImageFile(e.target.files?.[0] || null)}
                   className="col-span-3" 
                 />
+                {selectedProduct.image_url && (
+                  <div className="col-span-4 flex justify-center">
+                    <img 
+                      src={selectedProduct.image_url} 
+                      alt="Current product" 
+                      className="max-h-32 object-contain"
+                    />
+                  </div>
+                )}
+                <p className="col-span-4 text-sm text-gray-500 text-center">
+                  Max file size: 500KB
+                </p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="edit-category" className="text-right">Category</Label>
@@ -472,7 +558,7 @@ export const AdminProducts = () => {
           {selectedProduct && (
             <div className="py-4">
               <p><strong>Product:</strong> {selectedProduct.name}</p>
-              <p><strong>Price:</strong> ${selectedProduct.price}</p>
+              <p><strong>Price:</strong> {formatPrice(selectedProduct.price, selectedProduct.currency || 'USD')}</p>
             </div>
           )}
           <DialogFooter>
