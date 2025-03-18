@@ -1,37 +1,54 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PriceSectionProps {
-  price: string; // This will now be the formatted Rupiah string
-  setPrice: (price: string) => void; // This expects raw numeric string
+  price: string;
+  setPrice: (price: string) => void;
+  currency: "IDR" | "USD";
+  setCurrency: (currency: "IDR" | "USD") => void;
   isLoading: boolean;
 }
 
-export const PriceSection = ({ price, setPrice, isLoading }: PriceSectionProps) => {
+export const PriceSection = ({ price, setPrice, currency, setCurrency, isLoading }: PriceSectionProps) => {
   const { language } = useLanguage();
 
-  // Handle input change to maintain formatting
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-    setPrice(value); // Send raw numeric value to parent
+    setPrice(value);
   };
 
   return (
     <div className="space-y-2">
       <Label htmlFor="price">
-        {language === 'id' ? 'Harga (IDR)*' : 'Price (IDR)*'}
+        {language === 'id' ? 'Harga*' : 'Price*'}
       </Label>
-      <Input
-        id="price"
-        type="text" // Changed from number to text to show Rp prefix
-        value={price} // This is the formatted value from ProductForm
-        onChange={handleChange}
-        placeholder="Rp 0"
-        required
-        disabled={isLoading}
-        className="font-mono" // Optional: makes numbers align nicely
-      />
+      <div className="flex gap-2">
+        <Input
+          id="price"
+          type="text"
+          value={price}
+          onChange={handleChange}
+          placeholder={currency === 'IDR' ? 'Rp 0' : '$ 0'}
+          required
+          disabled={isLoading}
+          className="font-mono flex-grow"
+        />
+        <Select
+          value={currency}
+          onValueChange={setCurrency}
+          disabled={isLoading}
+        >
+          <SelectTrigger className="w-24">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="IDR">IDR</SelectItem>
+            <SelectItem value="USD">USD</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };
