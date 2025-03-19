@@ -36,7 +36,7 @@ const About = () => {
             <img
               src="/logo-pasarpahing.png" // Replace with your image path
               alt={t('about.imageAlt')}
-              className="w-full max-w-3xl mx-auto rounded-lg shadow-lg object-cover h-64 md:h-96"
+              className="w-full max-w-1xl mx-auto rounded-lg shadow-lg object-cover h-64 md:h-96"
             />
           </div>
         </section>
