@@ -121,7 +121,7 @@ const Auth = () => {
             <CardDescription>
               {isSignUp
                 ? t('common.signup')
-                : t('auth.dontHaveAccount') + " " + t('auth.signup').toLowerCase() + " now!"}
+                : t('auth.dontHaveAccount')}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
