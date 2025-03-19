@@ -34,7 +34,7 @@ const About = () => {
           </p>
           <div className="mt-8">
             <img
-              src="/about-us-image.jpg" // Replace with your image path
+              src="/logo-pasarpahing.png" // Replace with your image path
               alt={t('about.imageAlt')}
               className="w-full max-w-3xl mx-auto rounded-lg shadow-lg object-cover h-64 md:h-96"
             />
