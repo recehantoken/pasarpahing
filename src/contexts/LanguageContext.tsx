@@ -778,6 +778,98 @@ const initialTranslations: Translations = {
     en: '© {year} Pasar Pahing developed by ID Cent. All rights reserved.',
     id: '© {year} Pasar Pahing dikembangkan oleh ID Cent. Semua hak dilindungi.',
   },
+  'profile.title': {
+  en: 'My Profile',
+  id: 'Profil Saya',
+},
+'profile.picture': {
+  en: 'Profile Picture',
+  id: 'Foto Profil',
+},
+'profile.pictureDescription': {
+  en: 'Upload a picture to personalize your profile',
+  id: 'Unggah foto untuk mempersonalisasi profil Anda',
+},
+'profile.personalInfo': {
+  en: 'Personal Information',
+  id: 'Informasi Pribadi',
+},
+'profile.personalInfoDescription': {
+  en: 'Update your personal information and manage your account',
+  id: 'Perbarui informasi pribadi Anda dan kelola akun Anda',
+},
+'profile.emailLocked': {
+  en: 'Email cannot be changed',
+  id: 'Email tidak dapat diubah',
+},
+'profile.errorLoading': {
+  en: 'An error occurred while loading your profile',
+  id: 'Terjadi kesalahan saat memuat profil Anda',
+},
+'profile.errorUpdating': {
+  en: 'An error occurred while updating your profile',
+  id: 'Terjadi kesalahan saat memperbarui profil Anda',
+},
+'profile.updated': {
+  en: 'Profile updated',
+  id: 'Profil diperbarui',
+},
+'profile.updatedDescription': {
+  en: 'Your profile has been successfully updated.',
+  id: 'Profil Anda telah berhasil diperbarui.',
+},
+'profile.signOutSuccess': {
+  en: 'You have been signed out successfully.',
+  id: 'Anda telah berhasil keluar.',
+},
+'profile.changePassword': {
+  en: 'Change Password',
+  id: 'Ubah Kata Sandi',
+},
+'profile.changePasswordDescription': {
+  en: 'Update your account password',
+  id: 'Perbarui kata sandi akun Anda',
+},
+'profile.newPasswordPlaceholder': {
+  en: 'Enter new password',
+  id: 'Masukkan kata sandi baru',
+},
+'profile.changePasswordButton': {
+  en: 'Change Password',
+  id: 'Ubah Kata Sandi',
+},
+'profile.passwordUpdated': {
+  en: 'Password updated',
+  id: 'Kata sandi diperbarui',
+},
+'profile.passwordUpdatedDescription': {
+  en: 'Your password has been successfully updated.',
+  id: 'Kata sandi Anda telah berhasil diperbarui.',
+},
+'profile.errorPassword': {
+  en: 'An error occurred while updating your password',
+  id: 'Terjadi kesalahan saat memperbarui kata sandi Anda',
+},
+'profile.theme': {
+  en: 'Theme Preferences',
+  id: 'Preferensi Tema',
+},
+'profile.themeDescription': {
+  en: 'Customize the appearance of your account',
+  id: 'Sesuaikan tampilan akun Anda',
+},
+'profile.darkMode': {
+  en: 'Dark Mode',
+  id: 'Mode Gelap',
+},
+'profile.darkModeDescription': {
+  en: 'Toggle between light and dark mode',
+  id: 'Beralih antara mode terang dan gelap',
+},
+'common.saving': {
+  en: 'Saving...',
+  id: 'Menyimpan...',
+},
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
