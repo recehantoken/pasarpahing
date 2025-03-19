@@ -345,6 +345,54 @@ const initialTranslations: Translations = {
   en: 'Cookies',
   id: 'Cookie',
 },
+'about.missionTitle': {
+  en: 'Our Mission',
+  id: 'Misi Kami',
+},
+'about.valuesTitle': {
+  en: 'Our Values',
+  id: 'Nilai Kami',
+},
+'about.values.community': {
+  en: 'Community',
+  id: 'Komunitas',
+},
+'about.values.communityDesc': {
+  en: 'We foster a strong community of buyers and sellers, building trust and connection.',
+  id: 'Kami membina komunitas yang kuat antara pembeli dan penjual, membangun kepercayaan dan koneksi.',
+},
+'about.values.authenticity': {
+  en: 'Authenticity',
+  id: 'Keaslian',
+},
+'about.values.authenticityDesc': {
+  en: 'We celebrate genuine Indonesian products and heritage crafts.',
+  id: 'Kami merayakan produk asli Indonesia dan kerajinan warisan.',
+},
+'about.values.sustainability': {
+  en: 'Sustainability',
+  id: 'Keberlanjutan',
+},
+'about.values.sustainabilityDesc': {
+  en: 'We promote eco-friendly practices and support sustainable growth.',
+  id: 'Kami mempromosikan praktik ramah lingkungan dan mendukung pertumbuhan berkelanjutan.',
+},
+'about.teamTitle': {
+  en: 'Meet Our Team',
+  id: 'Temui Tim Kami',
+},
+'about.team.role1': {
+  en: 'Founder & CEO',
+  id: 'Pendiri & CEO',
+},
+'about.team.role2': {
+  en: 'Chief Marketing Officer',
+  id: 'Kepala Pemasaran',
+},
+'about.team.role3': {
+  en: 'Lead Developer',
+  id: 'Pengembang Utama',
+},
 };
 
 type LanguageContextType = {
