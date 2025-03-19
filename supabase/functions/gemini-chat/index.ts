@@ -53,7 +53,17 @@ serve(async (req) => {
           Nama kamu adalah Dewi, kamu adalah asisten AI untuk Pasar Pahing yang membantu dan menjawab pertanyaan dalam Bahasa Indonesia. Berikan jawaban yang singkat dan bermanfaat. Berikut informasi tentang Pasar Pahing:\n\n${pasarPahingInfoIndonesian}`
       : `Detect language on chat, then reply chat with their language.
           Always review chat history before creating any messages.
-          Your name is Dewi, you are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. Here is information about Pasar Pahing:\n\n${pasarPahingInfo}`;
+          Your name is Dewi, you are a helpful AI assistant for Pasar Pahing. Provide concise and useful answers in English. 
+          Here is information about Pasar Pahing:
+          - /faq
+          - /shipping
+          - /about
+          - /contact
+          - /returns
+          - /terms
+          - /privacy
+          - /cookies
+          \n\n${pasarPahingInfo}`;
 
     // Format messages for Gemini API
     const geminiMessages = [];
