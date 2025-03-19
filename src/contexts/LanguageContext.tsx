@@ -238,11 +238,67 @@ const initialTranslations: Translations = {
     en: 'Our mission is to create an accessible, fair, and sustainable marketplace that supports small businesses and fosters economic growth.',
     id: 'Misi kami adalah menciptakan pasar yang mudah diakses, adil, dan berkelanjutan yang mendukung usaha kecil dan memupuk pertumbuhan ekonomi.',
   },
+  'about.missionTitle': {
+    en: 'Our Mission',
+    id: 'Misi Kami',
+  },
+  'about.valuesTitle': {
+    en: 'Our Values',
+    id: 'Nilai Kami',
+  },
+  'about.values.community': {
+    en: 'Community',
+    id: 'Komunitas',
+  },
+  'about.values.communityDesc': {
+    en: 'We foster a strong community of buyers and sellers, building trust and connection.',
+    id: 'Kami membina komunitas yang kuat antara pembeli dan penjual, membangun kepercayaan dan koneksi.',
+  },
+  'about.values.authenticity': {
+    en: 'Authenticity',
+    id: 'Keaslian',
+  },
+  'about.values.authenticityDesc': {
+    en: 'We celebrate genuine Indonesian products and heritage crafts.',
+    id: 'Kami merayakan produk asli Indonesia dan kerajinan warisan.',
+  },
+  'about.values.sustainability': {
+    en: 'Sustainability',
+    id: 'Keberlanjutan',
+  },
+  'about.values.sustainabilityDesc': {
+    en: 'We promote eco-friendly practices and support sustainable growth.',
+    id: 'Kami mempromosikan praktik ramah lingkungan dan mendukung pertumbuhan berkelanjutan.',
+  },
+  'about.teamTitle': {
+    en: 'Meet Our Team',
+    id: 'Temui Tim Kami',
+  },
+  'about.team.role1': {
+    en: 'Founder & CEO',
+    id: 'Pendiri & CEO',
+  },
+  'about.team.role2': {
+    en: 'Chief Marketing Officer',
+    id: 'Kepala Pemasaran',
+  },
+  'about.team.role3': {
+    en: 'Lead Developer',
+    id: 'Pengembang Utama',
+  },
 
   // Footer
-  'footer.links': {
-    en: 'Links',
-    id: 'Tautan',
+  'footer.description': {
+    en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
+    id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Rasakan perdagangan yang semarak, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang hidup.',
+  },
+  'footer.quickLinks': {
+    en: 'Quick Links',
+    id: 'Tautan Cepat',
+  },
+  'footer.help': {
+    en: 'Help',
+    id: 'Bantuan',
   },
   'footer.about': {
     en: 'About Us',
@@ -277,122 +333,45 @@ const initialTranslations: Translations = {
     id: 'Kebijakan Privasi',
   },
   'footer.cookies': {
-    en: 'Cookie Policy',
-    id: 'Kebijakan Cookie',
+    en: 'Cookies',
+    id: 'Cookie',
   },
-  'footer.description': {
-  en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
-  id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Rasakan perdagangan yang semarak, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang hidup.',
-},
-'footer.quickLinks': {
-  en: 'Quick Links',
-  id: 'Tautan Cepat',
-},
-'footer.help': {
-  en: 'Help',
-  id: 'Bantuan',
-},
-'footer.developedBy': {
-  en: 'developed by',
-  id: 'dikembangkan oleh',
-},
-// Ensure these are already included from previous updates
-'nav.sell': {
-  en: 'Sell',
-  id: 'Jual',
-},
-'nav.cart': {
-  en: 'Cart',
-  id: 'Keranjang',
-},
-'nav.profile': {
-  en: 'Profile',
-  id: 'Profil',
-},
-'footer.about': {
-  en: 'About Us',
-  id: 'Tentang Kami',
-},
-'footer.faq': {
-  en: 'FAQ',
-  id: 'FAQ',
-},
-'footer.shipping': {
-  en: 'Shipping',
-  id: 'Pengiriman',
-},
-'footer.returns': {
-  en: 'Returns',
-  id: 'Pengembalian',
-},
-'footer.contact': {
-  en: 'Contact Us',
-  id: 'Hubungi Kami',
-},
-'footer.legal': {
-  en: 'Legal',
-  id: 'Hukum',
-},
-'footer.terms': {
-  en: 'Terms of Service',
-  id: 'Ketentuan Layanan',
-},
-'footer.privacy': {
-  en: 'Privacy Policy',
-  id: 'Kebijakan Privasi',
-},
-'footer.cookies': {
-  en: 'Cookies',
-  id: 'Cookie',
-},
-'about.missionTitle': {
-  en: 'Our Mission',
-  id: 'Misi Kami',
-},
-'about.valuesTitle': {
-  en: 'Our Values',
-  id: 'Nilai Kami',
-},
-'about.values.community': {
-  en: 'Community',
-  id: 'Komunitas',
-},
-'about.values.communityDesc': {
-  en: 'We foster a strong community of buyers and sellers, building trust and connection.',
-  id: 'Kami membina komunitas yang kuat antara pembeli dan penjual, membangun kepercayaan dan koneksi.',
-},
-'about.values.authenticity': {
-  en: 'Authenticity',
-  id: 'Keaslian',
-},
-'about.values.authenticityDesc': {
-  en: 'We celebrate genuine Indonesian products and heritage crafts.',
-  id: 'Kami merayakan produk asli Indonesia dan kerajinan warisan.',
-},
-'about.values.sustainability': {
-  en: 'Sustainability',
-  id: 'Keberlanjutan',
-},
-'about.values.sustainabilityDesc': {
-  en: 'We promote eco-friendly practices and support sustainable growth.',
-  id: 'Kami mempromosikan praktik ramah lingkungan dan mendukung pertumbuhan berkelanjutan.',
-},
-'about.teamTitle': {
-  en: 'Meet Our Team',
-  id: 'Temui Tim Kami',
-},
-'about.team.role1': {
-  en: 'Founder & CEO',
-  id: 'Pendiri & CEO',
-},
-'about.team.role2': {
-  en: 'Chief Marketing Officer',
-  id: 'Kepala Pemasaran',
-},
-'about.team.role3': {
-  en: 'Lead Developer',
-  id: 'Pengembang Utama',
-},
+  'footer.developedBy': {
+    en: 'developed by',
+    id: 'dikembangkan oleh',
+  },
+
+  // Index
+  'index.welcome': {
+    en: 'Welcome to Pasar Pahing',
+    id: 'Selamat Datang di Pasar Pahing',
+  },
+  'index.description': {
+    en: 'Discover authentic Indonesian products and vibrant local trade in our community-driven marketplace.',
+    id: 'Temukan produk autentik Indonesia dan perdagangan lokal yang semarak di pasar berbasis komunitas kami.',
+  },
+  'index.featuredProducts': {
+    en: 'Featured Products',
+    id: 'Produk Unggulan',
+  },
+
+  // ProductCard
+  'product.flashSale': {
+    en: 'Flash Sale',
+    id: 'Penjualan Kilat',
+  },
+  'product.new': {
+    en: 'New',
+    id: 'Baru',
+  },
+  'product.noImage': {
+    en: 'No Image',
+    id: 'Tidak Ada Gambar',
+  },
+  'product.addToCart': {
+    en: 'Add to Cart',
+    id: 'Tambah ke Keranjang',
+  },
 };
 
 type LanguageContextType = {

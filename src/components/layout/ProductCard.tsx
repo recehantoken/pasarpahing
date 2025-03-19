@@ -1,10 +1,8 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { Flame, Sparkles } from "lucide-react";
 import { Product } from "@/types/product";
@@ -29,13 +27,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     <Card className="flex flex-col border border-primary/20 relative group">
       {product.is_flash_sale && (
         <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white flex items-center gap-1 z-10">
-          <Flame className="h-3 w-3" /> Flash Sale
+          <Flame className="h-3 w-3" /> {t('product.flashSale')}
         </Badge>
       )}
       
       {product.is_new && !product.is_flash_sale && (
         <Badge className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-1 z-10">
-          <Sparkles className="h-3 w-3" /> New
+          <Sparkles className="h-3 w-3" /> {t('product.new')}
         </Badge>
       )}
       
@@ -48,19 +46,19 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           />
         ) : (
           <div className="w-full h-48 bg-gray-200 rounded-t flex items-center justify-center">
-            No Image
+            {t('product.noImage')}
           </div>
         )}
         <CardTitle className="text-lg">{product.name}</CardTitle>
         <CardDescription>
           {product.is_new && <Badge>{t('product.new')}</Badge>}
-          {product.is_flash_sale && <Badge variant="secondary">Flash Sale</Badge>}
+          {product.is_flash_sale && <Badge variant="secondary">{t('product.flashSale')}</Badge>}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
         <div className="mt-2">
-          <p className="text-lg font-bold">${product.price}</p>
+          <CurrencyDisplay amount={product.price} className="text-lg font-bold" />
           <CurrencyDisplay amount={product.price} className="text-sm text-muted-foreground" />
         </div>
         {product.categories && (
