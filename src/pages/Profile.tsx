@@ -131,7 +131,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pt-16"> {/* Added pt-16 to offset header */}
       <Header />
       
       <div className="container mx-auto px-4 py-8 relative z-10">
