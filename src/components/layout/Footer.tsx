@@ -20,7 +20,6 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/" className="text-sm hover:underline">{t('nav.home')}</Link></li>
               <li><Link to="/about" className="text-sm hover:underline">{t('footer.about')}</Link></li>
-              <li><Link to="/sell" className="text-sm hover:underline">{t('nav.sell')}</Link></li>
               <li><Link to="/cart" className="text-sm hover:underline">{t('nav.cart')}</Link></li>
               <li><Link to="/profile" className="text-sm hover:underline">{t('nav.profile')}</Link></li>
             </ul>
