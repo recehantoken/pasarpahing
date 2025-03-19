@@ -1,162 +1,56 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
-// Define available languages
-export type Language = 'en' | 'id';
-
-// Define translations type
-export type Translations = {
+type Language = "en" | "id";
+type Translations = {
   [key: string]: {
-    [key in Language]: string;
+    en: string;
+    id: string;
   };
 };
 
-// Translation context type
-type LanguageContextType = {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string, params?: Record<string, string | number>) => string;
-  translations: Translations;
-};
-
-// Create the context
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-// Define initial translations
 const initialTranslations: Translations = {
   // Common
-  'common.search': {
-    en: 'Search',
-    id: 'Cari',
-  },
-  'common.submit': {
-    en: 'Submit',
-    id: 'Kirim',
-  },
-  'common.cancel': {
-    en: 'Cancel',
-    id: 'Batal',
-  },
-  'common.save': {
-    en: 'Save',
-    id: 'Simpan',
-  },
-  'common.delete': {
-    en: 'Delete',
-    id: 'Hapus',
-  },
-  'common.edit': {
-    en: 'Edit',
-    id: 'Ubah',
+  'common.allRightsReserved': {
+    en: 'All rights reserved.',
+    id: 'Hak cipta dilindungi.',
   },
   'common.loading': {
     en: 'Loading...',
     id: 'Memuat...',
   },
+  'common.signup': {
+    en: 'Sign up to join our community',
+    id: 'Daftar untuk bergabung dengan komunitas kami',
+  },
+  'common.login': {
+    en: 'Sign in to your account',
+    id: 'Masuk ke akun Anda',
+  },
   'common.error': {
     en: 'Error',
     id: 'Kesalahan',
   },
-  'common.success': {
-    en: 'Success',
-    id: 'Berhasil',
+  'common.save': {
+    en: 'Save Changes',
+    id: 'Simpan Perubahan',
   },
-  'common.required': {
-    en: 'Required',
-    id: 'Wajib',
+  'common.saving': {
+    en: 'Saving...',
+    id: 'Menyimpan...',
   },
-  'common.optional': {
-    en: 'Optional',
-    id: 'Opsional',
+  'common.uploading': {
+    en: 'Uploading...',
+    id: 'Mengunggah...',
   },
-  'common.select': {
-    en: 'Select',
-    id: 'Pilih',
-  },
-  'common.preview': {
-    en: 'Preview',
-    id: 'Pratinjau',
-  },
-  'common.status': {
-    en: 'Status',
-    id: 'Status',
-  },
-  'common.active': {
-    en: 'Active',
-    id: 'Aktif',
-  },
-  'common.inactive': {
-    en: 'Inactive',
-    id: 'Nonaktif',
-  },
-  'common.action': {
-    en: 'Action',
-    id: 'Tindakan',
-  },
-  'common.actions': {
-    en: 'Actions',
-    id: 'Tindakan',
-  },
-  'common.add': {
-    en: 'Add',
-    id: 'Tambah',
-  },
-  'common.create': {
-    en: 'Create',
-    id: 'Buat',
-  },
-  'common.update': {
-    en: 'Update',
-    id: 'Perbarui',
-  },
-  'common.confirm': {
-    en: 'Confirm',
-    id: 'Konfirmasi',
-  },
-  'common.continue': {
-    en: 'Continue',
-    id: 'Lanjutkan',
-  },
-  'common.back': {
-    en: 'Back',
-    id: 'Kembali',
-  },
-  'common.next': {
-    en: 'Next',
-    id: 'Berikutnya',
-  },
-  'common.previous': {
-    en: 'Previous',
-    id: 'Sebelumnya',
-  },
-  'common.done': {
-    en: 'Done',
-    id: 'Selesai',
-  },
-  'common.finish': {
-    en: 'Finish',
-    id: 'Selesai',
-  },
-  'common.yes': {
-    en: 'Yes',
-    id: 'Ya',
-  },
-  'common.no': {
-    en: 'No',
-    id: 'Tidak',
-  },
-  'common.or': {
-    en: 'Or',
-    id: 'Atau',
-  },
-  'common.and': {
-    en: 'And',
-    id: 'Dan',
-  },
-  
-  // Navigation
+
+  // Navigation (Header)
   'nav.home': {
     en: 'Home',
     id: 'Beranda',
+  },
+  'nav.sell': {
+    en: 'Sell',
+    id: 'Jual',
   },
   'nav.profile': {
     en: 'Profile',
@@ -166,56 +60,28 @@ const initialTranslations: Translations = {
     en: 'Cart',
     id: 'Keranjang',
   },
-  'nav.sell': {
-    en: 'Sell',
-    id: 'Jual',
-  },
   'nav.admin': {
     en: 'Admin',
     id: 'Admin',
   },
   'nav.login': {
-    en: 'Login',
+    en: 'Sign In',
     id: 'Masuk',
   },
   'nav.logout': {
-    en: 'Logout',
+    en: 'Sign Out',
     id: 'Keluar',
   },
-  'nav.signup': {
-    en: 'Sign Up',
-    id: 'Daftar',
-  },
-  'nav.about': {
-    en: 'About',
-    id: 'Tentang',
-  },
-  'nav.contact': {
-    en: 'Contact',
-    id: 'Kontak',
-  },
-  'nav.faq': {
-    en: 'FAQ',
-    id: 'FAQ',
-  },
-  'nav.terms': {
-    en: 'Terms',
-    id: 'Ketentuan',
-  },
-  'nav.privacy': {
-    en: 'Privacy',
-    id: 'Privasi',
-  },
-  'nav.shipping': {
-    en: 'Shipping',
-    id: 'Pengiriman',
-  },
-  'nav.returns': {
-    en: 'Returns',
-    id: 'Pengembalian',
-  },
-  
+
   // Auth
+  'auth.signIn': {
+    en: 'Sign In',
+    id: 'Masuk',
+  },
+  'auth.createAccount': {
+    en: 'Create Account',
+    id: 'Buat Akun',
+  },
   'auth.email': {
     en: 'Email',
     id: 'Email',
@@ -223,14 +89,6 @@ const initialTranslations: Translations = {
   'auth.password': {
     en: 'Password',
     id: 'Kata Sandi',
-  },
-  'auth.login': {
-    en: 'Login',
-    id: 'Masuk',
-  },
-  'auth.signup': {
-    en: 'Sign Up',
-    id: 'Daftar',
   },
   'auth.firstName': {
     en: 'First Name',
@@ -240,507 +98,155 @@ const initialTranslations: Translations = {
     en: 'Last Name',
     id: 'Nama Belakang',
   },
-  'auth.continueWith': {
-    en: 'Or continue with',
-    id: 'Atau lanjutkan dengan',
+  'auth.signup': {
+    en: 'Sign Up',
+    id: 'Daftar',
   },
-  'auth.createAccount': {
-    en: 'Create an Account',
-    id: 'Buat Akun',
-  },
-  'auth.signIn': {
+  'auth.login': {
     en: 'Sign In',
     id: 'Masuk',
   },
   'auth.alreadyHaveAccount': {
-    en: 'Already have an account? Sign In',
+    en: 'Already have an account? Sign in',
     id: 'Sudah memiliki akun? Masuk',
   },
   'auth.dontHaveAccount': {
-    en: 'Don\'t have an account? Sign Up',
-    id: 'Belum memiliki akun? Daftar',
-  },
-  'auth.forgotPassword': {
-    en: 'Forgot Password?',
-    id: 'Lupa Kata Sandi?',
-  },
-  'auth.resetPassword': {
-    en: 'Reset Password',
-    id: 'Atur Ulang Kata Sandi',
-  },
-  'auth.verification': {
-    en: 'Verification',
-    id: 'Verifikasi',
-  },
-  'auth.accountCreated': {
-    en: 'Account Created',
-    id: 'Akun Dibuat',
-  },
-  'auth.loggedIn': {
-    en: 'Logged In',
-    id: 'Berhasil Masuk',
+    en: 'Don’t have an account?',
+    id: 'Belum memiliki akun?',
   },
   'auth.loggedOut': {
-    en: 'Logged Out',
-    id: 'Berhasil Keluar',
+    en: 'Signed out',
+    id: 'Keluar',
   },
-  
-  // Products
-  'product.price': {
-    en: 'Price',
-    id: 'Harga',
-  },
-  'product.category': {
-    en: 'Category',
-    id: 'Kategori',
-  },
-  'product.description': {
-    en: 'Description',
-    id: 'Deskripsi',
-  },
-  'product.addToCart': {
-    en: 'Add to Cart',
-    id: 'Tambahkan ke Keranjang',
-  },
-  'product.buyNow': {
-    en: 'Buy Now',
-    id: 'Beli Sekarang',
-  },
-  'product.outOfStock': {
-    en: 'Out of Stock',
-    id: 'Stok Habis',
-  },
-  'product.name': {
-    en: 'Product Name',
-    id: 'Nama Produk',
-  },
-  'product.image': {
-    en: 'Product Image',
-    id: 'Gambar Produk',
-  },
-  'product.selectImage': {
-    en: 'Select Image',
-    id: 'Pilih Gambar',
-  },
-  'product.flashSale': {
-    en: 'Flash Sale',
-    id: 'Flash Sale',
-  },
-  'product.new': {
-    en: 'New Product',
-    id: 'Produk Baru',
-  },
-  'product.list': {
-    en: 'List Product for Sale',
-    id: 'Daftarkan Produk Untuk Dijual',
-  },
-  'product.listing': {
-    en: 'Listing Product...',
-    id: 'Mendaftarkan Produk...',
-  },
-  'product.listed': {
-    en: 'Item listed successfully',
-    id: 'Barang terdaftar berhasil',
-  },
-  'product.listingFailed': {
-    en: 'Error listing item',
-    id: 'Gagal mendaftarkan barang',
-  },
-  'product.requiredFields': {
-    en: 'Required fields',
-    id: 'Kolom wajib diisi',
-  },
-  
-  // Cart
-  'cart.title': {
-    en: 'Your Cart',
-    id: 'Keranjang Anda',
-  },
-  'cart.empty': {
-    en: 'Your cart is empty',
-    id: 'Keranjang Anda kosong',
-  },
-  'cart.total': {
-    en: 'Total',
-    id: 'Total',
-  },
-  'cart.checkout': {
-    en: 'Checkout',
-    id: 'Bayar',
-  },
-  'cart.remove': {
-    en: 'Remove',
-    id: 'Hapus',
-  },
-  'cart.quantity': {
-    en: 'Quantity',
-    id: 'Jumlah',
-  },
-  'cart.continue': {
-    en: 'Continue Shopping',
-    id: 'Lanjutkan Belanja',
-  },
-  'cart.summary': {
-    en: 'Order Summary',
-    id: 'Ringkasan Pesanan',
-  },
-  'cart.shipping': {
-    en: 'Shipping',
-    id: 'Pengiriman',
-  },
-  'cart.tax': {
-    en: 'Tax',
-    id: 'Pajak',
-  },
-  'cart.discount': {
-    en: 'Discount',
-    id: 'Diskon',
-  },
-  'cart.subtotal': {
-    en: 'Subtotal',
-    id: 'Subtotal',
-  },
-  'cart.estimatedTotal': {
-    en: 'Estimated Total',
-    id: 'Total Estimasi',
-  },
-  
+
   // Profile
   'profile.title': {
-    en: 'Profile',
-    id: 'Profil',
+    en: 'My Profile',
+    id: 'Profil Saya',
+  },
+  'profile.picture': {
+    en: 'Profile Picture',
+    id: 'Foto Profil',
+  },
+  'profile.pictureDescription': {
+    en: 'Upload a picture to personalize your profile',
+    id: 'Unggah foto untuk mempersonalisasi profil Anda',
+  },
+  'profile.changePicture': {
+    en: 'Change Picture',
+    id: 'Ubah Foto',
+  },
+  'profile.pictureUpdated': {
+    en: 'Your profile picture has been updated successfully',
+    id: 'Foto profil Anda telah berhasil diperbarui',
+  },
+  'profile.errorUploadingPicture': {
+    en: 'There was an error uploading your avatar',
+    id: 'Terjadi kesalahan saat mengunggah avatar Anda',
   },
   'profile.personalInfo': {
     en: 'Personal Information',
     id: 'Informasi Pribadi',
   },
-  'profile.orders': {
-    en: 'Orders',
-    id: 'Pesanan',
+  'profile.personalInfoDescription': {
+    en: 'Update your personal information and manage your account',
+    id: 'Perbarui informasi pribadi Anda dan kelola akun Anda',
   },
-  'profile.settings': {
-    en: 'Settings',
-    id: 'Pengaturan',
+  'profile.emailLocked': {
+    en: 'Email cannot be changed',
+    id: 'Email tidak dapat diubah',
   },
-  'profile.language': {
-    en: 'Language',
-    id: 'Bahasa',
+  'profile.errorLoading': {
+    en: 'An error occurred while loading your profile',
+    id: 'Terjadi kesalahan saat memuat profil Anda',
+  },
+  'profile.errorUpdating': {
+    en: 'An error occurred while updating your profile',
+    id: 'Terjadi kesalahan saat memperbarui profil Anda',
+  },
+  'profile.updated': {
+    en: 'Profile updated',
+    id: 'Profil diperbarui',
+  },
+  'profile.updatedDescription': {
+    en: 'Your profile has been successfully updated.',
+    id: 'Profil Anda telah berhasil diperbarui.',
+  },
+  'profile.signOutSuccess': {
+    en: 'You have been signed out successfully.',
+    id: 'Anda telah berhasil keluar.',
   },
   'profile.changePassword': {
     en: 'Change Password',
     id: 'Ubah Kata Sandi',
   },
-  'profile.accountSettings': {
-    en: 'Account Settings',
-    id: 'Pengaturan Akun',
-  },
-  'profile.notifications': {
-    en: 'Notifications',
-    id: 'Notifikasi',
-  },
-  'profile.preferences': {
-    en: 'Preferences',
-    id: 'Preferensi',
-  },
-  'profile.address': {
-    en: 'Address',
-    id: 'Alamat',
-  },
-  'profile.paymentMethods': {
-    en: 'Payment Methods',
-    id: 'Metode Pembayaran',
-  },
-  'profile.changeEmail': {
-    en: 'Change Email',
-    id: 'Ubah Email',
-  },
-  'profile.deleteAccount': {
-    en: 'Delete Account',
-    id: 'Hapus Akun',
-  },
-  'profile.exportData': {
-    en: 'Export My Data',
-    id: 'Ekspor Data Saya',
-  },
-  
-  // Admin
-  'admin.dashboard': {
-    en: 'Dashboard',
-    id: 'Dasbor',
-  },
-  'admin.products': {
-    en: 'Products',
-    id: 'Produk',
-  },
-  'admin.categories': {
-    en: 'Categories',
-    id: 'Kategori',
-  },
-  'admin.users': {
-    en: 'Users',
-    id: 'Pengguna',
-  },
-  'admin.orders': {
-    en: 'Orders',
-    id: 'Pesanan',
-  },
-  'admin.settings': {
-    en: 'Settings',
-    id: 'Pengaturan',
-  },
-  'admin.shipping': {
-    en: 'Shipping',
-    id: 'Pengiriman',
-  },
-  'admin.frontpage': {
-    en: 'Front Page',
-    id: 'Halaman Depan',
-  },
-  'admin.addProduct': {
-    en: 'Add Product',
-    id: 'Tambah Produk',
-  },
-  'admin.editProduct': {
-    en: 'Edit Product',
-    id: 'Edit Produk',
-  },
-  'admin.addCategory': {
-    en: 'Add Category',
-    id: 'Tambah Kategori',
-  },
-  'admin.editCategory': {
-    en: 'Edit Category',
-    id: 'Edit Kategori',
-  },
-  'admin.addShipping': {
-    en: 'Add Shipping Method',
-    id: 'Tambah Metode Pengiriman',
-  },
-  'admin.editShipping': {
-    en: 'Edit Shipping Method',
-    id: 'Edit Metode Pengiriman',
-  },
-  'admin.payments': {
-    en: 'Payment Methods',
-    id: 'Metode Pembayaran',
-  },
-  'admin.addPayment': {
-    en: 'Add Payment Method',
-    id: 'Tambah Metode Pembayaran',
-  },
-  'admin.editPayment': {
-    en: 'Edit Payment Method',
-    id: 'Edit Metode Pembayaran',
-  },
-  'admin.statistics': {
-    en: 'Statistics',
-    id: 'Statistik',
-  },
-  'admin.analytics': {
-    en: 'Analytics',
-    id: 'Analitik',
-  },
-  'admin.sales': {
-    en: 'Sales',
-    id: 'Penjualan',
-  },
-  'admin.revenue': {
-    en: 'Revenue',
-    id: 'Pendapatan',
-  },
-  'admin.customers': {
-    en: 'Customers',
-    id: 'Pelanggan',
-  },
-  'admin.content': {
-    en: 'Content',
-    id: 'Konten',
-  },
-  'admin.marketing': {
-    en: 'Marketing',
-    id: 'Pemasaran',
-  },
-  'admin.discounts': {
-    en: 'Discounts',
-    id: 'Diskon',
-  },
-  'admin.reports': {
-    en: 'Reports',
-    id: 'Laporan',
-  },
-  'admin.inventory': {
-    en: 'Inventory',
-    id: 'Inventaris',
-  },
-  
-  // Payment and Shipping
-  'payment.method': {
-    en: 'Payment Method',
-    id: 'Metode Pembayaran',
-  },
-  'payment.methods': {
-    en: 'Payment Methods',
-    id: 'Metode Pembayaran',
-  },
-  'payment.cardNumber': {
-    en: 'Card Number',
-    id: 'Nomor Kartu',
-  },
-  'payment.expiryDate': {
-    en: 'Expiry Date',
-    id: 'Tanggal Kadaluwarsa',
-  },
-  'payment.cvv': {
-    en: 'CVV',
-    id: 'CVV',
-  },
-  'payment.nameOnCard': {
-    en: 'Name on Card',
-    id: 'Nama pada Kartu',
-  },
-  'payment.billingAddress': {
-    en: 'Billing Address',
-    id: 'Alamat Penagihan',
-  },
-  'payment.crypto': {
-    en: 'Cryptocurrency',
-    id: 'Mata Uang Kripto',
-  },
-  'payment.wallet': {
-    en: 'Wallet Address',
-    id: 'Alamat Dompet',
-  },
-  'payment.bankTransfer': {
-    en: 'Bank Transfer',
-    id: 'Transfer Bank',
-  },
-  'payment.accountNumber': {
-    en: 'Account Number',
-    id: 'Nomor Rekening',
-  },
-  'payment.accountName': {
-    en: 'Account Name',
-    id: 'Nama Pemilik Rekening',
-  },
-  'payment.bankName': {
-    en: 'Bank Name',
-    id: 'Nama Bank',
-  },
-  'payment.payNow': {
-    en: 'Pay Now',
-    id: 'Bayar Sekarang',
-  },
-  'payment.paymentSummary': {
-    en: 'Payment Summary',
-    id: 'Ringkasan Pembayaran',
-  },
-  'payment.paymentSuccessful': {
-    en: 'Payment Successful',
-    id: 'Pembayaran Berhasil',
-  },
-  'payment.paymentFailed': {
-    en: 'Payment Failed',
-    id: 'Pembayaran Gagal',
-  },
-  'shipping.method': {
-    en: 'Shipping Method',
-    id: 'Metode Pengiriman',
-  },
-  'shipping.methods': {
-    en: 'Shipping Methods',
-    id: 'Metode Pengiriman',
-  },
-  'shipping.address': {
-    en: 'Shipping Address',
-    id: 'Alamat Pengiriman',
-  },
-  'shipping.cost': {
-    en: 'Shipping Cost',
-    id: 'Biaya Pengiriman',
-  },
-  'shipping.expedited': {
-    en: 'Expedited Shipping',
-    id: 'Pengiriman Ekspres',
-  },
-  'shipping.standard': {
-    en: 'Standard Shipping',
-    id: 'Pengiriman Standar',
-  },
-  'shipping.free': {
-    en: 'Free Shipping',
-    id: 'Pengiriman Gratis',
-  },
-  'shipping.estimatedDelivery': {
-    en: 'Estimated Delivery',
-    id: 'Perkiraan Pengiriman',
-  },
-  'shipping.tracking': {
-    en: 'Tracking Number',
-    id: 'Nomor Pelacakan',
-  },
-  'shipping.track': {
-    en: 'Track Package',
-    id: 'Lacak Paket',
-  },
-  'shipping.days': {
-    en: 'days',
-    id: 'hari',
-  },
-  
-  // Chat
-  'chat.title': {
-    en: 'Chat',
-    id: 'Obrolan',
-  },
-  'chat.message': {
-    en: 'Message',
-    id: 'Pesan',
-  },
-  'chat.send': {
-    en: 'Send',
-    id: 'Kirim',
-  },
-  'chat.typing': {
-    en: 'Typing...',
-    id: 'Mengetik...',
-  },
-  'chat.placeholder': {
-    en: 'Type a message...',
-    id: 'Ketik pesan...',
-  },
-  'chat.assistant': {
-    en: 'Assistant',
-    id: 'Asisten',
-  },
-  'chat.loadMore': {
-    en: 'Load more messages',
-    id: 'Muat lebih banyak pesan',
-  },
-  'chat.welcome': {
-    en: 'Hello! How can I help you today?',
-    id: 'Halo! Apa yang bisa saya bantu hari ini?',
-  },
-  'chat.networkError': {
-    en: 'Network error. Please try again.',
-    id: 'Kesalahan jaringan. Silakan coba lagi.',
-  },
-  'chat.errorMessage': {
-    en: 'Sorry, there was an error. Please try again.',
-    id: 'Maaf, terjadi kesalahan. Silakan coba lagi.',
+  'profile.changePasswordDescription': {
+    en: 'Update your account password',
+    id: 'Perbarui kata sandi akun Anda',
+  },
+  'profile.newPasswordPlaceholder': {
+    en: 'Enter new password',
+    id: 'Masukkan kata sandi baru',
+  },
+  'profile.changePasswordButton': {
+    en: 'Change Password',
+    id: 'Ubah Kata Sandi',
+  },
+  'profile.passwordUpdated': {
+    en: 'Password updated',
+    id: 'Kata sandi diperbarui',
+  },
+  'profile.passwordUpdatedDescription': {
+    en: 'Your password has been successfully updated.',
+    id: 'Kata sandi Anda telah berhasil diperbarui.',
+  },
+  'profile.errorPassword': {
+    en: 'An error occurred while updating your password',
+    id: 'Terjadi kesalahan saat memperbarui kata sandi Anda',
+  },
+  'profile.theme': {
+    en: 'Theme Preferences',
+    id: 'Preferensi Tema',
+  },
+  'profile.themeDescription': {
+    en: 'Customize the appearance of your account',
+    id: 'Sesuaikan tampilan akun Anda',
+  },
+  'profile.darkMode': {
+    en: 'Dark Mode',
+    id: 'Mode Gelap',
+  },
+  'profile.darkModeDescription': {
+    en: 'Toggle between light and dark mode',
+    id: 'Beralih antara mode terang dan gelap',
   },
 
-  // Footer (New Additions)
+  // About
+  'about.title': {
+    en: 'About Us',
+    id: 'Tentang Kami',
+  },
+  'about.description': {
+    en: 'Pasar Pahing is a vibrant marketplace connecting buyers and sellers in a seamless, community-driven platform. We aim to empower local commerce and bring value to every transaction.',
+    id: 'Pasar Pahing adalah pasar yang dinamis yang menghubungkan pembeli dan penjual dalam platform yang mulus dan didorong oleh komunitas. Kami bertujuan untuk memberdayakan perdagangan lokal dan memberikan nilai pada setiap transaksi.',
+  },
+  'about.imageAlt': {
+    en: 'Our Team at Pasar Pahing',
+    id: 'Tim Kami di Pasar Pahing',
+  },
+  'about.mission': {
+    en: 'Our mission is to create an accessible, fair, and sustainable marketplace that supports small businesses and fosters economic growth.',
+    id: 'Misi kami adalah menciptakan pasar yang mudah diakses, adil, dan berkelanjutan yang mendukung usaha kecil dan memupuk pertumbuhan ekonomi.',
+  },
+
+  // Footer
+  'footer.links': {
+    en: 'Links',
+    id: 'Tautan',
+  },
   'footer.about': {
-    en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
-    id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Nikmati perdagangan yang hidup, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang ramai.',
-  },
-  'footer.quickLinks': {
-    en: 'Quick Links',
-    id: 'Tautan Cepat',
-  },
-  'footer.help': {
-    en: 'Help',
-    id: 'Bantuan',
+    en: 'About Us',
+    id: 'Tentang Kami',
   },
   'footer.faq': {
     en: 'FAQ',
@@ -764,131 +270,44 @@ const initialTranslations: Translations = {
   },
   'footer.terms': {
     en: 'Terms of Service',
-    id: 'Syarat Layanan',
+    id: 'Ketentuan Layanan',
   },
   'footer.privacy': {
     en: 'Privacy Policy',
     id: 'Kebijakan Privasi',
   },
   'footer.cookies': {
-    en: 'Cookies',
-    id: 'Kuki',
+    en: 'Cookie Policy',
+    id: 'Kebijakan Cookie',
   },
-  'footer.copyright': {
-    en: '© {year} Pasar Pahing developed by ID Cent. All rights reserved.',
-    id: '© {year} Pasar Pahing dikembangkan oleh ID Cent. Semua hak dilindungi.',
-  },
-  'profile.title': {
-  en: 'My Profile',
-  id: 'Profil Saya',
+  'footer.description': {
+  en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
+  id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Rasakan perdagangan yang semarak, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang hidup.',
 },
-'profile.picture': {
-  en: 'Profile Picture',
-  id: 'Foto Profil',
+'footer.quickLinks': {
+  en: 'Quick Links',
+  id: 'Tautan Cepat',
 },
-'profile.pictureDescription': {
-  en: 'Upload a picture to personalize your profile',
-  id: 'Unggah foto untuk mempersonalisasi profil Anda',
+'footer.help': {
+  en: 'Help',
+  id: 'Bantuan',
 },
-'profile.personalInfo': {
-  en: 'Personal Information',
-  id: 'Informasi Pribadi',
+'footer.developedBy': {
+  en: 'developed by',
+  id: 'dikembangkan oleh',
 },
-'profile.personalInfoDescription': {
-  en: 'Update your personal information and manage your account',
-  id: 'Perbarui informasi pribadi Anda dan kelola akun Anda',
+// Ensure these are already included from previous updates
+'nav.sell': {
+  en: 'Sell',
+  id: 'Jual',
 },
-'profile.emailLocked': {
-  en: 'Email cannot be changed',
-  id: 'Email tidak dapat diubah',
+'nav.cart': {
+  en: 'Cart',
+  id: 'Keranjang',
 },
-'profile.errorLoading': {
-  en: 'An error occurred while loading your profile',
-  id: 'Terjadi kesalahan saat memuat profil Anda',
-},
-'profile.errorUpdating': {
-  en: 'An error occurred while updating your profile',
-  id: 'Terjadi kesalahan saat memperbarui profil Anda',
-},
-'profile.updated': {
-  en: 'Profile updated',
-  id: 'Profil diperbarui',
-},
-'profile.updatedDescription': {
-  en: 'Your profile has been successfully updated.',
-  id: 'Profil Anda telah berhasil diperbarui.',
-},
-'profile.signOutSuccess': {
-  en: 'You have been signed out successfully.',
-  id: 'Anda telah berhasil keluar.',
-},
-'profile.changePassword': {
-  en: 'Change Password',
-  id: 'Ubah Kata Sandi',
-},
-'profile.changePasswordDescription': {
-  en: 'Update your account password',
-  id: 'Perbarui kata sandi akun Anda',
-},
-'profile.newPasswordPlaceholder': {
-  en: 'Enter new password',
-  id: 'Masukkan kata sandi baru',
-},
-'profile.changePasswordButton': {
-  en: 'Change Password',
-  id: 'Ubah Kata Sandi',
-},
-'profile.passwordUpdated': {
-  en: 'Password updated',
-  id: 'Kata sandi diperbarui',
-},
-'profile.passwordUpdatedDescription': {
-  en: 'Your password has been successfully updated.',
-  id: 'Kata sandi Anda telah berhasil diperbarui.',
-},
-'profile.errorPassword': {
-  en: 'An error occurred while updating your password',
-  id: 'Terjadi kesalahan saat memperbarui kata sandi Anda',
-},
-'profile.theme': {
-  en: 'Theme Preferences',
-  id: 'Preferensi Tema',
-},
-'profile.themeDescription': {
-  en: 'Customize the appearance of your account',
-  id: 'Sesuaikan tampilan akun Anda',
-},
-'profile.darkMode': {
-  en: 'Dark Mode',
-  id: 'Mode Gelap',
-},
-'profile.darkModeDescription': {
-  en: 'Toggle between light and dark mode',
-  id: 'Beralih antara mode terang dan gelap',
-},
-'common.saving': {
-  en: 'Saving...',
-  id: 'Menyimpan...',
-},
-'profile.changePicture': {
-  en: 'Change Picture',
-  id: 'Ubah Foto',
-},
-'profile.pictureUpdated': {
-  en: 'Your profile picture has been updated successfully',
-  id: 'Foto profil Anda telah berhasil diperbarui',
-},
-'profile.errorUploadingPicture': {
-  en: 'There was an error uploading your avatar',
-  id: 'Terjadi kesalahan saat mengunggah avatar Anda',
-},
-'common.uploading': {
-  en: 'Uploading...',
-  id: 'Mengunggah...',
-},
-'footer.links': {
-  en: 'Links',
-  id: 'Tautan',
+'nav.profile': {
+  en: 'Profile',
+  id: 'Profil',
 },
 'footer.about': {
   en: 'About Us',
@@ -923,57 +342,38 @@ const initialTranslations: Translations = {
   id: 'Kebijakan Privasi',
 },
 'footer.cookies': {
-  en: 'Cookie Policy',
-  id: 'Kebijakan Cookie',
+  en: 'Cookies',
+  id: 'Cookie',
 },
 };
 
+type LanguageContextType = {
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: (key: string) => string;
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Get language from localStorage or use default
-  const [language, setLanguageState] = useState<Language>(() => {
-    const savedLanguage = localStorage.getItem('language');
-    return (savedLanguage as Language) || 'en';
-  });
-  const [translations, setTranslations] = useState<Translations>(initialTranslations);
+  const [language, setLanguage] = useState<Language>("en");
 
-  // Update localStorage when language changes
-  const setLanguage = (lang: Language) => {
-    localStorage.setItem('language', lang);
-    setLanguageState(lang);
+  const t = (key: string): string => {
+    const translation = initialTranslations[key];
+    return translation ? translation[language] : key;
   };
-
-  // Translation function with parameter support
-  const t = (key: string, params?: Record<string, string | number>): string => {
-    if (translations[key] && translations[key][language]) {
-      let translated = translations[key][language];
-      if (params) {
-        Object.entries(params).forEach(([param, value]) => {
-          translated = translated.replace(`{${param}}`, value.toString());
-        });
-      }
-      return translated;
-    }
-    // Fallback to English or key if translation not found
-    return translations[key]?.['en'] || key;
-  };
-
-  // Store language in localStorage
-  useEffect(() => {
-    localStorage.setItem('language', language);
-  }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, translations }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
 };
 
-// Hook for using the language context
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+  if (!context) {
+    throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
 };

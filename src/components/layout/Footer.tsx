@@ -5,62 +5,49 @@ export const Footer = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-background/90 border-t border-primary/20 py-6 mt-auto">
+    <footer className="bg-card border-t border-primary/20 py-6 mt-auto">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand Section */}
-          <div className="flex flex-col space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/cent.png" alt="Pasar Pahing Logo" className="h-8 w-auto" />
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                Pasar Pahing
-              </span>
-            </Link>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Pasar Pahing</h3>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Pasar Pahing. {t('common.allRightsReserved')}
+              {t('footer.description')}
             </p>
           </div>
-
-          {/* Navigation Links */}
-          <div className="flex flex-col space-y-2">
-            <h3 className="text-lg font-semibold text-foreground">{t('footer.links')}</h3>
-            <nav className="flex flex-col space-y-2">
-              <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('nav.home')}
-              </Link>
-              <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.about')}
-              </Link>
-              <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.faq')}
-              </Link>
-              <Link to="/shipping" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.shipping')}
-              </Link>
-              <Link to="/returns" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.returns')}
-              </Link>
-              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.contact')}
-              </Link>
-            </nav>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
+            <ul className="space-y-2">
+              <li><Link to="/" className="text-sm hover:underline">{t('nav.home')}</Link></li>
+              <li><Link to="/about" className="text-sm hover:underline">{t('footer.about')}</Link></li>
+              <li><Link to="/sell" className="text-sm hover:underline">{t('nav.sell')}</Link></li>
+              <li><Link to="/cart" className="text-sm hover:underline">{t('nav.cart')}</Link></li>
+              <li><Link to="/profile" className="text-sm hover:underline">{t('nav.profile')}</Link></li>
+            </ul>
           </div>
-
-          {/* Legal Links */}
-          <div className="flex flex-col space-y-2">
-            <h3 className="text-lg font-semibold text-foreground">{t('footer.legal')}</h3>
-            <nav className="flex flex-col space-y-2">
-              <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.terms')}
-              </Link>
-              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.privacy')}
-              </Link>
-              <Link to="/cookies" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('footer.cookies')}
-              </Link>
-            </nav>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.help')}</h3>
+            <ul className="space-y-2">
+              <li><Link to="/faq" className="text-sm hover:underline">{t('footer.faq')}</Link></li>
+              <li><Link to="/shipping" className="text-sm hover:underline">{t('footer.shipping')}</Link></li>
+              <li><Link to="/returns" className="text-sm hover:underline">{t('footer.returns')}</Link></li>
+              <li><Link to="/contact" className="text-sm hover:underline">{t('footer.contact')}</Link></li>
+            </ul>
           </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.legal')}</h3>
+            <ul className="space-y-2">
+              <li><Link to="/terms" className="text-sm hover:underline">{t('footer.terms')}</Link></li>
+              <li><Link to="/privacy" className="text-sm hover:underline">{t('footer.privacy')}</Link></li>
+              <li><Link to="/cookies" className="text-sm hover:underline">{t('footer.cookies')}</Link></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="mt-8 pt-4 border-t border-primary/10 text-center text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} Pasar Pahing {t('footer.developedBy')} ID Cent. {t('common.allRightsReserved')}</p>
         </div>
       </div>
     </footer>
