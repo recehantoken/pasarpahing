@@ -155,7 +155,7 @@ const Auth = () => {
                   <span className="w-full border-t border-muted"></span>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">{t('auth.orEmail')}</span>
+                  <span className="bg-card px-2 text-muted-foreground">{t("OR LOGIN WITH EMAIL")}</span>
                 </div>
               </div>
 
