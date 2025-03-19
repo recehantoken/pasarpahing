@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Define available languages
@@ -15,7 +14,7 @@ export type Translations = {
 type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   translations: Translations;
 };
 
@@ -729,6 +728,56 @@ const initialTranslations: Translations = {
     en: 'Sorry, there was an error. Please try again.',
     id: 'Maaf, terjadi kesalahan. Silakan coba lagi.',
   },
+
+  // Footer (New Additions)
+  'footer.about': {
+    en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
+    id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Nikmati perdagangan yang hidup, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang ramai.',
+  },
+  'footer.quickLinks': {
+    en: 'Quick Links',
+    id: 'Tautan Cepat',
+  },
+  'footer.help': {
+    en: 'Help',
+    id: 'Bantuan',
+  },
+  'footer.faq': {
+    en: 'FAQ',
+    id: 'FAQ',
+  },
+  'footer.shipping': {
+    en: 'Shipping',
+    id: 'Pengiriman',
+  },
+  'footer.returns': {
+    en: 'Returns',
+    id: 'Pengembalian',
+  },
+  'footer.contact': {
+    en: 'Contact Us',
+    id: 'Hubungi Kami',
+  },
+  'footer.legal': {
+    en: 'Legal',
+    id: 'Hukum',
+  },
+  'footer.terms': {
+    en: 'Terms of Service',
+    id: 'Syarat Layanan',
+  },
+  'footer.privacy': {
+    en: 'Privacy Policy',
+    id: 'Kebijakan Privasi',
+  },
+  'footer.cookies': {
+    en: 'Cookies',
+    id: 'Kuki',
+  },
+  'footer.copyright': {
+    en: '© {year} Pasar Pahing developed by ID Cent. All rights reserved.',
+    id: '© {year} Pasar Pahing dikembangkan oleh ID Cent. Semua hak dilindungi.',
+  },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
@@ -745,10 +794,16 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     setLanguageState(lang);
   };
 
-  // Translation function
-  const t = (key: string): string => {
+  // Translation function with parameter support
+  const t = (key: string, params?: Record<string, string | number>): string => {
     if (translations[key] && translations[key][language]) {
-      return translations[key][language];
+      let translated = translations[key][language];
+      if (params) {
+        Object.entries(params).forEach(([param, value]) => {
+          translated = translated.replace(`{${param}}`, value.toString());
+        });
+      }
+      return translated;
     }
     // Fallback to English or key if translation not found
     return translations[key]?.['en'] || key;
