@@ -102,7 +102,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col pt-16"> {/* Added pt-16 to offset header */}
+    <div className="min-h-screen flex flex-col pt-16"> {/* Padding to offset header */}
       <Header />
       
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-15" 
@@ -155,7 +155,7 @@ const Auth = () => {
                   <span className="w-full border-t border-muted"></span>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">{t("OR LOGIN WITH EMAIL")}</span>
+                  <span className="bg-card px-2 text-muted-foreground">Or login with email</span>
                 </div>
               </div>
 
