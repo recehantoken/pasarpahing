@@ -102,7 +102,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pt-16"> {/* Added pt-16 to offset header */}
       <Header />
       
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-15" 
@@ -119,7 +119,9 @@ const Auth = () => {
               {isSignUp ? t('auth.createAccount') : t('auth.signIn')}
             </CardTitle>
             <CardDescription>
-              {isSignUp ? t('common.signup') : ""} {/* Removed t('common.login') */}
+              {isSignUp
+                ? t('common.signup')
+                : t('auth.dontHaveAccount') + " " + t('auth.signup').toLowerCase() + " now!"}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
