@@ -870,6 +870,22 @@ const initialTranslations: Translations = {
   en: 'Saving...',
   id: 'Menyimpan...',
 },
+'profile.changePicture': {
+  en: 'Change Picture',
+  id: 'Ubah Foto',
+},
+'profile.pictureUpdated': {
+  en: 'Your profile picture has been updated successfully',
+  id: 'Foto profil Anda telah berhasil diperbarui',
+},
+'profile.errorUploadingPicture': {
+  en: 'There was an error uploading your avatar',
+  id: 'Terjadi kesalahan saat mengunggah avatar Anda',
+},
+'common.uploading': {
+  en: 'Uploading...',
+  id: 'Mengunggah...',
+},
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
