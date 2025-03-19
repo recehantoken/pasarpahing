@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import Admin from "./pages/Admin";
+import About from "./pages/About"; // Added import
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -28,7 +28,6 @@ const queryClient = new QueryClient();
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { session, isLoading } = useAuth();
   
-  // Show nothing while checking auth state
   if (isLoading) {
     return null;
   }
@@ -76,7 +75,6 @@ const App = () => (
                     </ProtectedRoute>
                   } 
                 />
-                {/* Admin route - authentication is handled within the component */}
                 <Route path="/admin" element={<Admin />} />
                 {/* Footer Pages */}
                 <Route path="/faq" element={<FAQ />} />
@@ -86,6 +84,7 @@ const App = () => (
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
+                <Route path="/about" element={<About />} /> {/* Added route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Chatbot />

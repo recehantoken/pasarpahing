@@ -886,6 +886,26 @@ const initialTranslations: Translations = {
   en: 'Uploading...',
   id: 'Mengunggah...',
 },
+'about.title': {
+  en: 'About Us',
+  id: 'Tentang Kami',
+},
+'about.description': {
+  en: 'Pasar Pahing is a vibrant marketplace connecting buyers and sellers in a seamless, community-driven platform. We aim to empower local commerce and bring value to every transaction.',
+  id: 'Pasar Pahing adalah pasar yang dinamis yang menghubungkan pembeli dan penjual dalam platform yang mulus dan didorong oleh komunitas. Kami bertujuan untuk memberdayakan perdagangan lokal dan memberikan nilai pada setiap transaksi.',
+},
+'about.imageAlt': {
+  en: 'Our Team at Pasar Pahing',
+  id: 'Tim Kami di Pasar Pahing',
+},
+'about.mission': {
+  en: 'Our mission is to create an accessible, fair, and sustainable marketplace that supports small businesses and fosters economic growth.',
+  id: 'Misi kami adalah menciptakan pasar yang mudah diakses, adil, dan berkelanjutan yang mendukung usaha kecil dan memupuk pertumbuhan ekonomi.',
+},
+'footer.about': {
+  en: 'About Us',
+  id: 'Tentang Kami',
+},
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
