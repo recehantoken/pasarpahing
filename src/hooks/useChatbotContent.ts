@@ -1,27 +1,34 @@
-// useChatbotContent.ts
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export const useChatbotContent = (pageKey: string) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["chatbot-content", pageKey],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("page_content")
-        .select("title, content, image_url")
-        .eq("page_key", pageKey)
-        .single();
+export const useChatbotContent = (page: string) => {
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
 
-      if (error) throw error;
-      return data;
-    },
-  });
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const res = await fetch("https://<project-id>.functions.supabase.co/gemini-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: `Provide the full content for the ${page} page.` }],
+            language,
+            page,
+          }),
+        });
+        const { reply } = await res.json();
+        setContent(reply);
+      } catch (error) {
+        console.error(`Error fetching ${page} content:`, error);
+        setContent("Error loading content.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContent();
+  }, [page, language]);
 
-  return {
-    title: data?.title || "",
-    content: data?.content || "",
-    imageUrl: data?.image_url || "", // New field for image URL
-    loading: isLoading,
-    error,
-  };
+  return { content, loading };
 };

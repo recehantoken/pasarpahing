@@ -8,7 +8,7 @@ import { Clock } from "lucide-react";
 import { useChatbotContent } from "@/hooks/useChatbotContent";
 
 const Shipping = () => {
-  const { title, content, loading: contentLoading } = useChatbotContent("shipping");
+  const { content, loading: contentLoading } = useChatbotContent("shipping");
   const { data: shippingMethods, isLoading: methodsLoading } = useQuery({
     queryKey: ["shipping-methods"],
     queryFn: async () => {
@@ -25,7 +25,7 @@ const Shipping = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">{title}</h1>
+        <h1 className="text-3xl font-bold mb-6">Shipping Information</h1>
         <div className="space-y-8">
           {contentLoading ? (
             <p className="text-muted-foreground">Loading...</p>

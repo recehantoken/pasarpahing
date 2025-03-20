@@ -1,42 +1,23 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useChatbotContent } from "@/hooks/useChatbotContent";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const FAQ = () => {
-  const { title, content, loading } = useChatbotContent("faq");
-  const { t } = useLanguage();
-
-  // Replace literal "\n" with actual newlines for rendering
-  const formattedContent = content.replace(/\\n/g, "\n");
+  const { content, loading } = useChatbotContent("faq");
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
+    <div className="min-h-screen flex flex-col">
       <Header />
-
-      {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-12">
-        {/* Page Title */}
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-8 text-center">
-          {loading ? t("common.loading") : title}
-        </h1>
-
-        {/* FAQ Content as Plain Text */}
-        <div className="max-w-3xl mx-auto">
-          {loading ? (
-            <p className="text-muted-foreground text-center">{t("common.loading")}</p>
-          ) : content ? (
-            <div className="prose max-w-none text-muted-foreground whitespace-pre-wrap">
-              {formattedContent}
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-center">{t("faq.noContent")}</p>
-          )}
-        </div>
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">Frequently Asked Questions</h1>
+        {loading ? (
+          <p className="text-muted-foreground">Loading...</p>
+        ) : (
+          <div className="space-y-6 text-muted-foreground whitespace-pre-wrap">
+            {content}
+          </div>
+        )}
       </main>
-
-      {/* Footer */}
       <Footer />
     </div>
   );

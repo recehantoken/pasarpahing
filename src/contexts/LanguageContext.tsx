@@ -10,496 +10,368 @@ type Translations = {
 
 const initialTranslations: Translations = {
   // Common
-  "common.allRightsReserved": {
-    en: "All rights reserved.",
-    id: "Hak cipta dilindungi.",
+  'common.allRightsReserved': {
+    en: 'All rights reserved.',
+    id: 'Hak cipta dilindungi.',
   },
-  "common.loading": {
-    en: "Loading...",
-    id: "Memuat...",
+  'common.loading': {
+    en: 'Loading...',
+    id: 'Memuat...',
   },
-  "common.signup": {
-    en: "Sign up to join our community",
-    id: "Daftar untuk bergabung dengan komunitas kami",
+  'common.signup': {
+    en: 'Sign up to join our community',
+    id: 'Daftar untuk bergabung dengan komunitas kami',
   },
-  "common.login": {
-    en: "Sign in to your account",
-    id: "Masuk ke akun Anda",
+  'common.login': {
+    en: 'Sign in to your account',
+    id: 'Masuk ke akun Anda',
   },
-  "common.error": {
-    en: "Error",
-    id: "Kesalahan",
+  'common.error': {
+    en: 'Error',
+    id: 'Kesalahan',
   },
-  "common.save": {
-    en: "Save Changes",
-    id: "Simpan Perubahan",
+  'common.save': {
+    en: 'Save Changes',
+    id: 'Simpan Perubahan',
   },
-  "common.saving": {
-    en: "Saving...",
-    id: "Menyimpan...",
+  'common.saving': {
+    en: 'Saving...',
+    id: 'Menyimpan...',
   },
-  "common.uploading": {
-    en: "Uploading...",
-    id: "Mengunggah...",
+  'common.uploading': {
+    en: 'Uploading...',
+    id: 'Mengunggah...',
   },
 
   // Navigation (Header)
-  "nav.home": {
-    en: "Home",
-    id: "Beranda",
+  'nav.home': {
+    en: 'Home',
+    id: 'Beranda',
   },
-  "nav.sell": {
-    en: "Sell",
-    id: "Jual",
+  'nav.sell': {
+    en: 'Sell',
+    id: 'Jual',
   },
-  "nav.profile": {
-    en: "Profile",
-    id: "Profil",
+  'nav.profile': {
+    en: 'Profile',
+    id: 'Profil',
   },
-  "nav.cart": {
-    en: "Cart",
-    id: "Keranjang",
+  'nav.cart': {
+    en: 'Cart',
+    id: 'Keranjang',
   },
-  "nav.admin": {
-    en: "Admin",
-    id: "Admin",
+  'nav.admin': {
+    en: 'Admin',
+    id: 'Admin',
   },
-  "nav.login": {
-    en: "Sign In",
-    id: "Masuk",
+  'nav.login': {
+    en: 'Sign In',
+    id: 'Masuk',
   },
-  "nav.logout": {
-    en: "Sign Out",
-    id: "Keluar",
+  'nav.logout': {
+    en: 'Sign Out',
+    id: 'Keluar',
   },
 
   // Auth
-  "auth.signIn": {
-    en: "Sign In",
-    id: "Masuk",
+  'auth.signIn': {
+    en: 'Sign In',
+    id: 'Masuk',
   },
-  "auth.createAccount": {
-    en: "Create Account",
-    id: "Buat Akun",
+  'auth.createAccount': {
+    en: 'Create Account',
+    id: 'Buat Akun',
   },
-  "auth.email": {
-    en: "Email",
-    id: "Email",
+  'auth.email': {
+    en: 'Email',
+    id: 'Email',
   },
-  "auth.password": {
-    en: "Password",
-    id: "Kata Sandi",
+  'auth.password': {
+    en: 'Password',
+    id: 'Kata Sandi',
   },
-  "auth.firstName": {
-    en: "First Name",
-    id: "Nama Depan",
+  'auth.firstName': {
+    en: 'First Name',
+    id: 'Nama Depan',
   },
-  "auth.lastName": {
-    en: "Last Name",
-    id: "Nama Belakang",
+  'auth.lastName': {
+    en: 'Last Name',
+    id: 'Nama Belakang',
   },
-  "auth.signup": {
-    en: "Sign Up",
-    id: "Daftar",
+  'auth.signup': {
+    en: 'Sign Up',
+    id: 'Daftar',
   },
-  "auth.login": {
-    en: "Sign In",
-    id: "Masuk",
+  'auth.login': {
+    en: 'Sign In',
+    id: 'Masuk',
   },
-  "auth.alreadyHaveAccount": {
-    en: "Already have an account? Sign in",
-    id: "Sudah memiliki akun? Masuk",
+  'auth.alreadyHaveAccount': {
+    en: 'Already have an account? Sign in',
+    id: 'Sudah memiliki akun? Masuk',
   },
-  "auth.dontHaveAccount": {
-    en: "Don’t have an account?",
-    id: "Belum memiliki akun?",
+  'auth.dontHaveAccount': {
+    en: 'Don’t have an account?',
+    id: 'Belum memiliki akun?',
   },
-  "auth.loggedOut": {
-    en: "Signed out",
-    id: "Keluar",
+  'auth.loggedOut': {
+    en: 'Signed out',
+    id: 'Keluar',
   },
 
   // Profile
-  "profile.title": {
-    en: "My Profile",
-    id: "Profil Saya",
+  'profile.title': {
+    en: 'My Profile',
+    id: 'Profil Saya',
   },
-  "profile.picture": {
-    en: "Profile Picture",
-    id: "Foto Profil",
+  'profile.picture': {
+    en: 'Profile Picture',
+    id: 'Foto Profil',
   },
-  "profile.pictureDescription": {
-    en: "Upload a picture to personalize your profile",
-    id: "Unggah foto untuk mempersonalisasi profil Anda",
+  'profile.pictureDescription': {
+    en: 'Upload a picture to personalize your profile',
+    id: 'Unggah foto untuk mempersonalisasi profil Anda',
   },
-  "profile.changePicture": {
-    en: "Change Picture",
-    id: "Ubah Foto",
+  'profile.changePicture': {
+    en: 'Change Picture',
+    id: 'Ubah Foto',
   },
-  "profile.pictureUpdated": {
-    en: "Your profile picture has been updated successfully",
-    id: "Foto profil Anda telah berhasil diperbarui",
+  'profile.pictureUpdated': {
+    en: 'Your profile picture has been updated successfully',
+    id: 'Foto profil Anda telah berhasil diperbarui',
   },
-  "profile.errorUploadingPicture": {
-    en: "There was an error uploading your avatar",
-    id: "Terjadi kesalahan saat mengunggah avatar Anda",
+  'profile.errorUploadingPicture': {
+    en: 'There was an error uploading your avatar',
+    id: 'Terjadi kesalahan saat mengunggah avatar Anda',
   },
-  "profile.personalInfo": {
-    en: "Personal Information",
-    id: "Informasi Pribadi",
+  'profile.personalInfo': {
+    en: 'Personal Information',
+    id: 'Informasi Pribadi',
   },
-  "profile.personalInfoDescription": {
-    en: "Update your personal information and manage your account",
-    id: "Perbarui informasi pribadi Anda dan kelola akun Anda",
+  'profile.personalInfoDescription': {
+    en: 'Update your personal information and manage your account',
+    id: 'Perbarui informasi pribadi Anda dan kelola akun Anda',
   },
-  "profile.emailLocked": {
-    en: "Email cannot be changed",
-    id: "Email tidak dapat diubah",
+  'profile.emailLocked': {
+    en: 'Email cannot be changed',
+    id: 'Email tidak dapat diubah',
   },
-  "profile.errorLoading": {
-    en: "An error occurred while loading your profile",
-    id: "Terjadi kesalahan saat memuat profil Anda",
+  'profile.errorLoading': {
+    en: 'An error occurred while loading your profile',
+    id: 'Terjadi kesalahan saat memuat profil Anda',
   },
-  "profile.errorUpdating": {
-    en: "An error occurred while updating your profile",
-    id: "Terjadi kesalahan saat memperbarui profil Anda",
+  'profile.errorUpdating': {
+    en: 'An error occurred while updating your profile',
+    id: 'Terjadi kesalahan saat memperbarui profil Anda',
   },
-  "profile.updated": {
-    en: "Profile updated",
-    id: "Profil diperbarui",
+  'profile.updated': {
+    en: 'Profile updated',
+    id: 'Profil diperbarui',
   },
-  "profile.updatedDescription": {
-    en: "Your profile has been successfully updated.",
-    id: "Profil Anda telah berhasil diperbarui.",
+  'profile.updatedDescription': {
+    en: 'Your profile has been successfully updated.',
+    id: 'Profil Anda telah berhasil diperbarui.',
   },
-  "profile.signOutSuccess": {
-    en: "You have been signed out successfully.",
-    id: "Anda telah berhasil keluar.",
+  'profile.signOutSuccess': {
+    en: 'You have been signed out successfully.',
+    id: 'Anda telah berhasil keluar.',
   },
-  "profile.changePassword": {
-    en: "Change Password",
-    id: "Ubah Kata Sandi",
+  'profile.changePassword': {
+    en: 'Change Password',
+    id: 'Ubah Kata Sandi',
   },
-  "profile.changePasswordDescription": {
-    en: "Update your account password",
-    id: "Perbarui kata sandi akun Anda",
+  'profile.changePasswordDescription': {
+    en: 'Update your account password',
+    id: 'Perbarui kata sandi akun Anda',
   },
-  "profile.newPasswordPlaceholder": {
-    en: "Enter new password",
-    id: "Masukkan kata sandi baru",
+  'profile.newPasswordPlaceholder': {
+    en: 'Enter new password',
+    id: 'Masukkan kata sandi baru',
   },
-  "profile.changePasswordButton": {
-    en: "Change Password",
-    id: "Ubah Kata Sandi",
+  'profile.changePasswordButton': {
+    en: 'Change Password',
+    id: 'Ubah Kata Sandi',
   },
-  "profile.passwordUpdated": {
-    en: "Password updated",
-    id: "Kata sandi diperbarui",
+  'profile.passwordUpdated': {
+    en: 'Password updated',
+    id: 'Kata sandi diperbarui',
   },
-  "profile.passwordUpdatedDescription": {
-    en: "Your password has been successfully updated.",
-    id: "Kata sandi Anda telah berhasil diperbarui.",
+  'profile.passwordUpdatedDescription': {
+    en: 'Your password has been successfully updated.',
+    id: 'Kata sandi Anda telah berhasil diperbarui.',
   },
-  "profile.errorPassword": {
-    en: "An error occurred while updating your password",
-    id: "Terjadi kesalahan saat memperbarui kata sandi Anda",
+  'profile.errorPassword': {
+    en: 'An error occurred while updating your password',
+    id: 'Terjadi kesalahan saat memperbarui kata sandi Anda',
   },
-  "profile.theme": {
-    en: "Theme Preferences",
-    id: "Preferensi Tema",
+  'profile.theme': {
+    en: 'Theme Preferences',
+    id: 'Preferensi Tema',
   },
-  "profile.themeDescription": {
-    en: "Customize the appearance of your account",
-    id: "Sesuaikan tampilan akun Anda",
+  'profile.themeDescription': {
+    en: 'Customize the appearance of your account',
+    id: 'Sesuaikan tampilan akun Anda',
   },
-  "profile.darkMode": {
-    en: "Dark Mode",
-    id: "Mode Gelap",
+  'profile.darkMode': {
+    en: 'Dark Mode',
+    id: 'Mode Gelap',
   },
-  "profile.darkModeDescription": {
-    en: "Toggle between light and dark mode",
-    id: "Beralih antara mode terang dan gelap",
+  'profile.darkModeDescription': {
+    en: 'Toggle between light and dark mode',
+    id: 'Beralih antara mode terang dan gelap',
   },
 
   // About
-  "about.title": {
-    en: "About Us",
-    id: "Tentang Kami",
+  'about.title': {
+    en: 'About Us',
+    id: 'Tentang Kami',
   },
-  "about.description": {
-    en: "Pasar Pahing is a vibrant marketplace connecting buyers and sellers in a seamless, community-driven platform. We aim to empower local commerce and bring value to every transaction.",
-    id: "Pasar Pahing adalah pasar yang dinamis yang menghubungkan pembeli dan penjual dalam platform yang mulus dan didorong oleh komunitas. Kami bertujuan untuk memberdayakan perdagangan lokal dan memberikan nilai pada setiap transaksi.",
+  'about.description': {
+    en: 'Pasar Pahing is a vibrant marketplace connecting buyers and sellers in a seamless, community-driven platform. We aim to empower local commerce and bring value to every transaction.',
+    id: 'Pasar Pahing adalah pasar yang dinamis yang menghubungkan pembeli dan penjual dalam platform yang mulus dan didorong oleh komunitas. Kami bertujuan untuk memberdayakan perdagangan lokal dan memberikan nilai pada setiap transaksi.',
   },
-  "about.imageAlt": {
-    en: "Our Team at Pasar Pahing",
-    id: "Tim Kami di Pasar Pahing",
+  'about.imageAlt': {
+    en: 'Our Team at Pasar Pahing',
+    id: 'Tim Kami di Pasar Pahing',
   },
-  "about.mission": {
-    en: "Our mission is to create an accessible, fair, and sustainable marketplace that supports small businesses and fosters economic growth.",
-    id: "Misi kami adalah menciptakan pasar yang mudah diakses, adil, dan berkelanjutan yang mendukung usaha kecil dan memupuk pertumbuhan ekonomi.",
+  'about.mission': {
+    en: 'Our mission is to create an accessible, fair, and sustainable marketplace that supports small businesses and fosters economic growth.',
+    id: 'Misi kami adalah menciptakan pasar yang mudah diakses, adil, dan berkelanjutan yang mendukung usaha kecil dan memupuk pertumbuhan ekonomi.',
   },
-  "about.missionTitle": {
-    en: "Our Mission",
-    id: "Misi Kami",
+  'about.missionTitle': {
+    en: 'Our Mission',
+    id: 'Misi Kami',
   },
-  "about.valuesTitle": {
-    en: "Our Values",
-    id: "Nilai Kami",
+  'about.valuesTitle': {
+    en: 'Our Values',
+    id: 'Nilai Kami',
   },
-  "about.values.community": {
-    en: "Community",
-    id: "Komunitas",
+  'about.values.community': {
+    en: 'Community',
+    id: 'Komunitas',
   },
-  "about.values.communityDesc": {
-    en: "We foster a strong community of buyers and sellers, building trust and connection.",
-    id: "Kami membina komunitas yang kuat antara pembeli dan penjual, membangun kepercayaan dan koneksi.",
+  'about.values.communityDesc': {
+    en: 'We foster a strong community of buyers and sellers, building trust and connection.',
+    id: 'Kami membina komunitas yang kuat antara pembeli dan penjual, membangun kepercayaan dan koneksi.',
   },
-  "about.values.authenticity": {
-    en: "Authenticity",
-    id: "Keaslian",
+  'about.values.authenticity': {
+    en: 'Authenticity',
+    id: 'Keaslian',
   },
-  "about.values.authenticityDesc": {
-    en: "We celebrate genuine Indonesian products and heritage crafts.",
-    id: "Kami merayakan produk asli Indonesia dan kerajinan warisan.",
+  'about.values.authenticityDesc': {
+    en: 'We celebrate genuine Indonesian products and heritage crafts.',
+    id: 'Kami merayakan produk asli Indonesia dan kerajinan warisan.',
   },
-  "about.values.sustainability": {
-    en: "Sustainability",
-    id: "Keberlanjutan",
+  'about.values.sustainability': {
+    en: 'Sustainability',
+    id: 'Keberlanjutan',
   },
-  "about.values.sustainabilityDesc": {
-    en: "We promote eco-friendly practices and support sustainable growth.",
-    id: "Kami mempromosikan praktik ramah lingkungan dan mendukung pertumbuhan berkelanjutan.",
+  'about.values.sustainabilityDesc': {
+    en: 'We promote eco-friendly practices and support sustainable growth.',
+    id: 'Kami mempromosikan praktik ramah lingkungan dan mendukung pertumbuhan berkelanjutan.',
   },
-  "about.teamTitle": {
-    en: "Meet Our Team",
-    id: "Temui Tim Kami",
+  'about.teamTitle': {
+    en: 'Meet Our Team',
+    id: 'Temui Tim Kami',
   },
-  "about.team.role1": {
-    en: "Founder & CEO",
-    id: "Pendiri & CEO",
+  'about.team.role1': {
+    en: 'Founder & CEO',
+    id: 'Pendiri & CEO',
   },
-  "about.team.role2": {
-    en: "Chief Marketing Officer",
-    id: "Kepala Pemasaran",
+  'about.team.role2': {
+    en: 'Chief Marketing Officer',
+    id: 'Kepala Pemasaran',
   },
-  "about.team.role3": {
-    en: "Lead Developer",
-    id: "Pengembang Utama",
-  },
-  // FAQ
-  "faq.noContent": { en: "No FAQs available at the moment.", id: "Tidak ada FAQ yang tersedia saat ini." 
+  'about.team.role3': {
+    en: 'Lead Developer',
+    id: 'Pengembang Utama',
   },
 
   // Footer
-  "footer.description": {
-    en: "Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.",
-    id: "Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Rasakan perdagangan yang semarak, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang hidup.",
+  'footer.description': {
+    en: 'Pasar Pahing is a traditional Indonesian market celebrating local culture and authentic Indonesian products. Experience vibrant trade, heritage crafts, and community spirit in a lively marketplace setting.',
+    id: 'Pasar Pahing adalah pasar tradisional Indonesia yang merayakan budaya lokal dan produk autentik Indonesia. Rasakan perdagangan yang semarak, kerajinan warisan, dan semangat komunitas dalam suasana pasar yang hidup.',
   },
-  "footer.quickLinks": {
-    en: "Quick Links",
-    id: "Tautan Cepat",
+  'footer.quickLinks': {
+    en: 'Quick Links',
+    id: 'Tautan Cepat',
   },
-  "footer.help": {
-    en: "Help",
-    id: "Bantuan",
+  'footer.help': {
+    en: 'Help',
+    id: 'Bantuan',
   },
-  "footer.about": {
-    en: "About Us",
-    id: "Tentang Kami",
+  'footer.about': {
+    en: 'About Us',
+    id: 'Tentang Kami',
   },
-  "footer.faq": {
-    en: "FAQ",
-    id: "FAQ",
+  'footer.faq': {
+    en: 'FAQ',
+    id: 'FAQ',
   },
-  "footer.shipping": {
-    en: "Shipping",
-    id: "Pengiriman",
+  'footer.shipping': {
+    en: 'Shipping',
+    id: 'Pengiriman',
   },
-  "footer.returns": {
-    en: "Returns",
-    id: "Pengembalian",
+  'footer.returns': {
+    en: 'Returns',
+    id: 'Pengembalian',
   },
-  "footer.contact": {
-    en: "Contact Us",
-    id: "Hubungi Kami",
+  'footer.contact': {
+    en: 'Contact Us',
+    id: 'Hubungi Kami',
   },
-  "footer.legal": {
-    en: "Legal",
-    id: "Hukum",
+  'footer.legal': {
+    en: 'Legal',
+    id: 'Hukum',
   },
-  "footer.terms": {
-    en: "Terms of Service",
-    id: "Ketentuan Layanan",
+  'footer.terms': {
+    en: 'Terms of Service',
+    id: 'Ketentuan Layanan',
   },
-  "footer.privacy": {
-    en: "Privacy Policy",
-    id: "Kebijakan Privasi",
+  'footer.privacy': {
+    en: 'Privacy Policy',
+    id: 'Kebijakan Privasi',
   },
-  "footer.cookies": {
-    en: "Cookies",
-    id: "Cookie",
+  'footer.cookies': {
+    en: 'Cookies',
+    id: 'Cookie',
   },
-  "footer.developedBy": {
-    en: "developed by",
-    id: "dikembangkan oleh",
+  'footer.developedBy': {
+    en: 'developed by',
+    id: 'dikembangkan oleh',
   },
 
   // Index
-  "index.welcome": {
-    en: "Welcome to Pasar Pahing",
-    id: "Selamat Datang di Pasar Pahing",
+  'index.welcome': {
+    en: 'Welcome to Pasar Pahing',
+    id: 'Selamat Datang di Pasar Pahing',
   },
-  "index.description": {
-    en: "Discover authentic Indonesian products and vibrant local trade in our community-driven marketplace.",
-    id: "Temukan produk autentik Indonesia dan perdagangan lokal yang semarak di pasar berbasis komunitas kami.",
+  'index.description': {
+    en: 'Discover authentic Indonesian products and vibrant local trade in our community-driven marketplace.',
+    id: 'Temukan produk autentik Indonesia dan perdagangan lokal yang semarak di pasar berbasis komunitas kami.',
   },
-  "index.featuredProducts": {
-    en: "Featured Products",
-    id: "Produk Unggulan",
-  },
-  "index.welcome": {
-    en: "Welcome to Pasar Pahing",
-    id: "Selamat Datang di Pasar Pahing",
-  },
-  "index.description": {
-    en: "Discover authentic Indonesian products and vibrant local trade in our community-driven marketplace.",
-    id: "Temukan produk autentik Indonesia dan perdagangan lokal yang semarak di pasar berbasis komunitas kami.",
-  },
-  "index.featuredProducts": {
-    en: "Featured Products",
-    id: "Produk Unggulan",
+  'index.featuredProducts': {
+    en: 'Featured Products',
+    id: 'Produk Unggulan',
   },
 
   // ProductCard
-  "product.flashSale": {
-    en: "Flash Sale",
-    id: "Penjualan Kilat",
+  'product.flashSale': {
+    en: 'Flash Sale',
+    id: 'Penjualan Kilat',
   },
-  "product.new": {
-    en: "New",
-    id: "Baru",
+  'product.new': {
+    en: 'New',
+    id: 'Baru',
   },
-  "product.noImage": {
-    en: "No Image",
-    id: "Tidak Ada Gambar",
+  'product.noImage': {
+    en: 'No Image',
+    id: 'Tidak Ada Gambar',
   },
-  "product.addToCart": {
-    en: "Add to Cart",
-    id: "Tambah ke Keranjang",
+  'product.addToCart': {
+    en: 'Add to Cart',
+    id: 'Tambah ke Keranjang',
   },
-  "product.flashSale": {
-    en: "Flash Sale",
-    id: "Penjualan Kilat",
-  },
-  "product.new": {
-    en: "New",
-    id: "Baru",
-  },
-  "product.noImage": {
-    en: "No Image",
-    id: "Tidak Ada Gambar",
-  },
-  "product.addToCart": {
-    en: "Add to Cart",
-    id: "Tambah ke Keranjang",
-  },
-
-  // MetaMask (New Additions)
-  "metamask.notDetected": {
-    en: "MetaMask Not Detected",
-    id: "MetaMask Tidak Terdeteksi",
-  },
-  "metamask.installPrompt": {
-    en: "Please install the MetaMask browser extension to use this feature.",
-    id: "Silakan instal ekstensi browser MetaMask untuk menggunakan fitur ini.",
-  },
-  "metamask.loginSuccess": {
-    en: "Logged in successfully with MetaMask!",
-    id: "Berhasil masuk dengan MetaMask!",
-  },
-  "metamask.loginFailed": {
-    en: "Login Failed",
-    id: "Login Gagal",
-  },
-  "metamask.loginError": {
-    en: "There was an error connecting with MetaMask.",
-    id: "Terjadi kesalahan saat menghubungkan dengan MetaMask.",
-  },
-  "metamask.login": {
-    en: "Login with MetaMask",
-    id: "Masuk dengan MetaMask",
-  },
-
-  // Banners (New Additions)
-  "banner.crypto.title": {
-    en: "Trade with Crypto",
-    id: "Berdagang dengan Kripto",
-  },
-  "banner.crypto.description": {
-    en: "Now accepting Bitcoin, Ethereum and other cryptocurrencies for all purchases",
-    id: "Sekarang menerima Bitcoin, Ethereum, dan kriptocurrency lainnya untuk semua pembelian",
-  },
-  "banner.crypto.button": {
-    en: "Learn More",
-    id: "Pelajari Lebih Lanjut",
-  },
-  "banner.newArrivals.title": {
-    en: "New Arrivals",
-    id: "Kedatangan Baru",
-  },
-  "banner.newArrivals.description": {
-    en: "Check out our latest gold and silver collections fresh from the vault",
-    id: "Lihat koleksi emas dan perak terbaru kami langsung dari brankas",
-  },
-  "banner.newArrivals.button": {
-    en: "Explore",
-    id: "Jelajahi",
-  },
-  "banner.flashSale.title": {
-    en: "Flash Sale - 24 Hours Only!",
-    id: "Penjualan Kilat - Hanya 24 Jam!",
-  },
-  "banner.flashSale.description": {
-    en: "Limited time offers on premium jewelry - ends midnight tonight!",
-    id: "Penawaran waktu terbatas untuk perhiasan premium - berakhir tengah malam ini!",
-  },
-  "banner.flashSale.button": {
-    en: "Shop Now",
-    id: "Belanja Sekarang",
-  },
-  // Inside initialTranslations
-"contact.getInTouch": { en: "Get in Touch", id: "Hubungi Kami" },
-"contact.messageSent": { en: "Message Sent", id: "Pesan Terkirim" },
-"contact.messageSentDescription": { en: "We'll get back to you soon!", id: "Kami akan segera menghubungi Anda!" },
-"contact.namePlaceholder": { en: "Your name", id: "Nama Anda" },
-"contact.emailPlaceholder": { en: "Your email", id: "Email Anda" },
-"contact.subject": { en: "Subject", id: "Subjek" },
-"contact.subjectPlaceholder": { en: "Subject of your message", id: "Subjek pesan Anda" },
-"contact.message": { en: "Message", id: "Pesan" },
-"contact.messagePlaceholder": { en: "Your message", id: "Pesan Anda" },
-"contact.sendMessage": { en: "Send Message", id: "Kirim Pesan" },
-"contact.officeInfo": { en: "Office Information", id: "Informasi Kantor" },
-"contact.findUs": { en: "Find Us", id: "Temukan Kami" },
-"contact.mapTitle": { en: "Our Office Location", id: "Lokasi Kantor Kami" },
-"contact.officeImageAlt": { en: "Our Office", id: "Kantor Kami" },
-// Inside initialTranslations
-"admin.products": { en: "Products", id: "Produk" },
-"admin.productsPageTitle": { en: "Products Page Title", id: "Judul Halaman Produk" },
-"admin.productsPageContent": { en: "Products Page Content", id: "Konten Halaman Produk" },
-"admin.shippingPageTitle": { en: "Shipping Page Title", id: "Judul Halaman Pengiriman" },
-"admin.shippingPageContent": { en: "Shipping Page Content", id: "Konten Halaman Pengiriman" },
-"admin.cookies": { en: "Cookies", id: "Cookie" },
-"admin.cookiesPageTitle": { en: "Cookies Page Title", id: "Judul Halaman Cookie" },
-"admin.cookiesPageContent": { en: "Cookies Page Content", id: "Konten Halaman Cookie" },
-"admin.privacy": { en: "Privacy", id: "Privasi" },
-"admin.privacyPageTitle": { en: "Privacy Page Title", id: "Judul Halaman Privasi" },
-"admin.privacyPageContent": { en: "Privacy Page Content", id: "Konten Halaman Privasi" },
-"admin.terms": { en: "Terms", id: "Ketentuan" },
-"admin.termsPageTitle": { en: "Terms Page Title", id: "Judul Halaman Ketentuan" },
-"admin.termsPageContent": { en: "Terms Page Content", id: "Konten Halaman Ketentuan" },
-"admin.contentSaved": { en: "Content Saved", id: "Konten Disimpan" },
-"admin.pageUpdated": { en: "page content has been updated.", id: "konten halaman telah diperbarui." },
-"admin.saveFailed": { en: "Failed to save content", id: "Gagal menyimpan konten" },
 };
 
 type LanguageContextType = {
