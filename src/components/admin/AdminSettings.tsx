@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,34 +13,30 @@ export const AdminSettings = () => {
     <Card>
       <CardHeader>
         <CardTitle>{t('admin.settings')}</CardTitle>
-        <CardDescription>
-          Manage your store settings and preferences
-        </CardDescription>
+        <CardDescription>{t('admin.contentDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="general">
           <TabsList className="mb-4">
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="payments">Payments</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="general">{t('admin.general')}</TabsTrigger>
+            <TabsTrigger value="payments">{t('admin.payments')}</TabsTrigger>
+            <TabsTrigger value="notifications">{t('admin.notifications')}</TabsTrigger>
+            <TabsTrigger value="security">{t('admin.security')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="general" className="space-y-4">
             <div className="space-y-4">
               <div>
-                <Label htmlFor="store-name">Store Name</Label>
+                <Label htmlFor="store-name">{t('admin.storeName')}</Label>
                 <Input id="store-name" defaultValue="Recehan Gold" />
               </div>
-              
               <div>
-                <Label htmlFor="store-email">Store Email</Label>
+                <Label htmlFor="store-email">{t('admin.storeEmail')}</Label>
                 <Input id="store-email" defaultValue="info@recehan.gold" type="email" />
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="maintenance-mode" />
-                <Label htmlFor="maintenance-mode">Maintenance Mode</Label>
+                <Label htmlFor="maintenance-mode">{t('admin.maintenanceMode')}</Label>
               </div>
             </div>
           </TabsContent>
@@ -50,17 +45,15 @@ export const AdminSettings = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Switch id="payment-paypal" defaultChecked />
-                <Label htmlFor="payment-paypal">PayPal</Label>
+                <Label htmlFor="payment-paypal">{t('admin.paymentPaypal')}</Label>
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="payment-stripe" defaultChecked />
-                <Label htmlFor="payment-stripe">Stripe</Label>
+                <Label htmlFor="payment-stripe">{t('admin.paymentStripe')}</Label>
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="payment-crypto" defaultChecked />
-                <Label htmlFor="payment-crypto">Cryptocurrency</Label>
+                <Label htmlFor="payment-crypto">{t('admin.paymentCrypto')}</Label>
               </div>
             </div>
           </TabsContent>
@@ -69,17 +62,15 @@ export const AdminSettings = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Switch id="notify-orders" defaultChecked />
-                <Label htmlFor="notify-orders">New Order Notifications</Label>
+                <Label htmlFor="notify-orders">{t('admin.notifyOrders')}</Label>
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="notify-products" defaultChecked />
-                <Label htmlFor="notify-products">Low Stock Notifications</Label>
+                <Label htmlFor="notify-products">{t('admin.notifyProducts')}</Label>
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="notify-users" />
-                <Label htmlFor="notify-users">New User Registrations</Label>
+                <Label htmlFor="notify-users">{t('admin.notifyUsers')}</Label>
               </div>
             </div>
           </TabsContent>
@@ -88,16 +79,14 @@ export const AdminSettings = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Switch id="security-2fa" />
-                <Label htmlFor="security-2fa">Require 2FA for Admin Users</Label>
+                <Label htmlFor="security-2fa">{t('admin.security2fa')}</Label>
               </div>
-              
               <div className="flex items-center space-x-2">
                 <Switch id="security-login" defaultChecked />
-                <Label htmlFor="security-login">Login Attempt Monitoring</Label>
+                <Label htmlFor="security-login">{t('admin.securityLogin')}</Label>
               </div>
-              
               <div>
-                <Label htmlFor="session-timeout">Admin Session Timeout (minutes)</Label>
+                <Label htmlFor="session-timeout">{t('admin.sessionTimeout')}</Label>
                 <Input id="session-timeout" defaultValue="30" type="number" />
               </div>
             </div>

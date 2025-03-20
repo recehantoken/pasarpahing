@@ -372,6 +372,281 @@ const initialTranslations: Translations = {
     en: 'Add to Cart',
     id: 'Tambah ke Keranjang',
   },
+  // Admin Dashboard
+  'admin.dashboard': {
+    en: 'Dashboard',
+    id: 'Dasbor',
+  },
+  'admin.products': {
+    en: 'Products',
+    id: 'Produk',
+  },
+  'admin.categories': {
+    en: 'Categories',
+    id: 'Kategori',
+  },
+  'admin.users': {
+    en: 'Users',
+    id: 'Pengguna',
+  },
+
+  // Admin Settings
+  'admin.settings': {
+    en: 'Settings',
+    id: 'Pengaturan',
+  },
+  'admin.general': {
+    en: 'General',
+    id: 'Umum',
+  },
+  'admin.payments': {
+    en: 'Payments',
+    id: 'Pembayaran',
+  },
+  'admin.notifications': {
+    en: 'Notifications',
+    id: 'Notifikasi',
+  },
+  'admin.security': {
+    en: 'Security',
+    id: 'Keamanan',
+  },
+  'admin.storeName': {
+    en: 'Store Name',
+    id: 'Nama Toko',
+  },
+  'admin.storeEmail': {
+    en: 'Store Email',
+    id: 'Email Toko',
+  },
+  'admin.maintenanceMode': {
+    en: 'Maintenance Mode',
+    id: 'Mode Pemeliharaan',
+  },
+  'admin.paymentPaypal': {
+    en: 'PayPal',
+    id: 'PayPal',
+  },
+  'admin.paymentStripe': {
+    en: 'Stripe',
+    id: 'Stripe',
+  },
+  'admin.paymentCrypto': {
+    en: 'Cryptocurrency',
+    id: 'Kriptocurrency',
+  },
+  'admin.notifyOrders': {
+    en: 'New Order Notifications',
+    id: 'Notifikasi Pesanan Baru',
+  },
+  'admin.notifyProducts': {
+    en: 'Low Stock Notifications',
+    id: 'Notifikasi Stok Rendah',
+  },
+  'admin.notifyUsers': {
+    en: 'New User Registrations',
+    id: 'Pendaftaran Pengguna Baru',
+  },
+  'admin.security2fa': {
+    en: 'Require 2FA for Admin Users',
+    id: 'Wajibkan 2FA untuk Pengguna Admin',
+  },
+  'admin.securityLogin': {
+    en: 'Login Attempt Monitoring',
+    id: 'Pemantauan Upaya Login',
+  },
+  'admin.sessionTimeout': {
+    en: 'Admin Session Timeout (minutes)',
+    id: 'Batas Waktu Sesi Admin (menit)',
+  },
+
+  // Admin Products
+  'admin.addProduct': {
+    en: 'Add Product',
+    id: 'Tambah Produk',
+  },
+  'admin.editProduct': {
+    en: 'Edit Product',
+    id: 'Edit Produk',
+  },
+  'admin.deleteProduct': {
+    en: 'Delete Product',
+    id: 'Hapus Produk',
+  },
+  'admin.productName': {
+    en: 'Name',
+    id: 'Nama',
+  },
+  'admin.productPrice': {
+    en: 'Price',
+    id: 'Harga',
+  },
+  'admin.productDescription': {
+    en: 'Description',
+    id: 'Deskripsi',
+  },
+  'admin.productImage': {
+    en: 'Image',
+    id: 'Gambar',
+  },
+  'admin.productCategory': {
+    en: 'Category',
+    id: 'Kategori',
+  },
+  'admin.productStatus': {
+    en: 'Status',
+    id: 'Status',
+  },
+  'admin.markAsNew': {
+    en: 'Mark as New',
+    id: 'Tandai sebagai Baru',
+  },
+  'admin.flashSale': {
+    en: 'Flash Sale',
+    id: 'Penjualan Kilat',
+  },
+  'admin.addProductDescription': {
+    en: 'Fill in the details to add a new product to your store.',
+    id: 'Isi detail untuk menambahkan produk baru ke toko Anda.',
+  },
+  'admin.editProductDescription': {
+    en: 'Make changes to the product details.',
+    id: 'Lakukan perubahan pada detail produk.',
+  },
+  'admin.deleteProductDescription': {
+    en: 'Are you sure you want to delete this product? This action cannot be undone.',
+    id: 'Apakah Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.',
+  },
+
+  // Admin Categories
+  'admin.addCategory': {
+    en: 'Add Category',
+    id: 'Tambah Kategori',
+  },
+  'admin.editCategory': {
+    en: 'Edit Category',
+    id: 'Edit Kategori',
+  },
+  'admin.addCategoryDescription': {
+    en: 'Add a new category to organize your products',
+    id: 'Tambahkan kategori baru untuk mengatur produk Anda',
+  },
+  'admin.editCategoryDescription': {
+    en: 'Edit category details',
+    id: 'Edit detail kategori',
+  },
+
+  // Admin Content Management
+  'admin.contentManagement': {
+    en: 'Content Management',
+    id: 'Manajemen Konten',
+  },
+  'admin.contentDescription': {
+    en: 'Edit website content across different pages',
+    id: 'Edit konten situs web di berbagai halaman',
+  },
+  'admin.home': {
+    en: 'Home',
+    id: 'Beranda',
+  },
+  'admin.productsPage': {
+    en: 'Products',
+    id: 'Produk',
+  },
+  'admin.about': {
+    en: 'About',
+    id: 'Tentang',
+  },
+  'admin.contact': {
+    en: 'Contact',
+    id: 'Kontak',
+  },
+  'admin.faq': {
+    en: 'FAQ',
+    id: 'FAQ',
+  },
+  'admin.shipping': {
+    en: 'Shipping',
+    id: 'Pengiriman',
+  },
+  'admin.heroTitle': {
+    en: 'Hero Title',
+    id: 'Judul Hero',
+  },
+  'admin.heroSubtitle': {
+    en: 'Hero Subtitle',
+    id: 'Subjudul Hero',
+  },
+  'admin.heroImage': {
+    en: 'Hero Image URL',
+    id: 'URL Gambar Hero',
+  },
+  'admin.featuredProductsTitle': {
+    en: 'Featured Products Title',
+    id: 'Judul Produk Unggulan',
+  },
+  'admin.ctaText': {
+    en: 'Call to Action Text',
+    id: 'Teks Panggilan untuk Bertindak',
+  },
+  'admin.productsPageTitle': {
+    en: 'Products Page Title',
+    id: 'Judul Halaman Produk',
+  },
+  'admin.productsPageDescription': {
+    en: 'Products Page Description',
+    id: 'Deskripsi Halaman Produk',
+  },
+  'admin.aboutPageTitle': {
+    en: 'About Page Title',
+    id: 'Judul Halaman Tentang',
+  },
+  'admin.aboutPageContent': {
+    en: 'About Page Content',
+    id: 'Konten Halaman Tentang',
+  },
+  'admin.contactPageTitle': {
+    en: 'Contact Page Title',
+    id: 'Judul Halaman Kontak',
+  },
+  'admin.contactInfo': {
+    en: 'Contact Information',
+    id: 'Informasi Kontak',
+  },
+  'admin.faqPageTitle': {
+    en: 'FAQ Page Title',
+    id: 'Judul Halaman FAQ',
+  },
+  'admin.faqContent': {
+    en: 'FAQ Content',
+    id: 'Konten FAQ',
+  },
+  'admin.shippingPageTitle': {
+    en: 'Shipping Page Title',
+    id: 'Judul Halaman Pengiriman',
+  },
+  'admin.shippingContent': {
+    en: 'Shipping Policy Content',
+    id: 'Konten Kebijakan Pengiriman',
+  },
+
+  // Common Actions
+  'common.cancel': {
+    en: 'Cancel',
+    id: 'Batal',
+  },
+  'common.save': {
+    en: 'Save Changes',
+    id: 'Simpan Perubahan',
+  },
+  'common.edit': {
+    en: 'Edit',
+    id: 'Edit',
+  },
+  'common.delete': {
+    en: 'Delete',
+    id: 'Hapus',
+  },
 };
 
 type LanguageContextType = {
