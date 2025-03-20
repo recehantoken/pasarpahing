@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useChatbotContent } from "@/hooks/useChatbotContent";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -53,7 +53,7 @@ const LoadingSpinner = () => {
       <div className="relative">
         <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-primary text-sm font-medium animate-pulse">Loading...</span>
+          <span className="text-primary text-sm font-medium animate-pulse">{/* t('common.loading') could be added here */}Loading...</span>
         </div>
       </div>
     </div>
@@ -63,6 +63,7 @@ const LoadingSpinner = () => {
 const Index = () => {
   const { t } = useLanguage();
   const { session, signInWithMetaMask } = useAuth();
+  const { title, content, loading: contentLoading } = useChatbotContent("home");
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -92,19 +93,20 @@ const Index = () => {
   };
 
   const handleMetaMaskLogin = async () => {
-    if (typeof window.ethereum === 'undefined') {
-      toast("MetaMask Not Detected", {
-        description: "Please install the MetaMask browser extension to use this feature."
+    if (typeof window.ethereum === "undefined") {
+      toast(t("metamask.notDetected"), {
+        description: t("metamask.installPrompt"),
       });
       return;
     }
     
     try {
       await signInWithMetaMask();
+      toast.success(t("metamask.loginSuccess"));
     } catch (error) {
       console.error("MetaMask login error:", error);
-      toast("Login Failed", {
-        description: "There was an error connecting with MetaMask."
+      toast.error(t("metamask.loginFailed"), {
+        description: t("metamask.loginError"),
       });
     }
   };
@@ -120,22 +122,30 @@ const Index = () => {
   }
 
   if (productsError) {
-    return <div>{t('common.error')}</div>;
+    return <div>{t("common.error")}</div>;
   }
 
   return (
     <>
       <Header />
       <div className="container mx-auto px-4 py-8 mt-20">
-        <h1 className="text-3xl font-bold mb-4">{t('nav.home')}</h1>
+        {/* Dynamic title and content from AdminContentManagement */}
+        <h1 className="text-3xl font-bold mb-4">{contentLoading ? t("common.loading") : title}</h1>
+        {contentLoading ? (
+          <p className="text-muted-foreground">{t("common.loading")}</p>
+        ) : (
+          <div className="prose max-w-none text-muted-foreground whitespace-pre-wrap mb-8">
+            {content}
+          </div>
+        )}
 
         {/* Crypto Banner Ad */}
         <BannerAd 
-          title="Trade with Crypto"
-          description="Now accepting Bitcoin, Ethereum and other cryptocurrencies for all purchases"
+          title={t("banner.crypto.title")} // Add these to translations
+          description={t("banner.crypto.description")}
           imageUrl="/crypto-img.jpg"
           linkUrl="/crypto-payments"
-          buttonText="Learn More"
+          buttonText={t("banner.crypto.button")}
           className="w-full h-[250px] mb-8"
         />
 
@@ -143,21 +153,21 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {/* New Products Banner Ad */}
           <BannerAd 
-            title="New Arrivals"
-            description="Check out our latest gold and silver collections fresh from the vault"
+            title={t("banner.newArrivals.title")}
+            description={t("banner.newArrivals.description")}
             imageUrl="/kebaya.jpg"
             linkUrl="/new-arrivals"
-            buttonText="Explore"
+            buttonText={t("banner.newArrivals.button")}
             className="w-full h-[250px]"
           />
 
           {/* Flash Sale Banner Ad */}
           <BannerAd 
-            title="Flash Sale - 24 Hours Only!"
-            description="Limited time offers on premium jewelry - ends midnight tonight!"
+            title={t("banner.flashSale.title")}
+            description={t("banner.flashSale.description")}
             imageUrl="/scarf2.jpg"
             linkUrl="/flash-sale"
-            buttonText="Shop Now"
+            buttonText={t("banner.flashSale.button")}
             className="w-full h-[250px]"
           />
         </div>
@@ -165,7 +175,7 @@ const Index = () => {
         <div className="flex items-center justify-between mb-4">
           <Input
             type="text"
-            placeholder={t('common.search')}
+            placeholder={t("common.search")}
             value={searchQuery}
             onChange={handleSearchChange}
             className="w-full md:w-1/3 mr-4"
@@ -181,33 +191,33 @@ const Index = () => {
                 alt="MetaMask" 
                 className="w-5 h-5" 
               />
-              Login with MetaMask
+              {t("metamask.login")}
             </Button>
           )}
           {session?.user.email === "master@recehan.gold" && (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline">Add Product</Button>
+                <Button variant="outline">{t("admin.addProduct")}</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle>Add Product</DialogTitle>
+                  <DialogTitle>{t("admin.addProduct")}</DialogTitle>
                   <DialogDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    {t("admin.addProductDescription")}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <label htmlFor="name" className="text-right">
-                      Name
+                      {t("admin.productName")}
                     </label>
-                    <Input id="name" value={"test"} className="col-span-3" />
+                    <Input id="name" value="test" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <label htmlFor="username" className="text-right">
-                      Price
+                    <label htmlFor="price" className="text-right">
+                      {t("admin.productPrice")}
                     </label>
-                    <Input id="username" value={"100"} className="col-span-3" />
+                    <Input id="price" value="100" className="col-span-3" />
                   </div>
                 </div>
               </DialogContent>

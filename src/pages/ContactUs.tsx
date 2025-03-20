@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Send } from "lucide-react";
 
 const ContactUs = () => {
-  const { content, loading } = useChatbotContent("contact");
+  const { title, content, loading } = useChatbotContent("contact");
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,7 +31,7 @@ const ContactUs = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
+        <h1 className="text-3xl font-bold mb-6">{title}</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>

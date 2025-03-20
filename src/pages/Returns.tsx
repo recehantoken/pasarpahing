@@ -3,13 +3,13 @@ import { Footer } from "@/components/layout/Footer";
 import { useChatbotContent } from "@/hooks/useChatbotContent";
 
 const Returns = () => {
-  const { content, loading } = useChatbotContent("returns");
+  const { title, content, loading } = useChatbotContent("returns");
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Returns & Refunds</h1>
+        <h1 className="text-3xl font-bold mb-6">{title}</h1>
         {loading ? (
           <p className="text-muted-foreground">Loading...</p>
         ) : (
