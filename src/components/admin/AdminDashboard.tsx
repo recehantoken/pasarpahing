@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,7 +14,6 @@ export const AdminDashboard = () => {
     totalUsers: 0
   });
 
-  // Sample data for the chart
   const data = [
     { name: 'Jan', value: 400 },
     { name: 'Feb', value: 300 },
@@ -25,29 +23,12 @@ export const AdminDashboard = () => {
     { name: 'Jun', value: 700 },
   ];
 
-  // Fetch stats on component mount
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch product count
-        const { count: productCount, error: productsError } = await supabase
-          .from('products')
-          .select('*', { count: 'exact', head: true });
-
-        // Fetch category count
-        const { count: categoryCount, error: categoriesError } = await supabase
-          .from('categories')
-          .select('*', { count: 'exact', head: true });
-
-        // Fetch user count from profiles
-        const { count: userCount, error: usersError } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true });
-
-        if (productsError || categoriesError || usersError) {
-          console.error("Error fetching stats:", { productsError, categoriesError, usersError });
-          return;
-        }
+        const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
+        const { count: categoryCount } = await supabase.from('categories').select('*', { count: 'exact', head: true });
+        const { count: userCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
 
         setStats({
           totalProducts: productCount || 0,
@@ -65,12 +46,9 @@ export const AdminDashboard = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Stats Cards */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('admin.products')}
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.products')}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -87,17 +65,12 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalProducts}</div>
-            <p className="text-xs text-muted-foreground">
-              Total products in your store
-            </p>
+            <p className="text-xs text-muted-foreground">{t('admin.products')}</p>
           </CardContent>
         </Card>
-        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('admin.categories')}
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.categories')}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -113,17 +86,12 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalCategories}</div>
-            <p className="text-xs text-muted-foreground">
-              Total categories
-            </p>
+            <p className="text-xs text-muted-foreground">{t('admin.categories')}</p>
           </CardContent>
         </Card>
-        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('admin.users')}
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.users')}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -142,14 +110,10 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              Registered users
-            </p>
+            <p className="text-xs text-muted-foreground">{t('admin.users')}</p>
           </CardContent>
         </Card>
       </div>
-      
-      {/* Chart */}
       <Card>
         <CardHeader>
           <CardTitle>{t('admin.dashboard')}</CardTitle>
@@ -159,15 +123,15 @@ export const AdminDashboard = () => {
             <TabsList className="mb-4">
               <TabsTrigger value="bar" className="flex items-center space-x-2">
                 <BarChart className="h-4 w-4" />
-                <span>Bar</span>
+                <span>{t('admin.bar')}</span>
               </TabsTrigger>
               <TabsTrigger value="line" className="flex items-center space-x-2">
                 <LineChart className="h-4 w-4" />
-                <span>Line</span>
+                <span>{t('admin.line')}</span>
               </TabsTrigger>
               <TabsTrigger value="pie" className="flex items-center space-x-2">
                 <PieChart className="h-4 w-4" />
-                <span>Pie</span>
+                <span>{t('admin.pie')}</span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="bar" className="h-80">
@@ -183,12 +147,12 @@ export const AdminDashboard = () => {
             </TabsContent>
             <TabsContent value="line" className="h-80">
               <div className="flex h-full items-center justify-center">
-                <p className="text-muted-foreground">Line chart will be implemented</p>
+                <p className="text-muted-foreground">{t('admin.lineChartPending')}</p>
               </div>
             </TabsContent>
             <TabsContent value="pie" className="h-80">
               <div className="flex h-full items-center justify-center">
-                <p className="text-muted-foreground">Pie chart will be implemented</p>
+                <p className="text-muted-foreground">{t('admin.pieChartPending')}</p>
               </div>
             </TabsContent>
           </Tabs>
