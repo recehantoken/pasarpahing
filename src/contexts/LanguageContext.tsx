@@ -354,8 +354,36 @@ const initialTranslations: Translations = {
     en: "Featured Products",
     id: "Produk Unggulan",
   },
+  "index.welcome": {
+    en: "Welcome to Pasar Pahing",
+    id: "Selamat Datang di Pasar Pahing",
+  },
+  "index.description": {
+    en: "Discover authentic Indonesian products and vibrant local trade in our community-driven marketplace.",
+    id: "Temukan produk autentik Indonesia dan perdagangan lokal yang semarak di pasar berbasis komunitas kami.",
+  },
+  "index.featuredProducts": {
+    en: "Featured Products",
+    id: "Produk Unggulan",
+  },
 
   // ProductCard
+  "product.flashSale": {
+    en: "Flash Sale",
+    id: "Penjualan Kilat",
+  },
+  "product.new": {
+    en: "New",
+    id: "Baru",
+  },
+  "product.noImage": {
+    en: "No Image",
+    id: "Tidak Ada Gambar",
+  },
+  "product.addToCart": {
+    en: "Add to Cart",
+    id: "Tambah ke Keranjang",
+  },
   "product.flashSale": {
     en: "Flash Sale",
     id: "Penjualan Kilat",

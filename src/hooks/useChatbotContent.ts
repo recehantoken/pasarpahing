@@ -8,7 +8,7 @@ export const useChatbotContent = (pageKey: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("page_content")
-        .select("title, content")
+        .select("title, content, image_url")
         .eq("page_key", pageKey)
         .single();
 
@@ -20,6 +20,7 @@ export const useChatbotContent = (pageKey: string) => {
   return {
     title: data?.title || "",
     content: data?.content || "",
+    imageUrl: data?.image_url || "", // New field for image URL
     loading: isLoading,
     error,
   };

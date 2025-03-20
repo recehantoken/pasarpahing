@@ -14,6 +14,7 @@ type PageContent = {
   page_key: string;
   title: string;
   content: string;
+  image_url?: string; // Optional field for image URL
 };
 
 export const AdminContentManagement = () => {
@@ -38,7 +39,7 @@ export const AdminContentManagement = () => {
     fetchContent();
   }, [t]);
 
-  const handleInputChange = (field: "title" | "content", value: string) => {
+  const handleInputChange = (field: "title" | "content" | "image_url", value: string) => {
     setContent((prev) => ({
       ...prev,
       [activeTab]: { ...prev[activeTab], [field]: value },
@@ -48,7 +49,7 @@ export const AdminContentManagement = () => {
   const handleSave = async () => {
     const currentContent = content[activeTab];
     if (!currentContent) return;
-
+  
     try {
       const { error } = await supabase
         .from("page_content")
@@ -57,11 +58,12 @@ export const AdminContentManagement = () => {
             page_key: activeTab,
             title: currentContent.title,
             content: currentContent.content,
+            image_url: currentContent.image_url || null, // Save image URL or null
             updated_at: new Date().toISOString(),
           },
           { onConflict: "page_key" }
         );
-
+  
       if (error) throw error;
       toast.success(t("admin.contentSaved"), {
         description: `${t(`admin.${activeTab}`)} ${t("admin.pageUpdated")}`,
@@ -149,6 +151,7 @@ export const AdminContentManagement = () => {
               </div>
             </TabsContent>
 
+            // Inside AdminContentManagement.tsx
             <TabsContent value="about" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="about-title">{t("admin.aboutPageTitle")}</Label>
@@ -165,6 +168,15 @@ export const AdminContentManagement = () => {
                   rows={8}
                   value={content.about?.content || ""}
                   onChange={(e) => handleInputChange("content", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="about-image">{t("admin.aboutImageUrl")}</Label>
+                <Input
+                  id="about-image"
+                  value={content.about?.image_url || ""}
+                  onChange={(e) => handleInputChange("image_url", e.target.value)}
+                  placeholder={t("admin.imageUrlPlaceholder")}
                 />
               </div>
             </TabsContent>
