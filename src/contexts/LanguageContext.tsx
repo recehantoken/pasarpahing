@@ -464,6 +464,21 @@ const initialTranslations: Translations = {
     en: "Shop Now",
     id: "Belanja Sekarang",
   },
+  // Inside initialTranslations
+"contact.getInTouch": { en: "Get in Touch", id: "Hubungi Kami" },
+"contact.messageSent": { en: "Message Sent", id: "Pesan Terkirim" },
+"contact.messageSentDescription": { en: "We'll get back to you soon!", id: "Kami akan segera menghubungi Anda!" },
+"contact.namePlaceholder": { en: "Your name", id: "Nama Anda" },
+"contact.emailPlaceholder": { en: "Your email", id: "Email Anda" },
+"contact.subject": { en: "Subject", id: "Subjek" },
+"contact.subjectPlaceholder": { en: "Subject of your message", id: "Subjek pesan Anda" },
+"contact.message": { en: "Message", id: "Pesan" },
+"contact.messagePlaceholder": { en: "Your message", id: "Pesan Anda" },
+"contact.sendMessage": { en: "Send Message", id: "Kirim Pesan" },
+"contact.officeInfo": { en: "Office Information", id: "Informasi Kantor" },
+"contact.findUs": { en: "Find Us", id: "Temukan Kami" },
+"contact.mapTitle": { en: "Our Office Location", id: "Lokasi Kantor Kami" },
+"contact.officeImageAlt": { en: "Our Office", id: "Kantor Kami" },
 };
 
 type LanguageContextType = {
