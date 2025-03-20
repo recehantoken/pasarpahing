@@ -7,6 +7,9 @@ const FAQ = () => {
   const { title, content, loading } = useChatbotContent("faq");
   const { t } = useLanguage();
 
+  // Replace literal "\n" with actual newlines for rendering
+  const formattedContent = content.replace(/\\n/g, "\n");
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
@@ -25,7 +28,7 @@ const FAQ = () => {
             <p className="text-muted-foreground text-center">{t("common.loading")}</p>
           ) : content ? (
             <div className="prose max-w-none text-muted-foreground whitespace-pre-wrap">
-              {content}
+              {formattedContent}
             </div>
           ) : (
             <p className="text-muted-foreground text-center">{t("faq.noContent")}</p>
