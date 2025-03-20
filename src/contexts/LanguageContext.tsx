@@ -286,6 +286,9 @@ const initialTranslations: Translations = {
     en: "Lead Developer",
     id: "Pengembang Utama",
   },
+  // FAQ
+  "faq.noContent": { en: "No FAQs available at the moment.", id: "Tidak ada FAQ yang tersedia saat ini." 
+  },
 
   // Footer
   "footer.description": {
