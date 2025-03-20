@@ -1,45 +1,75 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { FileText, Image, Home, ShoppingCart, Info, Mail, HelpCircle, Save, Truck } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  FileText,
+  Image,
+  Home,
+  ShoppingCart,
+  Info,
+  Mail,
+  HelpCircle,
+  Save,
+  Truck,
+  Lock,
+  Shield,
+  FileCheck,
+} from "lucide-react";
 
 type PageContent = {
   page_key: string;
   title: string;
   content: string;
-  image_url?: string; // Optional field for image URL
 };
 
 export const AdminContentManagement = () => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("home");
-  const [content, setContent] = useState<Record<string, PageContent>>({});
+  const [content, setContent] = useState<{
+    [key: string]: { title: string; content: string };
+  }>({
+    home: { title: "", content: "" },
+    products: { title: "", content: "" },
+    about: { title: "", content: "" },
+    contact: { title: "", content: "" },
+    faq: { title: "", content: "" },
+    shipping: { title: "", content: "" },
+    cookies: { title: "", content: "" },
+    privacy: { title: "", content: "" },
+    terms: { title: "", content: "" },
+  });
 
-  // Fetch initial content from Supabase
+  // Fetch content from Supabase on mount
   useEffect(() => {
     const fetchContent = async () => {
-      const { data, error } = await supabase.from("page_content").select("*");
+      const { data, error } = await supabase.from("page_content").select("page_key, title, content");
       if (error) {
         toast.error(t("common.error"), { description: "Failed to load content" });
         return;
       }
-      const contentMap = data.reduce((acc, item) => {
-        acc[item.page_key] = item;
+
+      const contentMap = data.reduce((acc: any, item: PageContent) => {
+        acc[item.page_key] = { title: item.title || "", content: item.content || "" };
         return acc;
-      }, {} as Record<string, PageContent>);
-      setContent(contentMap);
+      }, {});
+
+      setContent((prev) => ({
+        ...prev,
+        ...contentMap,
+      }));
     };
+
     fetchContent();
   }, [t]);
 
-  const handleInputChange = (field: "title" | "content" | "image_url", value: string) => {
+  const handleInputChange = (field: "title" | "content", value: string) => {
     setContent((prev) => ({
       ...prev,
       [activeTab]: { ...prev[activeTab], [field]: value },
@@ -49,7 +79,7 @@ export const AdminContentManagement = () => {
   const handleSave = async () => {
     const currentContent = content[activeTab];
     if (!currentContent) return;
-  
+
     try {
       const { error } = await supabase
         .from("page_content")
@@ -58,18 +88,17 @@ export const AdminContentManagement = () => {
             page_key: activeTab,
             title: currentContent.title,
             content: currentContent.content,
-            image_url: currentContent.image_url || null, // Save image URL or null
             updated_at: new Date().toISOString(),
           },
           { onConflict: "page_key" }
         );
-  
+
       if (error) throw error;
       toast.success(t("admin.contentSaved"), {
         description: `${t(`admin.${activeTab}`)} ${t("admin.pageUpdated")}`,
       });
     } catch (error) {
-      toast.error(t("common.error"), { description: "Failed to save content" });
+      toast.error(t("common.error"), { description: t("admin.saveFailed") });
     }
   };
 
@@ -84,14 +113,14 @@ export const AdminContentManagement = () => {
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 w-full mb-6">
+          <TabsList className="grid grid-cols-3 md:grid-cols-9 gap-2 w-full mb-6">
             <TabsTrigger value="home" className="flex items-center gap-1">
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">{t("admin.home")}</span>
             </TabsTrigger>
             <TabsTrigger value="products" className="flex items-center gap-1">
               <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">{t("admin.productsPage")}</span>
+              <span className="hidden sm:inline">{t("admin.products")}</span>
             </TabsTrigger>
             <TabsTrigger value="about" className="flex items-center gap-1">
               <Info className="h-4 w-4" />
@@ -109,27 +138,39 @@ export const AdminContentManagement = () => {
               <Truck className="h-4 w-4" />
               <span className="hidden sm:inline">{t("admin.shipping")}</span>
             </TabsTrigger>
+            <TabsTrigger value="cookies" className="flex items-center gap-1">
+              <Shield className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("admin.cookies")}</span>
+            </TabsTrigger>
+            <TabsTrigger value="privacy" className="flex items-center gap-1">
+              <Lock className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("admin.privacy")}</span>
+            </TabsTrigger>
+            <TabsTrigger value="terms" className="flex items-center gap-1">
+              <FileCheck className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("admin.terms")}</span>
+            </TabsTrigger>
           </TabsList>
 
           <div className="space-y-6">
             <TabsContent value="home" className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="hero-title">{t("admin.heroTitle")}</Label>
+                <Label htmlFor="home-title">{t("admin.homePageTitle")}</Label>
                 <Input
-                  id="hero-title"
+                  id="home-title"
                   value={content.home?.title || ""}
                   onChange={(e) => handleInputChange("title", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hero-subtitle">{t("admin.heroSubtitle")}</Label>
-                <Input
-                  id="hero-subtitle"
+                <Label htmlFor="home-content">{t("admin.homePageContent")}</Label>
+                <Textarea
+                  id="home-content"
+                  rows={8}
                   value={content.home?.content || ""}
                   onChange={(e) => handleInputChange("content", e.target.value)}
                 />
               </div>
-              {/* Add other fields as needed */}
             </TabsContent>
 
             <TabsContent value="products" className="space-y-4">
@@ -142,16 +183,16 @@ export const AdminContentManagement = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="products-description">{t("admin.productsPageDescription")}</Label>
+                <Label htmlFor="products-content">{t("admin.productsPageContent")}</Label>
                 <Textarea
-                  id="products-description"
+                  id="products-content"
+                  rows={8}
                   value={content.products?.content || ""}
                   onChange={(e) => handleInputChange("content", e.target.value)}
                 />
               </div>
             </TabsContent>
 
-            // Inside AdminContentManagement.tsx
             <TabsContent value="about" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="about-title">{t("admin.aboutPageTitle")}</Label>
@@ -170,15 +211,6 @@ export const AdminContentManagement = () => {
                   onChange={(e) => handleInputChange("content", e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="about-image">{t("admin.aboutImageUrl")}</Label>
-                <Input
-                  id="about-image"
-                  value={content.about?.image_url || ""}
-                  onChange={(e) => handleInputChange("image_url", e.target.value)}
-                  placeholder={t("admin.imageUrlPlaceholder")}
-                />
-              </div>
             </TabsContent>
 
             <TabsContent value="contact" className="space-y-4">
@@ -191,10 +223,10 @@ export const AdminContentManagement = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="contact-info">{t("admin.contactInfo")}</Label>
+                <Label htmlFor="contact-content">{t("admin.contactPageContent")}</Label>
                 <Textarea
-                  id="contact-info"
-                  rows={4}
+                  id="contact-content"
+                  rows={8}
                   value={content.contact?.content || ""}
                   onChange={(e) => handleInputChange("content", e.target.value)}
                 />
@@ -211,7 +243,7 @@ export const AdminContentManagement = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="faq-content">{t("admin.faqContent")}</Label>
+                <Label htmlFor="faq-content">{t("admin.faqPageContent")}</Label>
                 <Textarea
                   id="faq-content"
                   rows={8}
@@ -231,11 +263,71 @@ export const AdminContentManagement = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="shipping-content">{t("admin.shippingContent")}</Label>
+                <Label htmlFor="shipping-content">{t("admin.shippingPageContent")}</Label>
                 <Textarea
                   id="shipping-content"
                   rows={8}
                   value={content.shipping?.content || ""}
+                  onChange={(e) => handleInputChange("content", e.target.value)}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="cookies" className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="cookies-title">{t("admin.cookiesPageTitle")}</Label>
+                <Input
+                  id="cookies-title"
+                  value={content.cookies?.title || ""}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="cookies-content">{t("admin.cookiesPageContent")}</Label>
+                <Textarea
+                  id="cookies-content"
+                  rows={8}
+                  value={content.cookies?.content || ""}
+                  onChange={(e) => handleInputChange("content", e.target.value)}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="privacy" className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="privacy-title">{t("admin.privacyPageTitle")}</Label>
+                <Input
+                  id="privacy-title"
+                  value={content.privacy?.title || ""}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="privacy-content">{t("admin.privacyPageContent")}</Label>
+                <Textarea
+                  id="privacy-content"
+                  rows={8}
+                  value={content.privacy?.content || ""}
+                  onChange={(e) => handleInputChange("content", e.target.value)}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="terms" className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="terms-title">{t("admin.termsPageTitle")}</Label>
+                <Input
+                  id="terms-title"
+                  value={content.terms?.title || ""}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="terms-content">{t("admin.termsPageContent")}</Label>
+                <Textarea
+                  id="terms-content"
+                  rows={8}
+                  value={content.terms?.content || ""}
                   onChange={(e) => handleInputChange("content", e.target.value)}
                 />
               </div>

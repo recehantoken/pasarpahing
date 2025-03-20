@@ -482,6 +482,24 @@ const initialTranslations: Translations = {
 "contact.findUs": { en: "Find Us", id: "Temukan Kami" },
 "contact.mapTitle": { en: "Our Office Location", id: "Lokasi Kantor Kami" },
 "contact.officeImageAlt": { en: "Our Office", id: "Kantor Kami" },
+// Inside initialTranslations
+"admin.products": { en: "Products", id: "Produk" },
+"admin.productsPageTitle": { en: "Products Page Title", id: "Judul Halaman Produk" },
+"admin.productsPageContent": { en: "Products Page Content", id: "Konten Halaman Produk" },
+"admin.shippingPageTitle": { en: "Shipping Page Title", id: "Judul Halaman Pengiriman" },
+"admin.shippingPageContent": { en: "Shipping Page Content", id: "Konten Halaman Pengiriman" },
+"admin.cookies": { en: "Cookies", id: "Cookie" },
+"admin.cookiesPageTitle": { en: "Cookies Page Title", id: "Judul Halaman Cookie" },
+"admin.cookiesPageContent": { en: "Cookies Page Content", id: "Konten Halaman Cookie" },
+"admin.privacy": { en: "Privacy", id: "Privasi" },
+"admin.privacyPageTitle": { en: "Privacy Page Title", id: "Judul Halaman Privasi" },
+"admin.privacyPageContent": { en: "Privacy Page Content", id: "Konten Halaman Privasi" },
+"admin.terms": { en: "Terms", id: "Ketentuan" },
+"admin.termsPageTitle": { en: "Terms Page Title", id: "Judul Halaman Ketentuan" },
+"admin.termsPageContent": { en: "Terms Page Content", id: "Konten Halaman Ketentuan" },
+"admin.contentSaved": { en: "Content Saved", id: "Konten Disimpan" },
+"admin.pageUpdated": { en: "page content has been updated.", id: "konten halaman telah diperbarui." },
+"admin.saveFailed": { en: "Failed to save content", id: "Gagal menyimpan konten" },
 };
 
 type LanguageContextType = {
