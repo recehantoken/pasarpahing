@@ -11,49 +11,27 @@ export const ThemeSwitcher = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Always set dark theme
+    // Always enforce dark theme
     document.documentElement.classList.add('dark');
+    
+    // Remove light mode class if it exists
+    document.documentElement.classList.remove('light');
 
     // Store user's preference if logged in
     const setDarkModePreference = async () => {
       if (user) {
         try {
-          const { data, error } = await supabase
+          const { error: upsertError } = await supabase
             .from('theme_settings')
-            .select('theme_preference')
-            .eq('user_id', user.id)
-            .maybeSingle();
+            .upsert({ 
+              user_id: user.id, 
+              theme_preference: 'dark' 
+            }, { 
+              onConflict: 'user_id'
+            });
 
-          if (error) {
-            console.error('Error fetching theme preference:', error);
-            return;
-          }
-
-          // If theme setting doesn't exist, create one with dark theme
-          if (!data) {
-            const { error: upsertError } = await supabase
-              .from('theme_settings')
-              .upsert({ 
-                user_id: user.id, 
-                theme_preference: 'dark' 
-              }, { 
-                onConflict: 'user_id'
-              });
-
-            if (upsertError) {
-              console.error('Error creating theme setting:', upsertError);
-            }
-          }
-          // If for some reason it's not dark, update it
-          else if (data.theme_preference !== 'dark') {
-            const { error: updateError } = await supabase
-              .from('theme_settings')
-              .update({ theme_preference: 'dark' })
-              .eq('user_id', user.id);
-
-            if (updateError) {
-              console.error('Error updating theme preference:', updateError);
-            }
+          if (upsertError) {
+            console.error('Error creating theme setting:', upsertError);
           }
         } catch (err) {
           console.error('Unexpected error in theme preference:', err);
