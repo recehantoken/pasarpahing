@@ -125,7 +125,7 @@ const initialTranslations: Translations = {
     id: 'Sudah memiliki akun? Masuk',
   },
   'auth.dontHaveAccount': {
-    en: 'Don't have an account?',
+    en: "Don't have an account?",
     id: 'Belum memiliki akun?',
   },
   'auth.loggedOut': {
@@ -386,6 +386,7 @@ const initialTranslations: Translations = {
     en: 'Add to Cart',
     id: 'Tambah ke Keranjang',
   },
+  
   // Admin Dashboard
   'admin.dashboard': {
     en: 'Dashboard',
