@@ -1,22 +1,21 @@
 
-import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
+import { useEffect } from "react";
+import { Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
 export const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Default to dark
   const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set dark theme as default
+    // Always set dark theme
     document.documentElement.classList.add('dark');
 
-    // Check if user has a theme preference
-    const fetchThemePreference = async () => {
+    // Store user's preference if logged in
+    const setDarkModePreference = async () => {
       if (user) {
         try {
           const { data, error } = await supabase
@@ -30,12 +29,8 @@ export const ThemeSwitcher = () => {
             return;
           }
 
-          // If theme setting exists, apply it
-          if (data) {
-            setTheme(data.theme_preference as 'light' | 'dark');
-            document.documentElement.classList.toggle('dark', data.theme_preference === 'dark');
-          } else {
-            // If no theme setting exists, create one with default dark theme
+          // If theme setting doesn't exist, create one with dark theme
+          if (!data) {
             const { error: upsertError } = await supabase
               .from('theme_settings')
               .upsert({ 
@@ -49,62 +44,36 @@ export const ThemeSwitcher = () => {
               console.error('Error creating theme setting:', upsertError);
             }
           }
+          // If for some reason it's not dark, update it
+          else if (data.theme_preference !== 'dark') {
+            const { error: updateError } = await supabase
+              .from('theme_settings')
+              .update({ theme_preference: 'dark' })
+              .eq('user_id', user.id);
+
+            if (updateError) {
+              console.error('Error updating theme preference:', updateError);
+            }
+          }
         } catch (err) {
           console.error('Unexpected error in theme preference:', err);
         }
       }
     };
 
-    fetchThemePreference();
+    setDarkModePreference();
   }, [user]);
 
-  const toggleTheme = async () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark');
-
-    if (user) {
-      try {
-        const { error } = await supabase
-          .from('theme_settings')
-          .upsert({
-            user_id: user.id,
-            theme_preference: newTheme
-          }, {
-            onConflict: 'user_id'
-          });
-
-        if (error) {
-          toast({
-            title: "Error saving theme preference",
-            description: "Please try again later",
-            variant: "destructive"
-          });
-          console.error('Error updating theme preference:', error);
-        }
-      } catch (err) {
-        console.error('Unexpected error toggling theme:', err);
-        toast({
-          title: "Error saving theme preference",
-          description: "Please try again later",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
+  // This button now just serves as an indicator that dark mode is active
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
-      className="w-10 h-10 rounded-full"
+      className="w-10 h-10 rounded-full cursor-default"
+      disabled
+      title="Dark Mode Active"
     >
-      {theme === 'light' ? (
-        <Moon className="h-5 w-5" />
-      ) : (
-        <Sun className="h-5 w-5" />
-      )}
+      <Moon className="h-5 w-5" />
     </Button>
   );
 };

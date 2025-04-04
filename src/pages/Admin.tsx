@@ -9,13 +9,6 @@ import {
   TabsList, 
   TabsTrigger 
 } from "@/components/ui/tabs";
-import { 
-  Card,
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -42,7 +35,6 @@ import {
   UserCog,
   ShoppingBag,
   FileText,
-  MessageSquare,
   CreditCard
 } from "lucide-react";
 
@@ -52,6 +44,11 @@ const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Force dark mode
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
 
   useEffect(() => {
     // Check if user is authorized to access admin
@@ -67,7 +64,7 @@ const Admin = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen dark:bg-sidebar">
         <p>Loading...</p>
       </div>
     );
