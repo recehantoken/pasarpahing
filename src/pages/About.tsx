@@ -4,9 +4,16 @@ import { Footer } from "@/components/layout/Footer";
 import { useChatbotContent } from "@/hooks/useChatbotContent";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useEffect } from "react";
 
 const About = () => {
   const { content, loading } = useChatbotContent("about");
+
+  // Force dark mode
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-sidebar">

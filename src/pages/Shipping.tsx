@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Loader2 } from "lucide-react";
 import { useChatbotContent } from "@/hooks/useChatbotContent";
+import { useEffect } from "react";
 
 const Shipping = () => {
   const { content, loading: contentLoading } = useChatbotContent("shipping");
@@ -21,6 +22,12 @@ const Shipping = () => {
       return data;
     },
   });
+
+  // Force dark mode
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-sidebar">
