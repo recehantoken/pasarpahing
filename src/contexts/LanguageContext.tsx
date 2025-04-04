@@ -1,6 +1,8 @@
+
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type Language = "en" | "id";
+// Export the Language type
+export type Language = "en" | "id";
 type Translations = {
   [key: string]: {
     en: string;
