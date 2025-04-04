@@ -208,6 +208,33 @@ export type Database = {
           },
         ]
       }
+      page_content: {
+        Row: {
+          content: string | null
+          id: string
+          image_url: string | null
+          page_key: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          id?: string
+          image_url?: string | null
+          page_key: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          id?: string
+          image_url?: string | null
+          page_key?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       payment_methods: {
         Row: {
           created_at: string
@@ -243,39 +270,48 @@ export type Database = {
           category_id: string | null
           created_at: string
           created_by: string | null
+          currency: string | null
           description: string | null
           id: string
           image_url: string | null
           is_flash_sale: boolean | null
           is_new: boolean | null
           name: string
+          payment_method_id: string | null
           price: number
+          shipping_method_id: string | null
           updated_at: string
         }
         Insert: {
           category_id?: string | null
           created_at?: string
           created_by?: string | null
+          currency?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
           is_flash_sale?: boolean | null
           is_new?: boolean | null
           name: string
+          payment_method_id?: string | null
           price: number
+          shipping_method_id?: string | null
           updated_at?: string
         }
         Update: {
           category_id?: string | null
           created_at?: string
           created_by?: string | null
+          currency?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
           is_flash_sale?: boolean | null
           is_new?: boolean | null
           name?: string
+          payment_method_id?: string | null
           price?: number
+          shipping_method_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -284,6 +320,20 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_payment_method_id_fkey"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_shipping_method_id_fkey"
+            columns: ["shipping_method_id"]
+            isOneToOne: false
+            referencedRelation: "shipping_methods"
             referencedColumns: ["id"]
           },
         ]
