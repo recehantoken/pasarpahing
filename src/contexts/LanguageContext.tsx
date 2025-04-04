@@ -44,6 +44,18 @@ const initialTranslations: Translations = {
     en: 'Uploading...',
     id: 'Mengunggah...',
   },
+  'common.cancel': {
+    en: 'Cancel',
+    id: 'Batal',
+  },
+  'common.edit': {
+    en: 'Edit',
+    id: 'Edit',
+  },
+  'common.delete': {
+    en: 'Delete',
+    id: 'Hapus',
+  },
 
   // Navigation (Header)
   'nav.home': {
@@ -113,7 +125,7 @@ const initialTranslations: Translations = {
     id: 'Sudah memiliki akun? Masuk',
   },
   'auth.dontHaveAccount': {
-    en: 'Don’t have an account?',
+    en: 'Don't have an account?',
     id: 'Belum memiliki akun?',
   },
   'auth.loggedOut': {
@@ -630,25 +642,7 @@ const initialTranslations: Translations = {
   'admin.shippingContent': {
     en: 'Shipping Policy Content',
     id: 'Konten Kebijakan Pengiriman',
-  },
-
-  // Common Actions
-  'common.cancel': {
-    en: 'Cancel',
-    id: 'Batal',
-  },
-  'common.save': {
-    en: 'Save Changes',
-    id: 'Simpan Perubahan',
-  },
-  'common.edit': {
-    en: 'Edit',
-    id: 'Edit',
-  },
-  'common.delete': {
-    en: 'Delete',
-    id: 'Hapus',
-  },
+  }
 };
 
 type LanguageContextType = {
