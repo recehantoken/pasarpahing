@@ -59,7 +59,7 @@ export const Header = () => {
         <Link to="/" className="flex items-center space-x-2">
           <img src="/logo-pasarpahing.png" alt="Recehan Logo" className="h-8 w-auto" />
           <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Pasar Pahing
+            Recehan Market
           </span>
         </Link>
         
