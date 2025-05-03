@@ -9,7 +9,7 @@ const corsHeaders = {
 
 const pasarPahingInfo = {
   general: `
-    Pasar Pahing is a digital platform connecting local farmers and artisans with consumers, promoting sustainable, locally sourced products like fresh produce, handcrafted goods, and traditional foods.
+    Recehan Market is a digital platform connecting local farmers and artisans with consumers, promoting sustainable, locally sourced products like fresh produce, handcrafted goods, and traditional foods.
   `,
   faq: `
     Frequently Asked Questions:
@@ -21,7 +21,7 @@ const pasarPahingInfo = {
   `,
   privacy: `
     Privacy Policy:
-    At Pasar Pahing, we take your privacy seriously. Here’s how we handle your information:
+    At Recehan Market, we take your privacy seriously. Here’s how we handle your information:
     1. Information We Collect: Name, email, address, phone, payment info from account creation, purchases, support contacts, subscriptions, surveys.
     2. Automatically Collected: IP address, browser type, access times, device info, location, cookies.
     3. How We Use It: To provide services, process transactions, send updates, respond to queries, personalize experiences, analyze trends, prevent fraud.
@@ -39,7 +39,7 @@ const pasarPahingInfo = {
     - Eligibility: Unused, unworn, original packaging, tags attached, with proof of purchase.
     - Exceptions: No returns for personalized items, digital products, gift cards, intimate apparel, final sale items.
     - Process: 
-      1. Contact returns@pasarpahing.com or (123) 456-7890 with order number and reason.
+      1. Contact support@recehan.gold or (123) 456-7890 with order number and reason.
       2. Receive return authorization and shipping label.
       3. Pack items with the return form.
       4. Ship using the prepaid label; keep the tracking number.
@@ -57,7 +57,7 @@ const pasarPahingInfo = {
   `,
   terms: `
     Terms of Service:
-    By using Pasar Pahing, you agree to these terms:
+    By using Recehan Market, you agree to these terms:
     1. Acceptance: Bound by these terms and laws.
     2. Use: For buying/selling as permitted; you’re responsible for account security.
     3. Accounts: Provide accurate info; we may suspend inaccurate accounts.
@@ -71,7 +71,7 @@ const pasarPahingInfo = {
     Last updated: ${new Date().toLocaleDateString()}.
   `,
   about: `
-    About Pasar Pahing:
+    About Recehan Market:
     - Description: A vibrant marketplace connecting buyers and sellers for sustainable local commerce.
     - Mission: Create an accessible, fair, sustainable marketplace supporting small businesses.
     - Values: 
@@ -107,7 +107,7 @@ const pasarPahingInfo = {
 
 const pasarPahingInfoIndonesian = {
   general: `
-    Pasar Pahing adalah platform digital yang menghubungkan petani dan pengrajin lokal dengan konsumen untuk mempromosikan produk lokal yang berkelanjutan seperti produk segar, kerajinan tangan, dan makanan tradisional.
+    Recehan Market adalah platform digital yang menghubungkan petani dan pengrajin lokal dengan konsumen untuk mempromosikan produk lokal yang berkelanjutan seperti produk segar, kerajinan tangan, dan makanan tradisional.
   `,
   faq: `
     Pertanyaan Umum:
@@ -155,7 +155,7 @@ const pasarPahingInfoIndonesian = {
   `,
   terms: `
     Ketentuan Layanan:
-    Dengan menggunakan Pasar Pahing, Anda setuju:
+    Dengan menggunakan Recehan Market, Anda setuju:
     1. Penerimaan: Terikat pada ketentuan ini dan hukum.
     2. Penggunaan: Untuk beli/jual sesuai izin; Anda bertanggung jawab atas keamanan akun.
     3. Akun: Berikan info akurat; akun tidak akurat dapat ditangguhkan.
@@ -169,7 +169,7 @@ const pasarPahingInfoIndonesian = {
     Terakhir diperbarui: ${new Date().toLocaleDateString()}.
   `,
   about: `
-    Tentang Pasar Pahing:
+    Tentang Recehan Market:
     - Deskripsi: Pasar dinamis yang menghubungkan pembeli dan penjual untuk perdagangan lokal berkelanjutan.
     - Misi: Ciptakan pasar yang mudah diakses, adil, dan berkelanjutan untuk usaha kecil.
     - Nilai:
@@ -218,8 +218,8 @@ serve(async (req) => {
     const pageInfo = page && infoSource[page] ? infoSource[page] : infoSource.general;
 
     const systemContext = language === "id"
-      ? `Selalu deteksi bahasa pada obrolan, lalu balas dengan bahasa yang digunakan. Nama kamu adalah Dewi, asisten AI untuk Pasar Pahing. Berikan jawaban singkat dan bermanfaat. Berikut informasi tentang halaman ${page || "umum"}:\n\n${pageInfo}`
-      : `Detect language on chat, then reply in that language. Your name is Dewi, an AI assistant for Pasar Pahing. Provide concise, helpful answers. Here is information for the ${page || "general"} page:\n\n${pageInfo}`;
+      ? `Selalu deteksi bahasa pada obrolan, lalu balas dengan bahasa yang digunakan. Nama kamu adalah Dewi, asisten AI untuk Recehan Market. Berikan jawaban singkat dan bermanfaat. Berikut informasi tentang halaman ${page || "umum"}:\n\n${pageInfo}`
+      : `Detect language on chat, then reply in that language. Your name is Dewi, an AI assistant for Recehan Market. Provide concise, helpful answers. Here is information for the ${page || "general"} page:\n\n${pageInfo}`;
 
     const geminiMessages = [
       { role: "user", parts: [{ text: systemContext }] },

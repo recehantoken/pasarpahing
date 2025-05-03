@@ -30,8 +30,8 @@ export function Chatbot() {
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       const welcomeMessage = language === 'id'
-        ? 'Halo! Saya adalah asisten AI Pasar Pahing. Apa yang bisa saya bantu hari ini?'
-        : 'Hello! I am the Pasar Pahing AI assistant. How can I help you today?';
+        ? 'Halo! Saya adalah asisten AI Recehan Market. Apa yang bisa saya bantu hari ini?'
+        : 'Hello! I am the Recehan Market AI assistant. How can I help you today?';
         
       setMessages([
         {
